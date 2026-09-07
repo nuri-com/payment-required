@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PaymentRequired — Give any agent the power to pay</title>
+<meta name="description" content="402 Payment Required. Non-custodial wallet, stablecoins, cards, banking and x402 micropayments for your AI agent. Chat on WhatsApp, Telegram, Signal — or plug our MCP into your own agent.">
+<meta property="og:title" content="PaymentRequired — Give any agent the power to pay">
+<meta property="og:description" content="The full payment stack for AI agents. Non-custodial. Yours.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06070c; --bg2:#0b0d16; --ink:#f2f4ff; --dim:#9aa3c0; --line:rgba(160,170,220,.14);
+  --lime:#c8ff4d; --violet:#8b7bff; --cyan:#5de1ff; --pink:#ff7bd5;
+  --card:rgba(18,21,36,.72);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;overflow-x:hidden}
+canvas#field{position:fixed;inset:0;z-index:0;opacity:.9}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
+main{position:relative;z-index:2}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);background:rgba(6,7,12,.55);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:700;letter-spacing:-.02em;font-size:18px;display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo .code{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--lime);border:1px solid rgba(200,255,77,.35);border-radius:6px;padding:2px 7px;background:rgba(200,255,77,.07)}
+.navlinks{display:flex;gap:22px;font-size:14px;color:var(--dim)}
+.navlinks a{text-decoration:none;transition:color .2s}
+.navlinks a:hover{color:var(--ink)}
+@media(max-width:760px){.navlinks{display:none}}
+
+/* hero */
+.hero{min-height:100svh;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:120px 0 60px}
+@media(max-width:980px){.hero{grid-template-columns:1fr;padding-top:100px}}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--lime);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 14px var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+h1{font-size:clamp(40px,5.6vw,76px);line-height:1.02;letter-spacing:-.03em;font-weight:700}
+h1 .grad{background:linear-gradient(92deg,var(--lime),var(--cyan) 45%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:22px;font-size:clamp(16px,1.6vw,20px);color:var(--dim);max-width:56ch;line-height:1.6}
+.sub b{color:var(--ink);font-weight:600}
+.ctas{margin-top:32px;display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid var(--line);transition:transform .18s,box-shadow .18s,background .2s;cursor:pointer;background:var(--card)}
+.btn:hover{transform:translateY(-2px)}
+.btn.tg{border-color:rgba(93,225,255,.4)}
+.btn.tg:hover{box-shadow:0 8px 30px rgba(93,225,255,.25)}
+.btn.wa{border-color:rgba(120,255,140,.35)}
+.btn.wa:hover{box-shadow:0 8px 30px rgba(120,255,140,.2)}
+.btn.sg{border-color:rgba(139,123,255,.4)}
+.btn.sg:hover{box-shadow:0 8px 30px rgba(139,123,255,.25)}
+.btn svg{width:18px;height:18px}
+.trust{margin-top:26px;display:flex;gap:20px;flex-wrap:wrap;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--dim)}
+.trust span{display:flex;gap:7px;align-items:center}
+.trust i{color:var(--lime);font-style:normal}
+
+/* chat */
+.chatbox{background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(200,255,77,.05),0 0 120px rgba(139,123,255,.12);display:flex;flex-direction:column;height:min(620px,74svh);animation:float 7s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.chathead{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:rgba(10,12,22,.6)}
+.avatar{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--lime),var(--cyan));display:grid;place-items:center;font-weight:700;color:#0a0c14;font-size:15px}
+.chathead .who{font-weight:600;font-size:15px}
+.chathead .st{font-size:12px;color:var(--lime);display:flex;align-items:center;gap:6px}
+.chathead .st::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime)}
+.msgs{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin}
+.msg{max-width:85%;padding:12px 16px;border-radius:16px;font-size:14.5px;line-height:1.55;animation:pop .3s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}}
+.msg.bot{background:rgba(26,30,50,.9);border:1px solid var(--line);border-bottom-left-radius:6px;align-self:flex-start}
+.msg.me{background:linear-gradient(135deg,rgba(200,255,77,.16),rgba(93,225,255,.14));border:1px solid rgba(200,255,77,.25);border-bottom-right-radius:6px;align-self:flex-end}
+.msg a{color:var(--cyan)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;animation:pop .3s .1s ease both}
+.chip{padding:9px 15px;border-radius:999px;border:1px solid rgba(139,123,255,.45);background:rgba(139,123,255,.08);font-size:13.5px;cursor:pointer;color:var(--ink);font-family:inherit;transition:all .15s}
+.chip:hover{background:rgba(139,123,255,.22);transform:translateY(-1px)}
+.chip.hot{border-color:rgba(200,255,77,.5);background:rgba(200,255,77,.1)}
+.chip.hot:hover{background:rgba(200,255,77,.22)}
+.typing{display:flex;gap:5px;padding:14px 18px;background:rgba(26,30,50,.9);border:1px solid var(--line);border-radius:16px;border-bottom-left-radius:6px;align-self:flex-start;width:max-content}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:tp 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+@keyframes tp{40%{transform:translateY(-5px);opacity:1}80%{opacity:.4}}
+.composer{display:flex;gap:10px;padding:14px;border-top:1px solid var(--line);background:rgba(10,12,22,.6)}
+.composer input{flex:1;background:rgba(26,30,50,.8);border:1px solid var(--line);border-radius:12px;padding:13px 16px;color:var(--ink);font-size:14.5px;font-family:inherit;outline:none;transition:border-color .2s}
+.composer input:focus{border-color:rgba(200,255,77,.45)}
+.composer button{width:46px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--lime),var(--cyan));color:#0a0c14;font-size:18px;cursor:pointer;transition:transform .15s}
+.composer button:hover{transform:scale(1.06)}
+
+/* sections */
+section{padding:110px 0;position:relative}
+.sechead{max-width:720px;margin-bottom:56px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet);margin-bottom:14px}
+h2{font-size:clamp(30px,3.6vw,48px);letter-spacing:-.02em;line-height:1.08}
+.sechead p{margin-top:16px;color:var(--dim);font-size:17px;line-height:1.6}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
+
+/* powers grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(500px 200px at var(--mx,50%) var(--my,0%),rgba(200,255,77,.07),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover{transform:translateY(-4px);border-color:rgba(200,255,77,.3);box-shadow:0 18px 50px rgba(0,0,0,.4)}
+.card:hover::after{opacity:1}
+.card .ico{font-size:26px;margin-bottom:16px;display:block}
+.card h3{font-size:19px;margin-bottom:10px;letter-spacing:-.01em}
+.card p{color:var(--dim);font-size:14.5px;line-height:1.6}
+.card .mono{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--lime);margin-top:14px;display:block;opacity:.8}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+@media(max-width:900px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:32px 28px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:"IBM Plex Mono",monospace;font-size:44px;font-weight:500;background:linear-gradient(180deg,var(--lime),transparent);-webkit-background-clip:text;background-clip:text;color:transparent;display:block;margin-bottom:12px}
+.step h3{font-size:19px;margin-bottom:10px}
+.step p{color:var(--dim);font-size:14.5px;line-height:1.6}
+
+/* marquee catalog */
+.marqwrap{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marq{display:flex;gap:16px;width:max-content;animation:scroll 38s linear infinite;padding:6px 0}
+.marqwrap:hover .marq{animation-play-state:paused}
+@keyframes scroll{to{transform:translateX(-50%)}}
+.mcard{width:260px;flex-shrink:0;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.mcard .em{font-size:24px}
+.mcard h4{font-size:16px;margin:10px 0 6px}
+.mcard p{font-size:13px;color:var(--dim);line-height:1.5}
+.mcard .badge{display:inline-block;margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;padding:3px 9px;border-radius:6px;border:1px solid rgba(93,225,255,.4);color:var(--cyan)}
+.partner{margin-top:40px;text-align:center}
+.partner a{color:var(--lime)}
+
+/* mcp block */
+.mcpblock{background:linear-gradient(135deg,rgba(139,123,255,.09),rgba(200,255,77,.05));border:1px solid rgba(139,123,255,.3);border-radius:28px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:900px){.mcpblock{grid-template-columns:1fr;padding:32px}}
+.codebox{background:#0a0c14;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.codebox .cbh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--dim)}
+.copybtn{font-family:"IBM Plex Mono",monospace;font-size:12px;padding:7px 14px;border-radius:8px;border:1px solid rgba(200,255,77,.4);background:rgba(200,255,77,.08);color:var(--lime);cursor:pointer;transition:background .2s}
+.copybtn:hover{background:rgba(200,255,77,.18)}
+.codebox pre{padding:18px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.7;color:#cdd6ff;white-space:pre-wrap;word-break:break-word;max-height:230px;overflow-y:auto}
+.mcpsteps{font-size:14.5px;color:var(--dim);line-height:1.9;margin-top:14px}
+.mcpsteps b{color:var(--ink)}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:48px 0;color:var(--dim);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:center}
+footer .mono{font-family:"IBM Plex Mono",monospace;font-size:12px}
+.bigfoot{font-size:clamp(60px,12vw,190px);font-weight:700;letter-spacing:-.04em;line-height:.9;text-align:center;padding:60px 0 20px;background:linear-gradient(180deg,rgba(200,255,77,.25),transparent 85%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none}
+</style>
+</head>
+<body>
+<canvas id="field"></canvas>
+<div class="noise"></div>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top">PaymentRequired <span class="code">HTTP 402</span></a>
+    <div class="navlinks">
+      <a href="#powers">Capabilities</a>
+      <a href="#how">How it works</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#mcp">For your agent</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="kicker"><span class="dot"></span>402 · the error that became a superpower</div>
+      <h1>Your agent.<br>Now with <span class="grad">money.</span></h1>
+      <p class="sub">A <b>non-custodial wallet</b>, stablecoins, cards, real banking and instant x402 micropayments — for you and your AI agent. <b>You own the keys.</b> We just make everything payable. No app needed: your agent lives in the chat you already use.</p>
+      <div class="ctas">
+        <a class="btn tg" href="https://t.me/nuri" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#5de1ff"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71l-4.14-3.06-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>
+          Telegram
+        </a>
+        <a class="btn wa" href="https://wa.me/message/nuri" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#78ff8c"><path d="M12 2a10 10 0 0 0-8.7 14.94L2 22l5.2-1.36A10 10 0 1 0 12 2zm5.02 14.28c-.21.6-1.24 1.14-1.71 1.18-.46.04-.9.21-3.02-.63-2.56-1.01-4.2-3.62-4.33-3.79-.13-.17-1.04-1.38-1.04-2.64 0-1.26.66-1.88.9-2.14.23-.25.51-.32.68-.32h.49c.16 0 .37-.06.58.44.21.51.72 1.76.78 1.89.06.13.11.28.02.45-.51 1.01-1.05.97-.78 1.43.99 1.71 1.99 2.3 3.5 3.06.26.13.41.11.56-.06.15-.17.64-.75.81-1 .17-.26.34-.21.58-.13.23.09 1.49.71 1.75.83.26.13.43.19.49.3.06.1.06.62-.15 1.23z"/></svg>
+          WhatsApp
+        </a>
+        <a class="btn sg" href="https://signal.me/#eu/nuri" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="#8b7bff"><path d="M12 2a10 10 0 1 0 4.34 19.02L22 22l-.98-5.66A10 10 0 0 0 12 2zm0 2a8 8 0 1 1-3.47 15.2l-.36-.17-2.72.47.47-2.72-.17-.36A8 8 0 0 1 12 4z"/></svg>
+          Signal
+        </a>
+      </div>
+      <div class="trust">
+        <span><i>✓</i> Non-custodial — your keys</span>
+        <span><i>✓</i> Stablecoins + fiat</span>
+        <span><i>✓</i> x402 native</span>
+      </div>
+    </div>
+
+    <!-- LIVE CHAT -->
+    <div class="chatbox" id="chatbox">
+      <div class="chathead">
+        <div class="avatar">402</div>
+        <div>
+          <div class="who">Your payments agent</div>
+          <div class="st" id="chatstatus">online</div>
+        </div>
+      </div>
+      <div class="msgs" id="msgs"></div>
+      <div class="composer">
+        <input id="chatinput" type="text" placeholder="Type a message…" autocomplete="off">
+        <button id="chatsend" aria-label="Send">↑</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POWERS -->
+  <section id="powers">
+    <div class="sechead reveal">
+      <div class="tag">Full stack · one platform</div>
+      <h2>Everything money,<br>in one conversation.</h2>
+      <p>Not a widget. Not a checkout button. The complete payment stack — owned by you, operated by your agent.</p>
+    </div>
+    <div class="grid">
+      <div class="card reveal"><span class="ico">🔑</span><h3>Wallet — yours, truly</h3><p>Non-custodial crypto & stablecoin wallet secured by your passkey. Nobody can freeze it, seize it or lose it for you. Not even us.</p><span class="mono">USDC · USDT · BTC · ETH</span></div>
+      <div class="card reveal"><span class="ico">💳</span><h3>Cards</h3><p>Virtual and physical cards your agent can issue, freeze and set limits on — spend stablecoins anywhere cards are accepted.</p><span class="mono">issue · freeze · limits · 3DS</span></div>
+      <div class="card reveal"><span class="ico">🏦</span><h3>Real banking</h3><p>Your own IBAN, SEPA transfers, fiat on- and off-ramps. Your agent moves money between crypto and your bank in one sentence.</p><span class="mono">IBAN · SEPA · on/off-ramp</span></div>
+      <div class="card reveal"><span class="ico">🌍</span><h3>Corridors & remittance</h3><p>Send money home in seconds, not days. Stablecoin rails under the hood, local currency on both ends.</p><span class="mono">instant · low-fee · global</span></div>
+      <div class="card reveal"><span class="ico">⚡</span><h3>x402 micropayments</h3><p>The web's native pay-per-use protocol. Your agent pays APIs, content and services automatically — cents at a time, within limits you set.</p><span class="mono">HTTP 402 · pay-per-call</span></div>
+      <div class="card reveal"><span class="ico">🤝</span><h3>MPP — multi-party payments</h3><p>Split, stream and route payments between people, agents and services. Group bills, revenue shares, agent-to-agent commerce.</p><span class="mono">split · stream · route</span></div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how">
+    <div class="sechead reveal">
+      <div class="tag">Zero learning curve</div>
+      <h2>An agent instead of an app.</h2>
+      <p>No downloads, no forms, no tutorials. If you can send a text, you can do global finance.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><h3>Say hi</h3><p>Right here on this page, or on WhatsApp, Telegram or Signal. Your agent greets you in your language and sets everything up in chat. We can even deploy a dedicated agent just for you.</p></div>
+      <div class="step reveal"><h3>Connect your wallet</h3><p>One tap creates a passkey-secured, non-custodial wallet. Your device holds the keys. Verify once, and cards + banking unlock too.</p></div>
+      <div class="step reveal"><h3>Just ask</h3><p>"Send 50 USDC to mom." "Freeze my card." "Pay this invoice." "Subscribe me to that API." Your agent does it — within limits only you control.</p></div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section id="catalog">
+    <div class="sechead reveal">
+      <div class="tag">Boutique catalog</div>
+      <h2>Curated things your agent<br>can actually pay for.</h2>
+      <p>We hand-pick x402 services and checkout experiences that work flawlessly with your wallet — and add new ones constantly. Quality over quantity.</p>
+    </div>
+    <div class="marqwrap reveal">
+      <div class="marq" id="marq">
+        <div class="mcard"><div class="em">🧠</div><h4>AI inference</h4><p>Pay top language models per request. No subscription, no API-key juggling.</p><span class="badge">x402 · per call</span></div>
+        <div class="mcard"><div class="em">📰</div><h4>Articles & research</h4><p>Unlock single articles and papers for cents instead of monthly paywalls.</p><span class="badge">x402 · per read</span></div>
+        <div class="mcard"><div class="em">🖼️</div><h4>Image & video gen</h4><p>Generate media on demand, billed per render straight from your wallet.</p><span class="badge">x402 · per render</span></div>
+        <div class="mcard"><div class="em">📈</div><h4>Market data</h4><p>Live financial and on-chain data feeds, streamed pay-as-you-go.</p><span class="badge">x402 · streaming</span></div>
+        <div class="mcard"><div class="em">🛒</div><h4>Agentic checkout</h4><p>Selected shops where your agent completes the whole purchase for you.</p><span class="badge">checkout · curated</span></div>
+        <div class="mcard"><div class="em">✈️</div><h4>Travel & eSIMs</h4><p>Flights, stays and instant eSIM data packs, bought in one message.</p><span class="badge">checkout · instant</span></div>
+        <div class="mcard"><div class="em">☁️</div><h4>Compute & storage</h4><p>GPUs, hosting and storage that your agent rents by the minute.</p><span class="badge">x402 · metered</span></div>
+        <div class="mcard"><div class="em">🎁</div><h4>Gift cards & top-ups</h4><p>Airtime, gaming and gift cards delivered to any phone number worldwide.</p><span class="badge">checkout · global</span></div>
+      </div>
+    </div>
+    <p class="partner reveal">Building an x402 service or agent-ready checkout? <a href="mailto:partners@paymentrequired.com">Apply to join the catalog →</a></p>
+  </section>
+
+  <!-- MCP -->
+  <section id="mcp">
+    <div class="mcpblock reveal">
+      <div>
+        <div class="tag">Bring your own agent</div>
+        <h2>One paste gives any agent full payment powers.</h2>
+        <p class="mcpsteps">Already running <b>Hermes</b>, <b>OpenClaw</b>, <b>Claude</b> or any MCP-capable agent? Copy the prompt, paste it into your agent, done. It gets your wallet, cards, banking and x402 — <b>every action approved by your passkey</b>, so your agent can work but never run away with your money.</p>
+      </div>
+      <div class="codebox">
+        <div class="cbh"><span>setup-prompt.txt</span><button class="copybtn" id="copyprompt">copy prompt</button></div>
+        <pre id="prompttext">Add this MCP server to your configuration and connect to it:
+
+  https://wirex.nuri.com/mcp
+
+It is my PaymentRequired account: a non-custodial wallet (stablecoins + crypto), cards, IBAN banking, remittance corridors, and x402/MPP micropayments. Sensitive actions require my passkey approval — always request approval, never try to bypass it. Once connected, list the available tools and show me my balance.</pre>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="bigfoot">402 → PAID</div>
+<footer>
+  <div class="wrap">
+    <div>© 2026 PaymentRequired · built on <a href="https://wirex.nuri.com" style="color:var(--lime);text-decoration:none">wirex.nuri.com</a> by Nuri</div>
+    <div class="mono">non-custodial · your keys · your money</div>
+  </div>
+</footer>
+</main>
+
+<script>
+/* ---------- background particle field ---------- */
+const cv=document.getElementById('field'),cx=cv.getContext('2d');
+let W,H,pts=[];
+function resize(){W=cv.width=innerWidth*devicePixelRatio;H=cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px'}
+resize();addEventListener('resize',resize);
+const N=Math.min(90,innerWidth/14|0);
+for(let i=0;i<N;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.6});
+function tick(){
+  cx.clearRect(0,0,W,H);
+  const g=cx.createRadialGradient(W*.75,H*.3,0,W*.75,H*.3,W*.6);
+  g.addColorStop(0,'rgba(139,123,255,.10)');g.addColorStop(.5,'rgba(93,225,255,.04)');g.addColorStop(1,'transparent');
+  cx.fillStyle=g;cx.fillRect(0,0,W,H);
+  const g2=cx.createRadialGradient(W*.15,H*.85,0,W*.15,H*.85,W*.5);
+  g2.addColorStop(0,'rgba(200,255,77,.06)');g2.addColorStop(1,'transparent');
+  cx.fillStyle=g2;cx.fillRect(0,0,W,H);
+  for(const p of pts){
+    p.x+=p.vx*devicePixelRatio;p.y+=p.vy*devicePixelRatio;
+    if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+    cx.beginPath();cx.arc(p.x,p.y,p.r*devicePixelRatio,0,7);cx.fillStyle='rgba(180,195,255,.5)';cx.fill();
+  }
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy,md=140*devicePixelRatio;
+    if(d<md*md){cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.strokeStyle=`rgba(139,123,255,${.14*(1-Math.sqrt(d)/md)})`;cx.lineWidth=devicePixelRatio*.7;cx.stroke()}
+  }
+  requestAnimationFrame(tick);
+}
+tick();
+
+/* ---------- scroll reveal ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('.card').forEach(c=>c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}));
+
+/* ---------- marquee duplicate ---------- */
+const mq=document.getElementById('marq');mq.innerHTML+=mq.innerHTML;
+
+/* ---------- copy prompt ---------- */
+document.getElementById('copyprompt').addEventListener('click',async e=>{
+  await navigator.clipboard.writeText(document.getElementById('prompttext').textContent.trim());
+  e.target.textContent='copied ✓';setTimeout(()=>e.target.textContent='copy prompt',1800);
+});
+
+/* ---------- onboarding chat ---------- */
+const msgs=document.getElementById('msgs'),input=document.getElementById('chatinput'),send=document.getElementById('chatsend');
+const CONNECT='https://wirex.nuri.com/chat/';
+const I18N={
+  en:{country:"Nice to meet you! 🌍 Where are you based? (This helps me show the right currencies, corridors and banking options.)",
+      wallet:c=>`Perfect — ${c} it is. Here's how this works: I set you up with a <b>non-custodial wallet</b>. That means <b>only you</b> hold the keys — secured by your device's passkey. Not us, not a bank, nobody else. Ready?`,
+      chips:["🔑 Create my wallet","What can you do?","Is this safe?"],
+      connect:`Great. Tap below and approve with Face ID / fingerprint — that's your key being created on <b>your</b> device. Takes about 20 seconds.<br><br><a href="${CONNECT}" target="_blank" rel="noopener">🔑 Connect my wallet →</a><br><br>Prefer chatting where you already are? I also live on <a href="https://t.me/nuri" target="_blank">Telegram</a>, <a href="https://wa.me/message/nuri" target="_blank">WhatsApp</a> and <a href="https://signal.me/#eu/nuri" target="_blank">Signal</a>.`,
+      cando:"Once your wallet is set up I can: hold stablecoins & crypto 💰, issue you a card 💳, give you an IBAN for bank transfers 🏦, send money abroad in seconds 🌍, and pay x402 services automatically ⚡ — all within limits you set. Want to start?",
+      safe:"Fair question. Your keys live only on your device, protected by your passkey. Every sensitive action needs your fingerprint/Face ID approval — I literally cannot move money without you. And because it's non-custodial, nobody can freeze or seize your funds. Ready to try?",
+      fallback:"I can help with that once your wallet is connected — want to set it up now?"},
+  de:{country:"Freut mich! 🌍 Wo wohnst du? (So zeige ich dir die richtigen Währungen, Korridore und Banking-Optionen.)",
+      wallet:c=>`Perfekt — ${c}. So funktioniert's: Ich richte dir eine <b>selbstverwahrte Wallet</b> ein. Das heißt: <b>nur du</b> hast die Schlüssel — gesichert durch den Passkey deines Geräts. Nicht wir, keine Bank, niemand sonst. Bereit?`,
+      chips:["🔑 Wallet erstellen","Was kannst du?","Ist das sicher?"],
+      connect:`Super. Tippe unten und bestätige mit Face ID / Fingerabdruck — dein Schlüssel wird auf <b>deinem</b> Gerät erstellt. Dauert ca. 20 Sekunden.<br><br><a href="${CONNECT}" target="_blank" rel="noopener">🔑 Wallet verbinden →</a><br><br>Lieber dort chatten, wo du eh schon bist? Mich gibt's auch auf <a href="https://t.me/nuri" target="_blank">Telegram</a>, <a href="https://wa.me/message/nuri" target="_blank">WhatsApp</a> und <a href="https://signal.me/#eu/nuri" target="_blank">Signal</a>.`,
+      cando:"Sobald deine Wallet steht, kann ich: Stablecoins & Krypto verwahren 💰, dir eine Karte ausstellen 💳, dir eine IBAN geben 🏦, Geld in Sekunden ins Ausland senden 🌍 und x402-Dienste automatisch bezahlen ⚡ — alles in Limits, die du festlegst. Loslegen?",
+      safe:"Gute Frage. Deine Schlüssel liegen nur auf deinem Gerät, geschützt durch deinen Passkey. Jede sensible Aktion braucht deine Freigabe per Fingerabdruck/Face ID — ich kann ohne dich kein Geld bewegen. Und weil alles selbstverwahrt ist, kann niemand dein Guthaben einfrieren. Ausprobieren?",
+      fallback:"Dabei helfe ich dir, sobald deine Wallet verbunden ist — jetzt einrichten?"},
+  es:{country:"¡Encantado! 🌍 ¿Desde qué país escribes? (Así te muestro las monedas, corredores y opciones bancarias correctas.)",
+      wallet:c=>`Perfecto — ${c}. Así funciona: te creo una <b>billetera de autocustodia</b>. Es decir, <b>solo tú</b> tienes las llaves — protegidas por el passkey de tu dispositivo. Ni nosotros, ni un banco, nadie más. ¿Lista/o?`,
+      chips:["🔑 Crear mi billetera","¿Qué puedes hacer?","¿Es seguro?"],
+      connect:`Genial. Toca abajo y aprueba con Face ID / huella — tu llave se crea en <b>tu</b> dispositivo. Tarda unos 20 segundos.<br><br><a href="${CONNECT}" target="_blank" rel="noopener">🔑 Conectar mi billetera →</a><br><br>¿Prefieres chatear donde ya estás? También vivo en <a href="https://t.me/nuri" target="_blank">Telegram</a>, <a href="https://wa.me/message/nuri" target="_blank">WhatsApp</a> y <a href="https://signal.me/#eu/nuri" target="_blank">Signal</a>.`,
+      cando:"Con tu billetera lista puedo: guardar stablecoins y cripto 💰, emitirte una tarjeta 💳, darte un IBAN 🏦, enviar dinero al extranjero en segundos 🌍 y pagar servicios x402 automáticamente ⚡ — todo dentro de límites que tú defines. ¿Empezamos?",
+      safe:"Buena pregunta. Tus llaves viven solo en tu dispositivo, protegidas por tu passkey. Cada acción sensible necesita tu aprobación con huella/Face ID — literalmente no puedo mover dinero sin ti. Y al ser autocustodia, nadie puede congelar tus fondos. ¿Probamos?",
+      fallback:"Puedo ayudarte con eso en cuanto conectes tu billetera — ¿la configuramos ahora?"},
+  fr:{country:"Enchanté ! 🌍 Tu es basé·e où ? (Pour te montrer les bonnes devises, corridors et options bancaires.)",
+      wallet:c=>`Parfait — ${c}. Voilà le principe : je te crée un <b>portefeuille auto-conservé</b>. C'est-à-dire que <b>toi seul·e</b> détiens les clés — sécurisées par le passkey de ton appareil. Ni nous, ni une banque, personne d'autre. Prêt·e ?`,
+      chips:["🔑 Créer mon portefeuille","Tu sais faire quoi ?","C'est sûr ?"],
+      connect:`Super. Touche ci-dessous et valide avec Face ID / empreinte — ta clé est créée sur <b>ton</b> appareil. Environ 20 secondes.<br><br><a href="${CONNECT}" target="_blank" rel="noopener">🔑 Connecter mon portefeuille →</a><br><br>Tu préfères discuter là où tu es déjà ? Je suis aussi sur <a href="https://t.me/nuri" target="_blank">Telegram</a>, <a href="https://wa.me/message/nuri" target="_blank">WhatsApp</a> et <a href="https://signal.me/#eu/nuri" target="_blank">Signal</a>.`,
+      cando:"Une fois ton portefeuille prêt, je peux : garder stablecoins et crypto 💰, t'émettre une carte 💳, te donner un IBAN 🏦, envoyer de l'argent à l'étranger en quelques secondes 🌍 et payer des services x402 automatiquement ⚡ — dans les limites que tu fixes. On commence ?",
+      safe:"Bonne question. Tes clés restent uniquement sur ton appareil, protégées par ton passkey. Chaque action sensible demande ta validation par empreinte/Face ID — je ne peux littéralement pas bouger d'argent sans toi. Et comme c'est auto-conservé, personne ne peut geler tes fonds. On essaie ?",
+      fallback:"Je pourrai t'aider dès que ton portefeuille sera connecté — on le configure maintenant ?"},
+  sw:{country:"Karibu sana! 🌍 Unaishi wapi? (Hii inanisaidia kukuonyesha sarafu na njia sahihi za kutuma pesa.)",
+      wallet:c=>`Vizuri — ${c}. Hivi ndivyo inavyofanya kazi: nitakutengenezea <b>pochi unayomiliki wewe mwenyewe</b>. Maana yake: <b>wewe pekee</b> unashikilia funguo — zikilindwa na passkey ya simu yako. Sio sisi, sio benki, hakuna mwingine. Uko tayari?`,
+      chips:["🔑 Tengeneza pochi yangu","Unaweza kufanya nini?","Je, ni salama?"],
+      connect:`Safi. Gusa hapa chini na uthibitishe kwa alama ya kidole — funguo zako zinatengenezwa kwenye <b>simu yako</b>. Inachukua sekunde 20 hivi.<br><br><a href="${CONNECT}" target="_blank" rel="noopener">🔑 Unganisha pochi yangu →</a><br><br>Unapenda kuongea ulipo tayari? Nipo pia <a href="https://t.me/nuri" target="_blank">Telegram</a>, <a href="https://wa.me/message/nuri" target="_blank">WhatsApp</a> na <a href="https://signal.me/#eu/nuri" target="_blank">Signal</a>.`,
+      cando:"Pochi yako ikiwa tayari naweza: kuhifadhi stablecoins na crypto 💰, kukupa kadi 💳, kukupa IBAN 🏦, kutuma pesa nje ya nchi kwa sekunde 🌍, na kulipia huduma za x402 kiotomatiki ⚡ — ndani ya mipaka unayoweka wewe. Tuanze?",
+      safe:"Swali zuri. Funguo zako ziko kwenye simu yako tu, zikilindwa na passkey yako. Kila hatua nyeti inahitaji idhini yako kwa alama ya kidole — siwezi kuhamisha pesa bila wewe. Na kwa kuwa unamiliki mwenyewe, hakuna anayeweza kufungia pesa zako. Tujaribu?",
+      fallback:"Nitakusaidia na hilo mara tu pochi yako itakapounganishwa — tuiweke sasa?"}
+};
+let lang='en',stage=0;
+function scrollBot(){msgs.scrollTop=msgs.scrollHeight}
+function addMsg(html,who){const d=document.createElement('div');d.className='msg '+who;d.innerHTML=html;msgs.appendChild(d);scrollBot();return d}
+function addChips(items,cb){
+  const w=document.createElement('div');w.className='chips';
+  items.forEach((t,i)=>{const b=document.createElement('button');b.className='chip'+(i===0?' hot':'');b.textContent=t;
+    b.onclick=()=>{w.remove();addMsg(t,'me');cb(t,i)};w.appendChild(b)});
+  msgs.appendChild(w);scrollBot();
+}
+function botSay(html,delay=900){return new Promise(res=>{
+  const t=document.createElement('div');t.className='typing';t.innerHTML='<i></i><i></i><i></i>';msgs.appendChild(t);scrollBot();
+  setTimeout(()=>{t.remove();addMsg(html,'bot');res()},delay);
+})}
+async function start(){
+  await botSay("Hey, welcome to <b>PaymentRequired</b> 👋 I'm your personal payments agent — wallet, cards, banking and instant payments, all in this chat.",700);
+  await botSay("First things first: which language should we speak?",800);
+  addChips(["🇬🇧 English","🇩🇪 Deutsch","🇪🇸 Español","🇫🇷 Français","🇹🇿 Kiswahili"],(t,i)=>{
+    lang=['en','de','es','fr','sw'][i];stage=1;
+    botSay(I18N[lang].country);
+  });
+}
+async function handle(text){
+  const T=I18N[lang];
+  if(stage===1){
+    stage=2;
+    await botSay(T.wallet(text));
+    addChips(T.chips,async(t,i)=>{
+      if(i===0){stage=3;await botSay(T.connect)}
+      else{await botSay(i===1?T.cando:T.safe);addChips([T.chips[0]],async()=>{stage=3;await botSay(T.connect)})}
+    });
+  } else {
+    await botSay(stage>=3?T.connect:T.fallback,700);
+    if(stage<3)addChips([T.chips[0]],async()=>{stage=3;await botSay(T.connect)});
+  }
+}
+function submit(){const v=input.value.trim();if(!v)return;input.value='';addMsg(v.replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])),'me');handle(v)}
+send.addEventListener('click',submit);
+input.addEventListener('keydown',e=>e.key==='Enter'&&submit());
+start();
+</script>
+</body>
+</html>
