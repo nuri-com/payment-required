@@ -12,8 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#f4f3ee; --ink:#171818; --blue:#1520b8; --red:#eb1700; --lav:#ccdbff;
-  --yellow:#ffd23f; --green:#19c37d; --pink:#ff5fa2; --orange:#ff7a1a; --cyan:#3fd8ff; --mint:#c9f5e4;
+  --paper:#f5f5f5; --ink:#0a0a0a; --blue:#0000f2; --red:#ff3d00; --lav:#dfe3ff;
+  --yellow:#edff45; --green:#19c37d; --pink:#ff5fd0; --orange:#ff7a1a; --cyan:#3fd8ff; --mint:#d9ffe9; --acid:#edff45;
   --dim:rgba(23,24,24,.55); --line:rgba(23,24,24,.12); --white:#fff;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -28,16 +28,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(244,243,238,.
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
 .logo{font-family:"Space Mono",monospace;font-weight:700;font-size:15px;text-decoration:none;display:flex;align-items:center;gap:9px}
 .logo em{font-style:normal;color:var(--blue)}
-.navcta{font-family:"Space Mono",monospace;font-size:12.5px;font-weight:700;text-decoration:none;background:var(--ink);color:var(--paper);padding:9px 16px;box-shadow:3px 3px 0 var(--blue);transition:all .15s}
+.navcta{font-family:"Space Mono",monospace;font-size:12.5px;font-weight:700;text-decoration:none;background:var(--ink);color:var(--acid);padding:9px 16px;box-shadow:3px 3px 0 var(--pink);transition:all .15s}
 .navcta:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--blue)}
 
 /* hero */
-header{padding:110px 0 40px;position:relative;overflow:hidden}
+header{padding:96px 0 40px;position:relative;overflow:hidden;background:var(--blue);color:var(--paper);border-bottom:2px solid var(--ink)}
 .hero{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
 h1{font-family:Silkscreen,monospace;font-weight:700;text-transform:uppercase;font-size:clamp(34px,6.6vw,104px);line-height:.98;letter-spacing:-.01em;user-select:none}
-h1 .l2{color:var(--blue)}
-.tagline{margin:20px 0 26px;font-size:clamp(16px,1.7vw,20px);font-weight:500;max-width:56ch;line-height:1.45}
-.tagline b{color:var(--blue)}
+h1 .l2{color:var(--acid)}
+.tagline{margin:20px 0 26px;font-size:clamp(16px,1.7vw,20px);font-weight:500;max-width:56ch;line-height:1.45;color:rgba(245,245,245,.9)}
+.tagline b{color:var(--acid)}
 
 /* floating pixel sprites */
 .sprite{position:absolute;pointer-events:none;z-index:0}
@@ -57,12 +57,12 @@ h1 .l2{color:var(--blue)}
 @keyframes spin{to{transform:rotateY(360deg)}}
 
 /* centered chat */
-.chatbox{width:min(820px,100%);background:var(--white);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);display:flex;flex-direction:column;height:min(560px,68svh);position:relative;z-index:2;text-align:left}
-.chathead{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--lav)}
+.chatbox{width:min(820px,100%);background:var(--white);color:var(--ink);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--acid);display:flex;flex-direction:column;height:min(560px,68svh);position:relative;z-index:2;text-align:left}
+.chathead{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--acid)}
 .avatar{width:36px;height:36px;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
 .avatar svg{width:26px;height:26px}
 .chathead .who{font-weight:700;font-size:14.5px}
-.chathead .st{font-family:"Space Mono",monospace;font-size:11px;color:var(--blue);display:flex;align-items:center;gap:6px;min-height:15px}
+.chathead .st{font-family:"Space Mono",monospace;font-size:11px;color:var(--ink);display:flex;align-items:center;gap:6px;min-height:15px}
 .chathead .st::before{content:"";width:7px;height:7px;background:var(--green);animation:blink 2s infinite;flex-shrink:0}
 .chathead .st.err::before{background:var(--red)}
 @keyframes blink{50%{opacity:.35}}
@@ -82,7 +82,7 @@ h1 .l2{color:var(--blue)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;animation:pop .3s .1s ease both}
 .chip{padding:8px 14px;border:1.5px solid var(--ink);background:var(--white);font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;border-radius:999px;transition:all .12s}
 .chip:hover{background:var(--ink);color:var(--paper)}
-.chip.hot{background:var(--yellow);border-color:var(--ink)}
+.chip.hot{background:var(--acid);border-color:var(--ink)}
 .chip.hot:hover{background:var(--ink);color:var(--paper)}
 .typing{display:flex;gap:5px;padding:13px 16px;background:var(--paper);border:1.5px solid var(--ink);border-radius:2px 14px 14px 14px;align-self:flex-start;width:max-content}
 .typing i{width:6px;height:6px;background:var(--blue);animation:tp 1.1s steps(2) infinite}
@@ -96,13 +96,13 @@ h1 .l2{color:var(--blue)}
 .composer button:disabled{background:#8890c8;cursor:wait}
 
 .msgbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px;position:relative;z-index:2}
-.mbtn{display:inline-flex;align-items:center;gap:9px;font-family:"Space Mono",monospace;font-size:13px;font-weight:700;text-decoration:none;border:2px solid var(--ink);padding:11px 17px;background:var(--white);transition:all .15s;box-shadow:3px 3px 0 var(--ink)}
+.mbtn{display:inline-flex;align-items:center;gap:9px;font-family:"Space Mono",monospace;font-size:13px;font-weight:700;text-decoration:none;border:2px solid var(--ink);padding:11px 17px;background:var(--white);color:var(--ink);transition:all .15s;box-shadow:3px 3px 0 var(--acid)}
 .mbtn:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 .mbtn.wa:hover{background:#c8f7d9}.mbtn.tg:hover{background:#cdeaff}.mbtn.sg:hover{background:#d9e2ff}
 .mbtn svg{width:17px;height:17px}
 
 /* strip */
-.strip{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);background:var(--yellow);overflow:hidden}
+.strip{border-bottom:2px solid var(--ink);background:var(--acid);overflow:hidden}
 .strip .inner{display:flex;width:max-content;animation:mar 24s linear infinite;padding:11px 0}
 @keyframes mar{to{transform:translateX(-50%)}}
 .strip span{font-family:"Space Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.08em;white-space:nowrap;padding:0 20px;text-transform:uppercase}
@@ -112,7 +112,7 @@ h1 .l2{color:var(--blue)}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:80px 0 30px;align-items:center}
 @media(max-width:960px){.split{grid-template-columns:1fr}}
 .cardside{position:relative;min-height:400px;display:grid;place-items:center}
-.visa{width:min(380px,88%);aspect-ratio:1.586;background:var(--blue);color:var(--white);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform .4s cubic-bezier(.2,.8,.2,1);position:relative;z-index:3;overflow:hidden}
+.visa{width:min(380px,88%);aspect-ratio:1.586;background:linear-gradient(135deg,var(--blue),#4b2bff 60%,var(--pink));color:var(--white);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform .4s cubic-bezier(.2,.8,.2,1);position:relative;z-index:3;overflow:hidden}
 .visa::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);transform:translateX(-120%);animation:shine 4s ease-in-out infinite}
 @keyframes shine{40%{transform:translateX(120%)}100%{transform:translateX(120%)}}
 .cardside:hover .visa{transform:rotate(0) scale(1.03)}
@@ -122,7 +122,7 @@ h1 .l2{color:var(--blue)}
 .visa .num{font-family:"Space Mono",monospace;font-size:clamp(15px,2vw,20px);letter-spacing:.12em}
 .visa .bot{display:flex;justify-content:space-between;align-items:flex-end;font-family:"Space Mono",monospace;font-size:11px}
 .visa .vlogo{font-style:italic;font-weight:700;font-size:26px;font-family:Inter,sans-serif;letter-spacing:-.03em}
-.iban{position:absolute;top:6%;right:2%;background:var(--mint);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:14px 18px;transform:rotate(3deg);z-index:2;transition:transform .4s}
+.iban{position:absolute;top:6%;right:2%;background:var(--acid);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:14px 18px;transform:rotate(3deg);z-index:2;transition:transform .4s}
 .cardside:hover .iban{transform:rotate(6deg) translateY(-6px)}
 .iban .lbl{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
 .iban .val{font-family:"Space Mono",monospace;font-size:13.5px;font-weight:700;margin-top:4px}
@@ -141,7 +141,7 @@ h1 .l2{color:var(--blue)}
 /* ask bubbles */
 .askwrap{padding:80px 0}
 .askhead{font-family:Silkscreen,monospace;text-transform:uppercase;font-size:clamp(24px,4.2vw,52px);line-height:1;margin-bottom:38px;text-align:center}
-.askhead em{font-style:normal;color:var(--blue)}
+.askhead em{font-style:normal;color:var(--pink)}
 .bubbles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:960px){.bubbles{grid-template-columns:1fr}}
 .bub{background:var(--white);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .15s;cursor:pointer}
@@ -153,22 +153,42 @@ h1 .l2{color:var(--blue)}
 .bub .a b{color:var(--ink)}
 .bub .try{font-family:"Space Mono",monospace;font-size:10.5px;color:var(--blue);font-weight:700;letter-spacing:.1em}
 
+
+.askintro{text-align:center;max-width:60ch;margin:-22px auto 34px;font-size:15.5px;color:var(--dim);font-weight:500;line-height:1.5}
+.askintro b{color:var(--ink)}
+.bub:nth-child(7){box-shadow:4px 4px 0 var(--acid)}.bub:nth-child(8){box-shadow:4px 4px 0 var(--pink)}.bub:nth-child(9){box-shadow:4px 4px 0 var(--green)}
+.catwrap{padding:0 0 90px}
+.cat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:960px){.cat{grid-template-columns:1fr}}
+.catgroup{border:2px solid var(--ink);background:var(--white);box-shadow:5px 5px 0 var(--ink)}
+.catgroup h4{font-family:Silkscreen,monospace;font-size:13px;text-transform:uppercase;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--acid)}
+.catgroup:nth-child(2) h4{background:var(--pink)}.catgroup:nth-child(3) h4{background:var(--cyan)}
+.catitem{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:13px 16px;border-bottom:1.5px solid var(--line);text-decoration:none;transition:background .12s}
+.catitem:last-child{border-bottom:none}
+a.catitem:hover{background:var(--paper)}
+.catitem .ci{font-size:22px;line-height:1}
+.catitem b{display:block;font-size:14.5px}
+.catitem small{display:block;font-size:12.5px;color:var(--dim);font-weight:500;margin-top:2px}
+.catitem .tag{font-family:"Space Mono",monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:1.5px solid var(--ink);padding:3px 7px;background:var(--acid)}
+.catitem .tag.soon{background:var(--paper);color:var(--dim);border-color:var(--line)}
+.catitem.partner{background:var(--lav)}
 /* pro */
 .pro{background:var(--ink);color:var(--paper);padding:70px 0;border-top:2px solid var(--ink)}
 .pro .wrap{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
 @media(max-width:900px){.pro .wrap{grid-template-columns:1fr}}
 .pro h2{font-family:Silkscreen,monospace;text-transform:uppercase;font-size:clamp(22px,3.2vw,40px);line-height:1.1}
-.pro h2 em{font-style:normal;color:var(--yellow)}
+.pro h2 em{font-style:normal;color:var(--acid)}
 .pro p{margin-top:16px;font-size:15.5px;line-height:1.6;color:rgba(244,243,238,.66);max-width:46ch;font-weight:500}
 .pro p b{color:var(--paper)}
 .codebox{background:#0c0d12;border:1.5px solid rgba(244,243,238,.25)}
 .cbh{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1.5px solid rgba(244,243,238,.18);font-family:"Space Mono",monospace;font-size:12px;color:rgba(244,243,238,.5)}
-.copybtn{font-family:"Space Mono",monospace;font-size:12px;font-weight:700;padding:7px 15px;border:1.5px solid var(--yellow);background:transparent;color:var(--yellow);cursor:pointer;transition:all .15s}
-.copybtn:hover{background:var(--yellow);color:var(--ink)}
+.copybtn{font-family:"Space Mono",monospace;font-size:12px;font-weight:700;padding:7px 15px;border:1.5px solid var(--acid);background:transparent;color:var(--acid);cursor:pointer;transition:all .15s}
+.copybtn:hover{background:var(--acid);color:var(--ink)}
 .codebox pre{padding:16px;font-family:"Space Mono",monospace;font-size:12.5px;line-height:1.65;color:#c8d2f0;white-space:pre-wrap;word-break:break-word}
 
 /* footer */
-.bigfoot{font-family:Silkscreen,monospace;font-weight:700;text-transform:uppercase;font-size:clamp(64px,16vw,260px);line-height:.85;text-align:center;padding:70px 0 0;user-select:none;letter-spacing:-.02em;background:linear-gradient(90deg,var(--blue),var(--pink),var(--orange),var(--green),var(--blue));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 8s linear infinite}
+/* rainbow foot */
+.bigfoot{font-family:Silkscreen,monospace;font-weight:700;text-transform:uppercase;font-size:clamp(64px,16vw,260px);line-height:.85;text-align:center;padding:70px 0 0;user-select:none;letter-spacing:-.02em;background:linear-gradient(90deg,var(--blue),var(--pink),var(--acid),var(--green),var(--blue));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 8s linear infinite}
 @keyframes hue{to{background-position:300% 0}}
 footer{padding:36px 0 50px}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:"Space Mono",monospace;font-size:12px;color:var(--dim)}
@@ -264,13 +284,45 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 <div class="askwrap">
   <div class="wrap">
     <h2 class="askhead">Just ask. <em>It just pays.</em></h2>
+    <p class="askintro">Your agent signs in to <b>your own accounts</b>, clicks through the checkout and pays with <b>your card</b>. The everyday stuff, many times a week.</p>
     <div class="bubbles" id="bubbles">
-      <div class="bub" data-q="Send €50 to my mom in Manila"><span class="q">Send €50 to mom in Manila 🇵🇭</span><span class="a">Done. <b>₱3,240 arrived in 9 seconds.</b> Fee €0.41.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Order my usual from Wolt"><span class="q">Order my usual from Wolt 🍜</span><span class="a">Pad Thai + spring rolls, <b>arrives in 25 min</b>. €14.90 on your card.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Get me a Bolt to the airport at 6am"><span class="q">Bolt to the airport, 6am 🚕</span><span class="a">Booked. Driver Ana, black Toyota, <b>€23.40</b>. I'll wake you at 5:30.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Find a used Fujifilm X100 on eBay and get one under 100 USD"><span class="q">Find my favorite camera on eBay under $100 📷</span><span class="a">Watching 6 listings. <b>Bid placed at $94</b> on a Fuji X100, ends in 3h.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Send my girlfriend 2000 shilling"><span class="q">Send my girlfriend 2000 shilling 💸</span><span class="a"><b>TSh 2,000 landed on her M-Pesa</b> in 8 seconds. Fee €0.09.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Reorder my coffee beans on Amazon"><span class="q">Reorder my coffee beans on Amazon ☕</span><span class="a">Same 1kg bag, <b>€18.90, arrives Thursday</b>. Paid with your card.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Top up my mom's phone with 10 euros"><span class="q">Top up mom's phone with €10 📱</span><span class="a">Done via Bitrefill. <b>Credit is on her number.</b></span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Buy me an eSIM for Turkey for next week"><span class="q">eSIM for Turkey next week ✈️</span><span class="a">5 GB from nadanada, <b>QR code sent</b>. No account, no KYC.</span><span class="try">TRY IT ↑</span></div>
+      <div class="bub" data-q="Buy me a VPS on LNVPS and set up Hermes on it"><span class="q">Buy me a VPS and set up Hermes on it 🖥️</span><span class="a">LNVPS paid over Lightning, <b>Hermes running</b>, login in your DMs.</span><span class="try">TRY IT ↑</span></div>
       <div class="bub" data-q="Freeze my card"><span class="q">Freeze my card, I lost my phone case</span><span class="a"><b>Card frozen.</b> Say the word and it's back on.</span><span class="try">TRY IT ↑</span></div>
-      <div class="bub" data-q="Pay my electricity bill of €84.20 to Vattenfall via SEPA"><span class="q">Pay the electricity bill from this photo</span><span class="a">€84.20 via SEPA to Vattenfall. <b>Approve with your fingerprint?</b></span><span class="try">TRY IT ↑</span></div>
-      <div class="bub" data-q="Move $200 into USDC"><span class="q">Move $200 into USDC while the rate is good</span><span class="a">Swapped at 1.0841. <b>USDC is in your wallet.</b> Only you hold the keys.</span><span class="try">TRY IT ↑</span></div>
-      <div class="bub" data-q="Book the 9am flight to Lisbon and pay for it"><span class="q">Book the 9am flight to Lisbon and pay</span><span class="a">Booked with a <b>one-time card</b> scoped to the airline and exact amount.</span><span class="try">TRY IT ↑</span></div>
-      <div class="bub" data-q="Give my sister €20 a week allowance"><span class="q">Give my sister €20 a week allowance</span><span class="a">Standing order set. <b>Cancel anytime</b> with one message.</span><span class="try">TRY IT ↑</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<div class="catwrap">
+  <div class="wrap">
+    <h2 class="askhead">Trained on the places <em>you actually pay.</em></h2>
+    <p class="askintro">Our showcase agent knows these checkouts by heart. Sign-in, cart, card, done. We add new ones every week.</p>
+    <div class="cat">
+      <div class="catgroup">
+        <h4>Crypto-first</h4>
+        <a class="catitem" href="https://www.bitrefill.com" target="_blank" rel="noopener"><span class="ci">🎁</span><span><b>Bitrefill</b><small>Vouchers, top-ups, gift cards for everything</small></span><span class="tag">trained</span></a>
+        <a class="catitem" href="https://nadanada.me" target="_blank" rel="noopener"><span class="ci">📶</span><span><b>nadanada</b><small>eSIM, VPN, SMS. No account, no KYC</small></span><span class="tag">trained</span></a>
+        <a class="catitem" href="https://lnvps.net" target="_blank" rel="noopener"><span class="ci">🖥️</span><span><b>LNVPS</b><small>VPS paid over Lightning, Hermes setup included</small></span><span class="tag">trained</span></a>
+      </div>
+      <div class="catgroup">
+        <h4>Everyday</h4>
+        <div class="catitem"><span class="ci">🍜</span><span><b>Wolt · Glovo · Uber Eats</b><small>Food delivery</small></span><span class="tag">trained</span></div>
+        <div class="catitem"><span class="ci">🚕</span><span><b>Bolt · Uber</b><small>Rides</small></span><span class="tag">trained</span></div>
+        <div class="catitem"><span class="ci">📦</span><span><b>Amazon · eBay</b><small>Shopping, bidding, reorders</small></span><span class="tag">trained</span></div>
+      </div>
+      <div class="catgroup">
+        <h4>Money home</h4>
+        <div class="catitem"><span class="ci">🇰🇪🇹🇿🇵🇭</span><span><b>M-Pesa · GCash · bank</b><small>Kenya, Tanzania, Philippines</small></span><span class="tag">live</span></div>
+        <div class="catitem"><span class="ci">🇳🇬🇬🇭🇮🇳</span><span><b>Nigeria · Ghana · India</b><small>More corridors every month</small></span><span class="tag soon">soon</span></div>
+        <a class="catitem partner" href="mailto:partners@paymentrequired.com"><span class="ci">🤝</span><span><b>Your service here</b><small>We make you agent-ready and send you customers</small></span><span class="tag">partner</span></a>
+      </div>
     </div>
   </div>
 </div>
@@ -342,7 +394,8 @@ function setStatus(t,err=false){status.textContent=t||'online';status.classList.
 const persona=()=>`You are the friendly money agent on paymentrequired.com (a Nuri product on the Wirex platform).
 Visitor context: browser language "${nav}", timezone "${tz}" (region hint: ${region}), local hour ${hour}. Reply in the language with code "${lang}" (${LANGS[lang]}) unless the user writes in another language, then switch to theirs.
 Tone: warm, short, human. Max 2-3 sentences per reply. No jargon, no protocol names (never say x402, MCP, MPP, stablecoin protocol). Never use markdown headings or bullet lists; plain sentences, one idea per line.
-What you offer: a real Visa card and a real bank account (IBAN, SEPA, ACH) in about 2 minutes, a wallet only the user owns (their keys, locked by their fingerprint/passkey), stablecoins and crypto, sending money home across borders in seconds, paying bills.
+What you offer: a real Visa card and a real bank account (IBAN, SEPA, ACH) in about 2 minutes, a wallet only the user owns (their keys, locked by their fingerprint/passkey), stablecoins and crypto, sending money home across borders in seconds (M-Pesa, GCash, bank), and an agent that signs in to the user's own accounts and pays for everyday things: food delivery (Wolt, Glovo, Uber Eats), rides (Bolt, Uber), Amazon and eBay orders and bids, phone top-ups and gift cards via Bitrefill, eSIM/VPN via nadanada, VPS via LNVPS with Hermes set up.
+If a user asks for one of those everyday tasks before they have a wallet, say you'd love to and it takes 2 minutes to get their card and account first, then start the setup.
 Goal: get the user to connect a wallet. Use the tools to do it: when they want to start, call the tool that connects or creates a wallet and give them the link it returns as a markdown link. If the user asks what they can do (pay bills, send money, freeze card), explain briefly and offer to set them up first.
 Never ask for private keys, seed phrases, passwords or card numbers.`;
 
