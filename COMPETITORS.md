@@ -1,38 +1,51 @@
-# Competitive landscape — agent payments (Sep 2026)
+# Competitive landscape (Sep 2026)
 
-| Name | URL | Category | Custody | Focus | Key difference vs paymentrequired.com |
+## A. Real financial instruments for agents (cards, bank accounts, IBAN/ACH)
+
+| Name | URL | Real cards? | Real bank / IBAN-ACH? | Crypto? | Retail? | Difference vs us |
+|---|---|---|---|---|---|---|
+| **Natural** | natural.com | via partners | FDIC fiat wallets, US ACH only | No | No, B2B/dev, $30M A | Closest on substance. Custodial, US-only, no IBAN/SEPA, no user-owned keys |
+| **Catena Labs** | catena.com | not primary | custodial deposits, seeking NY trust charter | Yes, stablecoin-first | No, B2B private access | Business agents; custodial |
+| **Mercury** | mercury.com | Yes, "agent cards" | US business checking, ACH/wire | No | No, B2B startups | Only mainstream player shipping named agent cards, but businesses only, US only |
+| Payman | paymanai.com | executes on your rails | routes over your existing accounts | No | No, B2B SDK/MCP | Issues nothing of its own |
+| Ramp / Brex | ramp.com | corp cards + Policy Agent | corporate accounts | No | No | Spend management on company cards |
+| Signets | signets.ai | delegated virtual cards | delegated US bank accounts | No | No, B2B2C | Custodial, delegated to users' agents |
+| Lithic | lithic.com | agentic virtual cards | No | No | dev infra | Embed-only |
+| Marqeta | marqeta.com | MCP card issuance | No | No | dev infra | You build on top |
+| Stripe Issuing | stripe.com | "Issuing for agents" | No | No | dev infra | Needs Stripe business account |
+| Highnote | highnote.com | virtual + physical | US financial accounts | No | dev infra | B2B embed |
+| Extend | paywithextend.com | virtual credit cards + AI toolkit | No | No | dev infra | Anchored to corporate card |
+| Slash | slash.com | Visa business charge cards via MCP | business deposits | No | B2B | Not retail |
+| Column / Increase / Unit / Synctera | — | Yes (API) | Yes (chartered / partner banks) | No | dev infra | Raw BaaS, someone must build the product |
+| Nekuda | nekuda.ai | injects your saved cards | No | No | B2B dev | Payment proxy / WebMCP, issues nothing |
+
+## B. Crypto / protocol / agent-wallet players
+
+| Name | URL | What | Custody | Retail? | Difference vs us |
 |---|---|---|---|---|---|
-| Natural | natural.com | Agent banking; FDIC-insured agent wallets, $30M Series A Jul 2026 | Custodial | Dev/B2B | Custodial fiat rails; no non-custodial crypto+IBAN+cards in one MCP |
-| Payman AI | paymanai.com | AI→human orchestration on existing rails (Visa/Coinbase backed) | Custodial | Dev | Orchestration layer, not user-owned wallets |
-| Skyfire | skyfire.xyz | Agent identity + USDC payment credentials ("Visa for the AI economy") | Custodial | Dev | Identity-led crypto; no cards/IBAN/remittance |
-| Coinbase x402/AgentKit/Bazaar | cdp.coinbase.com | Protocol + SDK + 112-service marketplace | Custodial (MPC) | Dev | On-chain USDC only; dev-native, not retail |
-| Stripe ACP | docs.stripe.com/agentic-commerce/acp | Agentic Commerce Protocol (w/ OpenAI+Meta) | Custodial | Merchant | Merchant checkout; fiat only |
-| PayPal Agent Toolkit | docs.paypal.ai | SDK/MCP wrapping PayPal APIs | Custodial | Dev | Fiat rails only |
-| Visa Intelligent Commerce | visa.com | Credentials/controls for AI-initiated buys | Custodial | Enterprise | Card-network sliver, not full-stack wallet |
-| Mastercard Agent Pay | mastercard.com | Agentic Tokens, Verifiable Intent | Custodial | Enterprise | Tokenization standard; no user-owned keys |
-| Nekuda | nekuda.ai | Agent card storage/issuance (Madrona-backed) | Custodial | Dev | Card-centric; no crypto/remittance |
-| Crossmint | crossmint.com | Agent wallets, virtual cards, payouts via API | Custodial | Dev | Embedded custodial B2B wallets |
-| PayBox (MoonPay) | paybox.sh | Retail vault: wallet/cards/credentials, pay via Claude/ChatGPT | Non-custodial | **Retail** | Closest analog — but vault only; no IBAN, x402, MPP |
-| Catena Labs | (verify domain) | AI-native bank for agents (Circle cofounder, $30M A) | Custodial | Dev | Custodial bank; no self-custody |
-| Circle | circle.com | Circle for Agents, agent accounts, USDC settlement | Custodial | Dev | USDC/wallets only |
-| Privy | privy.io | Embedded agentic wallets w/ policy rules | Non-custodial | Dev | Crypto wallets only; no banking/cards |
-| Fewsats / L402 | fewsats.com | Budget-gated L402 Lightning payments | Custodial (LN) | Dev | Bitcoin-only |
-| Cloudflare x402 | developers.cloudflare.com/agents | x402 in Agents SDK; x402 Foundation co-founder | Protocol | Dev | Infra, not a wallet product |
-| Google AP2 | — | Agent Payments Protocol on A2A | Protocol | Dev | Standards layer only |
-| Nevermined | nevermined.io | Delegated spending, metering, x402/MCP/A2A | Custodial | Dev | Merchant/API monetization, not retail wallet |
-| PayAI | payai.network | x402 facilitator + budget policy (Solana-first) | Non-custodial | Dev | Narrow facilitator; no full stack |
-| BotWallet | botwallet.co | Open-source agent wallet MCP, virtual cards (OpenClaw-focused) | Non-custodial | Dev+user | Same lane but crypto-only; no IBAN/remittance |
-| MoltPe | moltpe.com | Non-custodial USDC wallet + x402 + MPP + MCP | Non-custodial | Dev | Very close stack, USDC-only, dev-skewed |
-| Adyen Agentic | adyen.com | Agentic Feed/Cart/Payments, Meta AI-checkout | Custodial | Merchant | Merchant-side acceptance |
-| Lightning Labs L402 | lightning.engineering | L402 standard + agent tools | Non-custodial | Dev | Bitcoin-only standard |
+| PayBox (MoonPay) | paybox.sh | wallet + cards + credential vault, pay via Claude/ChatGPT | Non-custodial | **Yes** | Closest retail analog. No IBAN, no bank account |
+| Agentcard | agentcard.sh | card vault + prepaid Visa issuance widget for apps (YC) | Custodial | B2B2C | Cards only, no bank, no crypto |
+| AgentWallet | agentwallet.ai | wallet + virtual card + MCP/AP2/x402/ACP, WhatsApp | Custodial | Dev-first | Dev/protocol-heavy, no IBAN |
+| Skyfire | skyfire.xyz | agent identity + USDC credentials | Custodial | Dev | No cards/bank |
+| Coinbase x402 / AgentKit / Bazaar | cdp.coinbase.com | protocol + SDK + marketplace | Custodial MPC | Dev | USDC only |
+| Circle for Agents | circle.com | agent accounts, USDC | Custodial | Dev | USDC only |
+| Privy | privy.io | embedded agentic wallets w/ policies | Non-custodial | Dev | Crypto only |
+| Crossmint | crossmint.com | agent wallets, virtual cards, payouts | Custodial | Dev | B2B |
+| Nevermined | nevermined.io | delegated spend, metering, x402/MCP/A2A | Custodial | Dev | Merchant monetization |
+| PayAI | payai.network | x402 facilitator + policy (Solana) | Non-custodial | Dev | Narrow |
+| BotWallet | botwallet.co | open-source agent wallet MCP, virtual cards | Non-custodial | Dev+user | Crypto only |
+| MoltPe | moltpe.com | USDC wallet + x402 + MPP + MCP | Non-custodial | Dev | USDC only |
+| Fewsats / Lightning Labs L402 | fewsats.com | Lightning pay-per-call | mixed | Dev | Bitcoin only |
+| Stripe ACP / PayPal Agent Toolkit / Adyen Agentic | — | merchant-side agentic checkout | Custodial | Merchant | Acceptance, not a consumer wallet |
+| Visa Intelligent Commerce / Mastercard Agent Pay | — | network tokenization for agent buys | Custodial | Enterprise | Infra sliver |
+| Cloudflare x402 / Google AP2 | — | protocol/edge | n/a | Dev | Standards only |
 
 ## Our wedge
 
-1. **Only 100% retail + non-custodial player.** Nearly all rivals are custodial and dev/B2B. PayBox is retail non-custodial but vault-only.
-2. **Full stack in one MCP:** crypto/stablecoin wallet + cards + IBAN + remittance corridors + x402 + MPP. Every rival owns one slice.
-3. **Two-sided distribution:** agent-on-demand in WhatsApp/Telegram/Signal (no app) AND bolt-on MCP for existing agents (Hermes, OpenClaw, Claude).
-4. **MPP in a retail product** — essentially unshipped anywhere else.
-5. **Real banking rails (IBAN/SEPA/corridors) via Wirex BaaS** — crypto-only rivals can't follow.
+1. **Nobody offers real Visa card + real IBAN/ACH/SEPA account + non-custodial keys + retail onboarding in one place.** Every rival is either custodial B2B infra (Natural, Mercury, Lithic, Marqeta, Unit) or crypto/x402 rails (Coinbase, Circle, MoltPe, BotWallet).
+2. **Retail without an app**: agent on demand in WhatsApp/Telegram/Signal. Only PayBox and AgentWallet are near this; neither has a bank account.
+3. **Cross-border corridors on real rails** (EUR/USD + stablecoins, seconds): US-only ACH players can't follow.
+4. **Power-user door**: one MCP prompt gives Hermes/OpenClaw/Claude the same card, account and wallet. Same product, two audiences.
+5. **User holds keys, still gets fiat banking**: the combination competitors treat as mutually exclusive.
 
-Watchlist (facilitator ecosystem): x402dir, Primer, thirdweb.
-Note: Catena Labs domain unverified — confirm before citing publicly.
+Sources: vendor sites/snippets Sep 2026; Catena domain and some retail claims rest on marketing copy, verify before quoting publicly.
