@@ -127,7 +127,7 @@ h1{text-shadow:none}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:80px 0 30px;align-items:center}
 @media(max-width:960px){.split{grid-template-columns:1fr}}
 .cardside{position:relative;min-height:400px;display:grid;place-items:center}
-@media(max-width:760px){.cardside{min-height:330px}.iban{right:0;top:0}.keytag{bottom:0}.split{padding:48px 0 20px;gap:24px}}
+@media(max-width:760px){.cardside{min-height:0;display:flex;flex-direction:column;gap:18px;align-items:stretch;padding:8px 8px 14px}.cardside .iban,.cardside .keytag{position:static;transform:none;width:100%}.cardside .visa{width:100%;transform:none}.cardside:hover .visa,.cardside:hover .iban,.cardside:hover .keytag{transform:none}.split{padding:40px 0 20px;gap:24px}}
 .visa{width:min(380px,92%);aspect-ratio:1.586;background:linear-gradient(135deg,var(--blue),#4b2bff 60%,var(--bubble));color:var(--white);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform .4s cubic-bezier(.2,.8,.2,1);position:relative;z-index:3;overflow:hidden}
 .visa::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);transform:translateX(-120%);animation:shine 4s ease-in-out infinite}
 @keyframes shine{40%{transform:translateX(120%)}100%{transform:translateX(120%)}}
@@ -417,7 +417,8 @@ function addChips(items,cb){
   items.forEach((t,i)=>{const b=document.createElement('button');b.className='chip'+(i===0?' hot':'');b.textContent=t;b.onclick=()=>{w.remove();cb(t,i)};w.appendChild(b)});
   msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
 }
-function setBusy(b){input.disabled=b;send.disabled=b;if(!b)input.focus()}
+const isTouch=matchMedia('(pointer:coarse)').matches;
+function setBusy(b){input.disabled=b;send.disabled=b;if(!b&&!isTouch)input.focus()}
 function setStatus(t,err=false){status.textContent=t||'live · wirex.nuri.com';status.classList.toggle('err',err)}
 
 /* ---- persona ---- */
