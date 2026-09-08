@@ -28,7 +28,8 @@ export class McpChat {
     if (!r.ok) {
       let body; try { body = await r.json(); } catch {}
       const d = typeof body?.error?.message === "string" ? body.error.message : typeof body?.error === "string" ? body.error : "The service is temporarily unavailable.";
-      throw new Error(`${d} (HTTP ${r.status})`);
+      const e = new Error(`${d} (HTTP ${r.status})`); e.status = r.status; e.retryAfter = Number(r.headers.get("retry-after")) || 0;
+      throw e;
     }
     return r.status === 202 ? null : r.json();
   }
@@ -67,10 +68,22 @@ export class McpChat {
     try {
       for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
         this.onStatus("thinking…");
-        const res = await this.json(`${ORIGIN}/chat/api/llm`, {
-          method: "POST", headers: { "content-type": "application/json" },
-          body: JSON.stringify({ model: MODEL, messages: this.messages, tools: this.tools }),
-        });
+        let res, attempt = 0;
+        for (;;) {
+          try {
+            res = await this.json(`${ORIGIN}/chat/api/llm`, {
+              method: "POST", headers: { "content-type": "application/json" },
+              body: JSON.stringify({ model: MODEL, messages: this.messages, tools: this.tools }),
+            });
+            break;
+          } catch (e) {
+            if (!(e.status === 429 || e.status >= 500) || attempt >= 4) throw e;
+            const wait = Math.max(e.retryAfter * 1000, 1500 * 2 ** attempt);
+            this.onStatus(`busy, retrying in ${Math.round(wait / 1000)}s…`);
+            await new Promise((r) => setTimeout(r, wait));
+            attempt++;
+          }
+        }
         const m = res.choices?.[0]?.message;
         if (!m || m.role !== "assistant") throw new Error("The model did not return a valid response.");
         const calls = m.tool_calls;

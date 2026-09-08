@@ -594,9 +594,9 @@ async function resolveBridge(url){
   return t.href;
 }
 async function openBridge(url){
-  overlay.classList.add('on');document.body.style.overflow='hidden';ovtext.textContent='Loading…';
+  overlay.classList.add('on');document.body.style.overflow='hidden';ovtext.textContent='Loading…';clearTimeout(pollTimer);
   try{bridgeUrl=await resolveBridge(url)}catch(e){ovtext.textContent=e.message+' Ask for a new link below.';return}
-  frame.src=bridgeUrl;ovtext.textContent='Closes by itself when you are done.';pollRounds=0;schedulePoll(1500);
+  frame.src=bridgeUrl;ovtext.textContent='Closes by itself when you are done.';pollRounds=0;schedulePoll(8000);
 }
 function closeBridge(){overlay.classList.remove('on');document.body.style.overflow='';frame.src='about:blank';bridgeUrl=''}
 document.getElementById('ovcancel').onclick=()=>{closeBridge();clearTimeout(pollTimer)};
@@ -607,7 +607,7 @@ window.addEventListener('message',e=>{
 });
 msgs.addEventListener('click',e=>{const a=e.target.closest('a[data-bridge]');if(!a)return;e.preventDefault();if(a.dataset.used){ask('I need a new approval link',true);return}a.dataset.used='1';openBridge(a.href)});
 let pollTimer=null,pollRounds=0;
-function schedulePoll(delay=3000){
+function schedulePoll(delay=6000){
   clearTimeout(pollTimer);
   if(!chat||!chat.lastTool||!isPending(chat.lastTool.data)||pollRounds>=60){if(chat&&chat.lastTool&&isDone(chat.lastTool.data))closeBridge();return}
   pollTimer=setTimeout(async()=>{
@@ -623,7 +623,7 @@ async function ask(text,silent=false){
   clearTimeout(pollTimer);pollRounds=0;
   setBusy(true);typing(true);
   try{await chat.send(text,{silent})}
-  catch(e){typing(false);addMsg(`${esc(e.message)}<br><br><button class="cta" onclick="location.reload()">Start again →</button>`,'bot')}
+  catch(e){typing(false);chat.busy=false;addMsg(`${esc(e.message)}<br><br>Just send your message again.`,'bot')}
   finally{typing(false);setBusy(false);schedulePoll()}
 }
 function submit(){const v=input.value.trim();if(!v)return;input.value='';addMsg(esc(v),'me');ask(v,true)}
