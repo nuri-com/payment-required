@@ -29,6 +29,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(244,243,238,.
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
 .logo{font-family:"Space Mono",monospace;font-weight:700;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:9px}
 .logo em{font-style:normal;color:var(--blue)}
+@media(max-width:420px){.logo .tld{display:none}}
 .navcta{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;text-decoration:none;background:var(--ink);color:var(--acid);padding:9px 16px;box-shadow:3px 3px 0 var(--pink);transition:all .15s}
 .navcta:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--blue)}
 
@@ -59,7 +60,7 @@ h1 .l2{color:var(--acid)}
 
 /* centered chat */
 .chatbox{width:min(820px,100%);background:var(--white);color:var(--ink);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--acid);display:flex;flex-direction:column;height:min(600px,70svh);position:relative;z-index:2;text-align:left}
-@media(max-width:760px){header{padding:78px 0 28px}.wrap{padding:0 12px}.chatbox{height:78svh;box-shadow:5px 5px 0 var(--acid)}.chathead{padding:10px 12px;flex-wrap:wrap}.langs{margin-left:auto}.langs button{padding:6px 8px}.msgs{padding:12px}.msg{max-width:94%}.msgbtns{gap:8px}.mbtn{padding:11px 13px;flex:1;justify-content:center}.chathead .who{font-size:17px}}
+@media(max-width:760px){nav .wrap{height:54px}.logo{font-size:17px;gap:6px}.navcta{padding:8px 12px;box-shadow:2px 2px 0 var(--pink)}header{padding:78px 0 28px}.wrap{padding:0 12px}.chatbox{height:78svh;box-shadow:5px 5px 0 var(--acid)}.chathead{padding:10px 12px;flex-wrap:wrap}.langs{margin-left:auto}.langs button{padding:6px 8px}.msgs{padding:12px}.msg{max-width:94%}.msgbtns{gap:8px}.mbtn{padding:11px 13px;flex:1;justify-content:center}.chathead .who{font-size:17px}}
 .chathead{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--acid)}
 .avatar{width:36px;height:36px;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
 .avatar svg{width:26px;height:26px}
@@ -218,7 +219,7 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 
 <nav>
   <div class="wrap">
-    <a class="logo" href="#top"><svg class="px" width="22" height="22"><use href="#px-bot"/></svg>payment<em>required</em>.com</a>
+    <a class="logo" href="#top"><svg class="px" width="22" height="22"><use href="#px-bot"/></svg><span>payment<em>required</em><span class="tld">.com</span></span></a>
     <a class="navcta" href="#chat">GET STARTED</a>
   </div>
 </nav>
