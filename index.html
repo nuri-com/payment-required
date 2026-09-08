@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0000f2">
 <title>PaymentRequired — Make your agent pay</title>
 <meta name="description" content="A real Visa card, a real bank account, and a wallet only you own. Run by an agent in the chats you already use.">
 <meta property="og:title" content="PaymentRequired — Make your agent pay">
@@ -26,9 +27,9 @@ svg.px{shape-rendering:crispEdges;image-rendering:pixelated}
 /* nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(244,243,238,.86);backdrop-filter:blur(12px);border-bottom:2px solid var(--ink)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
-.logo{font-family:"Space Mono",monospace;font-weight:700;font-size:15px;text-decoration:none;display:flex;align-items:center;gap:9px}
+.logo{font-family:"Space Mono",monospace;font-weight:700;font-size:17px;text-decoration:none;display:flex;align-items:center;gap:9px}
 .logo em{font-style:normal;color:var(--blue)}
-.navcta{font-family:"Space Mono",monospace;font-size:12.5px;font-weight:700;text-decoration:none;background:var(--ink);color:var(--acid);padding:9px 16px;box-shadow:3px 3px 0 var(--pink);transition:all .15s}
+.navcta{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;text-decoration:none;background:var(--ink);color:var(--acid);padding:9px 16px;box-shadow:3px 3px 0 var(--pink);transition:all .15s}
 .navcta:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--blue)}
 
 /* hero */
@@ -36,7 +37,7 @@ header{padding:96px 0 40px;position:relative;overflow:hidden;background:var(--bl
 .hero{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
 h1{font-family:Silkscreen,monospace;font-weight:700;text-transform:uppercase;font-size:clamp(34px,6.6vw,104px);line-height:.98;letter-spacing:-.01em;user-select:none}
 h1 .l2{color:var(--acid)}
-.tagline{margin:20px 0 26px;font-size:clamp(16px,1.7vw,20px);font-weight:500;max-width:56ch;line-height:1.45;color:rgba(245,245,245,.9)}
+.tagline{margin:20px 0 26px;font-size:clamp(18px,1.9vw,22px);font-weight:500;max-width:56ch;line-height:1.45;color:rgba(245,245,245,.9)}
 .tagline b{color:var(--acid)}
 
 /* floating pixel sprites */
@@ -49,7 +50,7 @@ h1 .l2{color:var(--acid)}
 .s-bank{width:88px;top:48%;left:2%;animation:bob 4.2s ease-in-out .8s infinite}
 .s-globe{width:70px;top:44%;right:3%;animation:spin 8s steps(8) infinite}
 @media(max-width:1100px){.s-bank,.s-globe{display:none}}
-@media(max-width:760px){.s-card{width:70px}.s-coin{width:40px}.s-bolt,.s-heart{display:none}}
+@media(max-width:760px){.sprite{display:none}}
 @keyframes bob{50%{transform:translateY(-14px)}}
 @keyframes tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg) translateY(-8px)}}
 @keyframes zap{0%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
@@ -57,30 +58,31 @@ h1 .l2{color:var(--acid)}
 @keyframes spin{to{transform:rotateY(360deg)}}
 
 /* centered chat */
-.chatbox{width:min(820px,100%);background:var(--white);color:var(--ink);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--acid);display:flex;flex-direction:column;height:min(560px,68svh);position:relative;z-index:2;text-align:left}
+.chatbox{width:min(820px,100%);background:var(--white);color:var(--ink);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--acid);display:flex;flex-direction:column;height:min(600px,70svh);position:relative;z-index:2;text-align:left}
+@media(max-width:760px){header{padding:78px 0 28px}.wrap{padding:0 12px}.chatbox{height:78svh;box-shadow:5px 5px 0 var(--acid)}.chathead{padding:10px 12px;flex-wrap:wrap}.langs{margin-left:auto}.langs button{padding:6px 8px}.msgs{padding:12px}.msg{max-width:94%}.msgbtns{gap:8px}.mbtn{padding:11px 13px;flex:1;justify-content:center}.chathead .who{font-size:17px}}
 .chathead{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--acid)}
 .avatar{width:36px;height:36px;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
 .avatar svg{width:26px;height:26px}
-.chathead .who{font-weight:700;font-size:14.5px}
-.chathead .st{font-family:"Space Mono",monospace;font-size:11px;color:var(--ink);display:flex;align-items:center;gap:6px;min-height:15px}
+.chathead .who{font-weight:700;font-size:18px}
+.chathead .st{font-family:"Space Mono",monospace;font-size:17px;color:var(--ink);display:flex;align-items:center;gap:6px;min-height:15px}
 .chathead .st::before{content:"";width:7px;height:7px;background:var(--green);animation:blink 2s infinite;flex-shrink:0}
 .chathead .st.err::before{background:var(--red)}
 @keyframes blink{50%{opacity:.35}}
 .langs{margin-left:auto;display:flex;gap:4px}
-.langs button{font-family:"Space Mono",monospace;font-size:11px;font-weight:700;border:1.5px solid var(--ink);background:var(--white);padding:4px 7px;cursor:pointer;transition:all .12s}
+.langs button{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;border:1.5px solid var(--ink);background:var(--white);padding:6px 10px;cursor:pointer;transition:all .12s}
 .langs button:hover,.langs button.on{background:var(--ink);color:var(--paper)}
 .msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;background:
   linear-gradient(var(--white),var(--white)) padding-box}
-.msg{max-width:84%;padding:11px 15px;font-size:14.5px;line-height:1.5;animation:pop .28s ease both;border:1.5px solid var(--ink);word-break:break-word}
+.msg{max-width:88%;padding:13px 17px;font-size:17px;line-height:1.5;animation:pop .28s ease both;border:1.5px solid var(--ink);word-break:break-word}
 @keyframes pop{from{opacity:0;transform:translateY(6px)}}
 .msg.bot{background:var(--paper);align-self:flex-start;border-radius:2px 14px 14px 14px}
 .msg.me{background:var(--blue);color:var(--white);border-color:var(--blue);align-self:flex-end;border-radius:14px 2px 14px 14px}
 .msg a{color:var(--blue);font-weight:600}
 .msg.me a{color:#cdd8ff}
-.msg .cta{display:inline-block;margin-top:6px;background:var(--blue);color:var(--white);text-decoration:none;padding:9px 14px;font-weight:700;font-size:13.5px;box-shadow:3px 3px 0 var(--ink);border:1.5px solid var(--ink)}
+.msg .cta{display:inline-block;margin-top:8px;background:var(--blue);color:var(--white);text-decoration:none;padding:12px 18px;font-weight:700;font-size:17px;box-shadow:3px 3px 0 var(--ink);border:1.5px solid var(--ink)}
 .msg .cta:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;animation:pop .3s .1s ease both}
-.chip{padding:8px 14px;border:1.5px solid var(--ink);background:var(--white);font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;border-radius:999px;transition:all .12s}
+.chip{padding:11px 18px;border:1.5px solid var(--ink);background:var(--white);font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;border-radius:999px;transition:all .12s}
 .chip:hover{background:var(--ink);color:var(--paper)}
 .chip.hot{background:var(--acid);border-color:var(--ink)}
 .chip.hot:hover{background:var(--ink);color:var(--paper)}
@@ -89,14 +91,14 @@ h1 .l2{color:var(--acid)}
 .typing i:nth-child(2){animation-delay:.18s;background:var(--pink)}.typing i:nth-child(3){animation-delay:.36s;background:var(--green)}
 @keyframes tp{50%{transform:translateY(-4px)}}
 .composer{display:flex;border-top:2px solid var(--ink)}
-.composer input{flex:1;border:none;padding:15px 16px;font-size:15px;font-family:inherit;outline:none;background:var(--white);color:var(--ink)}
+.composer input{flex:1;min-width:0;border:none;padding:17px 18px;font-size:17px;font-family:inherit;outline:none;background:var(--white);color:var(--ink)}
 .composer input:disabled{background:#f7f6f2}
-.composer button{width:58px;border:none;border-left:2px solid var(--ink);background:var(--blue);color:var(--white);font-size:18px;cursor:pointer;transition:background .15s}
+.composer button{width:64px;border:none;border-left:2px solid var(--ink);background:var(--blue);color:var(--white);font-size:22px;cursor:pointer;transition:background .15s}
 .composer button:hover{background:var(--ink)}
 .composer button:disabled{background:#8890c8;cursor:wait}
 
 .msgbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px;position:relative;z-index:2}
-.mbtn{display:inline-flex;align-items:center;gap:9px;font-family:"Space Mono",monospace;font-size:13px;font-weight:700;text-decoration:none;border:2px solid var(--ink);padding:11px 17px;background:var(--white);color:var(--ink);transition:all .15s;box-shadow:3px 3px 0 var(--acid)}
+.mbtn{display:inline-flex;align-items:center;gap:9px;font-family:"Space Mono",monospace;font-size:17px;font-weight:700;text-decoration:none;border:2px solid var(--ink);padding:11px 17px;background:var(--white);color:var(--ink);transition:all .15s;box-shadow:3px 3px 0 var(--acid)}
 .mbtn:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 .mbtn.wa:hover{background:#c8f7d9}.mbtn.tg:hover{background:#cdeaff}.mbtn.sg:hover{background:#d9e2ff}
 .mbtn svg{width:17px;height:17px}
@@ -105,28 +107,29 @@ h1 .l2{color:var(--acid)}
 .strip{border-bottom:2px solid var(--ink);background:var(--acid);overflow:hidden}
 .strip .inner{display:flex;width:max-content;animation:mar 24s linear infinite;padding:11px 0}
 @keyframes mar{to{transform:translateX(-50%)}}
-.strip span{font-family:"Space Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.08em;white-space:nowrap;padding:0 20px;text-transform:uppercase}
+.strip span{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;letter-spacing:.08em;white-space:nowrap;padding:0 20px;text-transform:uppercase}
 .strip .dot{color:var(--blue)}
 
 /* card visual + features */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:80px 0 30px;align-items:center}
 @media(max-width:960px){.split{grid-template-columns:1fr}}
 .cardside{position:relative;min-height:400px;display:grid;place-items:center}
-.visa{width:min(380px,88%);aspect-ratio:1.586;background:linear-gradient(135deg,var(--blue),#4b2bff 60%,var(--pink));color:var(--white);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform .4s cubic-bezier(.2,.8,.2,1);position:relative;z-index:3;overflow:hidden}
+@media(max-width:760px){.cardside{min-height:330px}.iban{right:0;top:0}.keytag{bottom:0}.split{padding:48px 0 20px;gap:24px}}
+.visa{width:min(380px,92%);aspect-ratio:1.586;background:linear-gradient(135deg,var(--blue),#4b2bff 60%,var(--pink));color:var(--white);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:24px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-4deg);transition:transform .4s cubic-bezier(.2,.8,.2,1);position:relative;z-index:3;overflow:hidden}
 .visa::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);transform:translateX(-120%);animation:shine 4s ease-in-out infinite}
 @keyframes shine{40%{transform:translateX(120%)}100%{transform:translateX(120%)}}
 .cardside:hover .visa{transform:rotate(0) scale(1.03)}
 .visa .top{display:flex;justify-content:space-between;align-items:flex-start}
-.visa .brand{font-family:Silkscreen,monospace;font-size:12px}
+.visa .brand{font-family:Silkscreen,monospace;font-size:17px}
 .visa .chipp{width:42px;height:30px;background:linear-gradient(135deg,#ffd764,#e8a93c);border:1px solid rgba(0,0,0,.25)}
-.visa .num{font-family:"Space Mono",monospace;font-size:clamp(15px,2vw,20px);letter-spacing:.12em}
-.visa .bot{display:flex;justify-content:space-between;align-items:flex-end;font-family:"Space Mono",monospace;font-size:11px}
+.visa .num{font-family:"Space Mono",monospace;font-size:clamp(17px,2.2vw,22px);letter-spacing:.12em}
+.visa .bot{display:flex;justify-content:space-between;align-items:flex-end;font-family:"Space Mono",monospace;font-size:17px}
 .visa .vlogo{font-style:italic;font-weight:700;font-size:26px;font-family:Inter,sans-serif;letter-spacing:-.03em}
 .iban{position:absolute;top:6%;right:2%;background:var(--acid);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:14px 18px;transform:rotate(3deg);z-index:2;transition:transform .4s}
 .cardside:hover .iban{transform:rotate(6deg) translateY(-6px)}
-.iban .lbl{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
-.iban .val{font-family:"Space Mono",monospace;font-size:13.5px;font-weight:700;margin-top:4px}
-.keytag{position:absolute;bottom:5%;left:0;background:var(--pink);color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:12px 18px;transform:rotate(-2deg);z-index:4;font-family:"Space Mono",monospace;font-size:12.5px;font-weight:700;transition:transform .4s}
+.iban .lbl{font-family:"Space Mono",monospace;font-size:17px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.iban .val{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;margin-top:4px}
+.keytag{position:absolute;bottom:5%;left:0;background:var(--pink);color:var(--ink);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:12px 18px;transform:rotate(-2deg);z-index:4;font-family:"Space Mono",monospace;font-size:17px;font-weight:700;transition:transform .4s}
 .cardside:hover .keytag{transform:rotate(-5deg) translateY(4px)}
 
 .feat{display:flex;flex-direction:column;gap:0;border-top:2px solid var(--ink)}
@@ -134,8 +137,8 @@ h1 .l2{color:var(--acid)}
 .frow:hover{background:var(--white)}
 .frow .ic{width:48px;height:48px;border:2px solid var(--ink);display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink)}
 .frow .ic svg{width:30px;height:30px}
-.frow h3{font-family:Silkscreen,monospace;font-size:15px;text-transform:uppercase;line-height:1.3}
-.frow p{font-size:14px;color:var(--dim);font-weight:500;margin-top:3px;line-height:1.45}
+.frow h3{font-family:Silkscreen,monospace;font-size:18px;text-transform:uppercase;line-height:1.3}
+.frow p{font-size:17px;color:var(--dim);font-weight:500;margin-top:3px;line-height:1.45}
 .frow p b{color:var(--ink)}
 
 /* ask bubbles */
@@ -148,28 +151,28 @@ h1 .l2{color:var(--acid)}
 .bub:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
 .bub:nth-child(1){box-shadow:4px 4px 0 var(--pink)}.bub:nth-child(2){box-shadow:4px 4px 0 var(--green)}.bub:nth-child(3){box-shadow:4px 4px 0 var(--yellow)}
 .bub:nth-child(4){box-shadow:4px 4px 0 var(--cyan)}.bub:nth-child(5){box-shadow:4px 4px 0 var(--orange)}.bub:nth-child(6){box-shadow:4px 4px 0 var(--blue)}
-.bub .q{align-self:flex-end;background:var(--blue);color:var(--white);padding:9px 13px;border-radius:14px 2px 14px 14px;font-size:14px;font-weight:600;max-width:95%}
-.bub .a{align-self:flex-start;background:var(--paper);border:1.5px solid var(--line);padding:9px 13px;border-radius:2px 14px 14px 14px;font-size:13.5px;color:var(--dim);font-weight:500;line-height:1.5}
+.bub .q{align-self:flex-end;background:var(--blue);color:var(--white);padding:11px 15px;border-radius:14px 2px 14px 14px;font-size:17px;font-weight:600;max-width:95%}
+.bub .a{align-self:flex-start;background:var(--paper);border:1.5px solid var(--line);padding:11px 15px;border-radius:2px 14px 14px 14px;font-size:17px;color:var(--dim);font-weight:500;line-height:1.5}
 .bub .a b{color:var(--ink)}
-.bub .try{font-family:"Space Mono",monospace;font-size:10.5px;color:var(--blue);font-weight:700;letter-spacing:.1em}
+.bub .try{font-family:"Space Mono",monospace;font-size:17px;color:var(--blue);font-weight:700;letter-spacing:.1em}
 
 
-.askintro{text-align:center;max-width:60ch;margin:-22px auto 34px;font-size:15.5px;color:var(--dim);font-weight:500;line-height:1.5}
+.askintro{text-align:center;max-width:60ch;margin:-22px auto 34px;font-size:18px;color:var(--dim);font-weight:500;line-height:1.5}
 .askintro b{color:var(--ink)}
 .bub:nth-child(7){box-shadow:4px 4px 0 var(--acid)}.bub:nth-child(8){box-shadow:4px 4px 0 var(--pink)}.bub:nth-child(9){box-shadow:4px 4px 0 var(--green)}
 .catwrap{padding:0 0 90px}
 .cat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:960px){.cat{grid-template-columns:1fr}}
 .catgroup{border:2px solid var(--ink);background:var(--white);box-shadow:5px 5px 0 var(--ink)}
-.catgroup h4{font-family:Silkscreen,monospace;font-size:13px;text-transform:uppercase;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--acid)}
+.catgroup h4{font-family:Silkscreen,monospace;font-size:17px;text-transform:uppercase;padding:12px 16px;border-bottom:2px solid var(--ink);background:var(--acid)}
 .catgroup:nth-child(2) h4{background:var(--pink)}.catgroup:nth-child(3) h4{background:var(--cyan)}
 .catitem{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:13px 16px;border-bottom:1.5px solid var(--line);text-decoration:none;transition:background .12s}
 .catitem:last-child{border-bottom:none}
 a.catitem:hover{background:var(--paper)}
 .catitem .ci{font-size:22px;line-height:1}
-.catitem b{display:block;font-size:14.5px}
-.catitem small{display:block;font-size:12.5px;color:var(--dim);font-weight:500;margin-top:2px}
-.catitem .tag{font-family:"Space Mono",monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:1.5px solid var(--ink);padding:3px 7px;background:var(--acid)}
+.catitem b{display:block;font-size:17px}
+.catitem small{display:block;font-size:17px;color:var(--dim);font-weight:500;margin-top:2px}
+.catitem .tag{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:1.5px solid var(--ink);padding:3px 7px;background:var(--acid)}
 .catitem .tag.soon{background:var(--paper);color:var(--dim);border-color:var(--line)}
 .catitem.partner{background:var(--lav)}
 /* pro */
@@ -178,20 +181,20 @@ a.catitem:hover{background:var(--paper)}
 @media(max-width:900px){.pro .wrap{grid-template-columns:1fr}}
 .pro h2{font-family:Silkscreen,monospace;text-transform:uppercase;font-size:clamp(22px,3.2vw,40px);line-height:1.1}
 .pro h2 em{font-style:normal;color:var(--acid)}
-.pro p{margin-top:16px;font-size:15.5px;line-height:1.6;color:rgba(244,243,238,.66);max-width:46ch;font-weight:500}
+.pro p{margin-top:16px;font-size:18px;line-height:1.6;color:rgba(244,243,238,.66);max-width:46ch;font-weight:500}
 .pro p b{color:var(--paper)}
 .codebox{background:#0c0d12;border:1.5px solid rgba(244,243,238,.25)}
-.cbh{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1.5px solid rgba(244,243,238,.18);font-family:"Space Mono",monospace;font-size:12px;color:rgba(244,243,238,.5)}
-.copybtn{font-family:"Space Mono",monospace;font-size:12px;font-weight:700;padding:7px 15px;border:1.5px solid var(--acid);background:transparent;color:var(--acid);cursor:pointer;transition:all .15s}
+.cbh{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;border-bottom:1.5px solid rgba(244,243,238,.18);font-family:"Space Mono",monospace;font-size:17px;color:rgba(244,243,238,.5)}
+.copybtn{font-family:"Space Mono",monospace;font-size:17px;font-weight:700;padding:7px 15px;border:1.5px solid var(--acid);background:transparent;color:var(--acid);cursor:pointer;transition:all .15s}
 .copybtn:hover{background:var(--acid);color:var(--ink)}
-.codebox pre{padding:16px;font-family:"Space Mono",monospace;font-size:12.5px;line-height:1.65;color:#c8d2f0;white-space:pre-wrap;word-break:break-word}
+.codebox pre{padding:16px;font-family:"Space Mono",monospace;font-size:17px;line-height:1.65;color:#c8d2f0;white-space:pre-wrap;word-break:break-word}
 
 /* footer */
 /* rainbow foot */
 .bigfoot{font-family:Silkscreen,monospace;font-weight:700;text-transform:uppercase;font-size:clamp(64px,16vw,260px);line-height:.85;text-align:center;padding:70px 0 0;user-select:none;letter-spacing:-.02em;background:linear-gradient(90deg,var(--blue),var(--pink),var(--acid),var(--green),var(--blue));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 8s linear infinite}
 @keyframes hue{to{background-position:300% 0}}
 footer{padding:36px 0 50px}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:"Space Mono",monospace;font-size:12px;color:var(--dim)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-family:"Space Mono",monospace;font-size:17px;color:var(--dim)}
 footer a{color:var(--blue);text-decoration:none;font-weight:700}
 </style>
 </head>
@@ -230,14 +233,14 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 
   <div class="wrap hero">
     <h1>Make <span class="l2">your agent</span> pay.</h1>
-    <p class="tagline">A <b>real Visa card</b>, a <b>real bank account</b>, and a wallet only you own. Set up in chat, in 2 minutes.</p>
+    <p class="tagline">A <b>real Visa card</b>, a <b>real bank account</b>, and a <b>crypto &amp; stablecoin wallet</b> only you own. Set up in chat, in 2 minutes.</p>
 
     <div class="chatbox" id="chat">
       <div class="chathead">
         <div class="avatar"><svg class="px"><use href="#px-bot"/></svg></div>
         <div>
           <div class="who">Your money agent</div>
-          <div class="st" id="chatstatus">connecting…</div>
+          <div class="st" id="chatstatus">connecting to wirex.nuri.com…</div>
         </div>
         <div class="langs" id="langs"></div>
       </div>
@@ -257,7 +260,7 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 </header>
 
 <div class="strip"><div class="inner" id="stripinner">
-  <span>Real Visa card</span><span class="dot">✦</span><span>Your own IBAN</span><span class="dot">✦</span><span>SEPA + ACH</span><span class="dot">✦</span><span>Stablecoins</span><span class="dot">✦</span><span>Money home in seconds</span><span class="dot">✦</span><span>You hold the keys</span><span class="dot">✦</span>
+  <span>Real Visa card</span><span class="dot">✦</span><span>Your own IBAN</span><span class="dot">✦</span><span>SEPA + ACH</span><span class="dot">✦</span><span>USDC · USDT · BTC · ETH</span><span class="dot">✦</span><span>Money home in seconds</span><span class="dot">✦</span><span>You hold the keys</span><span class="dot">✦</span>
 </div></div>
 
 <div class="wrap">
@@ -276,7 +279,8 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
       <div class="frow"><div class="ic" style="background:var(--lav)"><svg class="px" viewBox="0 0 24 16"><use href="#px-card"/></svg></div><div><h3>A real Visa card</h3><p>Issued in chat, works everywhere Visa works. <b>Freeze, cap, unfreeze</b> with one message.</p></div></div>
       <div class="frow"><div class="ic" style="background:#d8f4ff"><svg class="px" viewBox="0 0 24 18"><use href="#px-bank"/></svg></div><div><h3>A real bank account</h3><p>Your own <b>IBAN</b>. Salary in, rent out, euros, dollars and stablecoins in one sentence.</p></div></div>
       <div class="frow"><div class="ic" style="background:#ffe9d1"><svg class="px" viewBox="0 0 16 16"><use href="#px-send"/></svg></div><div><h3>Money home in seconds</h3><p>Across borders in <b>seconds, not days</b>. Local currency on both ends.</p></div></div>
-      <div class="frow"><div class="ic" style="background:#fff3c2"><svg class="px"><use href="#px-key"/></svg></div><div><h3>A wallet only you own</h3><p>Locked by your fingerprint. <b>Nobody can freeze or take your money.</b> Not a bank. Not even us.</p></div></div>
+      <div class="frow"><div class="ic" style="background:#fff3c2"><svg class="px"><use href="#px-coin"/></svg></div><div><h3>Crypto &amp; stablecoins</h3><p><b>USDC, USDT, Bitcoin, Ethereum</b> next to your euros and dollars. Swap, send, receive, all in the same chat.</p></div></div>
+      <div class="frow"><div class="ic" style="background:#ffe0f4"><svg class="px"><use href="#px-key"/></svg></div><div><h3>A wallet only you own</h3><p>Locked by your fingerprint. <b>Nobody can freeze or take your money.</b> Not a bank. Not even us.</p></div></div>
     </div>
   </div>
 </div>
@@ -388,7 +392,7 @@ function addChips(items,cb){
   msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
 }
 function setBusy(b){input.disabled=b;send.disabled=b;if(!b)input.focus()}
-function setStatus(t,err=false){status.textContent=t||'online';status.classList.toggle('err',err)}
+function setStatus(t,err=false){status.textContent=t||'live · wirex.nuri.com';status.classList.toggle('err',err)}
 
 /* ---- persona ---- */
 const persona=()=>`You are the friendly money agent on paymentrequired.com (a Nuri product on the Wirex platform).
@@ -402,8 +406,8 @@ Never ask for private keys, seed phrases, passwords or card numbers.`;
 /* ---- chat ---- */
 let chat=null;
 const greetings={
-  en:`Hi${hour<12?', good morning':hour<18?', good afternoon':', good evening'} 👋 I'm your money agent. Get a real Visa card and bank account in 2 minutes. Only you hold the keys.`,
-  de:`Hallo${hour<12?', guten Morgen':hour<18?', guten Tag':', guten Abend'} 👋 Ich bin dein Geld-Agent. Echte Visa-Karte und Bankkonto in 2 Minuten. Nur du hast die Schlüssel.`,
+  en:`Hi${hour<12?', good morning':hour<18?', good afternoon':', good evening'} 👋 I'm your money agent. Get a real Visa card, bank account and crypto wallet in 2 minutes. Only you hold the keys.`,
+  de:`Hallo${hour<12?', guten Morgen':hour<18?', guten Tag':', guten Abend'} 👋 Ich bin dein Geld-Agent. Echte Visa-Karte, Bankkonto und Krypto-Wallet in 2 Minuten. Nur du hast die Schlüssel.`,
   es:`Hola${hour<12?', buenos días':hour<18?', buenas tardes':', buenas noches'} 👋 Soy tu agente de dinero. Tarjeta Visa real y cuenta bancaria en 2 minutos. Solo tú tienes las llaves.`,
   fr:`Salut${hour<12?', bonjour':hour<18?', bon après-midi':', bonsoir'} 👋 Je suis ton agent argent. Vraie carte Visa et compte bancaire en 2 minutes. Toi seul·e détiens les clés.`,
   pt:`Olá${hour<12?', bom dia':hour<18?', boa tarde':', boa noite'} 👋 Sou o teu agente de dinheiro. Cartão Visa real e conta bancária em 2 minutos. Só tu tens as chaves.`,
@@ -460,8 +464,8 @@ async function boot(){
     onStatus:t=>setStatus(t),
     onError:()=>{},
   });
-  try{await chat.start();setStatus('online');setBusy(false);addChips(starters[lang],onStarter)}
-  catch(e){setStatus('offline',true);addMsg(`I can't reach the agent right now. <a class="cta" href="${CONNECT}" target="_blank" rel="noopener">Open the full app →</a>`,'bot');chat=null}
+  try{await chat.start();setStatus('live · wirex.nuri.com');setBusy(false);addChips(starters[lang],onStarter)}
+  catch(e){setStatus('offline',true);addMsg(`I can't reach the agent from this address right now (${esc(e.message)}). <a class="cta" href="${CONNECT}" target="_blank" rel="noopener">Open the full app →</a>`,'bot');chat=null}
 }
 boot();
 </script>
