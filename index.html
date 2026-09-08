@@ -500,9 +500,20 @@ function onStarter(t,i){
 const overlay=document.getElementById('overlay'),frame=document.getElementById('bridgeframe'),ovtext=document.getElementById('ovtext');
 const BRIDGE_ORIGIN='https://wirex.nuri.com';
 let bridgeUrl='';
-function openBridge(url){
-  bridgeUrl=url;frame.src=url;overlay.classList.add('on');document.body.style.overflow='hidden';
-  ovtext.textContent='Closes by itself when you are done.';pollRounds=0;schedulePoll(1500);
+// Short links (…/mcp/s#token) are one-shot: resolve them here (same as the bridge's own short-link.mjs), then embed the real bridge URL.
+async function resolveBridge(url){
+  const src=new URL(url);const token=src.hash.slice(1);
+  if(!/\/s$/.test(src.pathname)||!/^[A-Za-z0-9_-]{32}$/.test(token))return url;
+  const r=await fetch(`${src.origin}${src.pathname}`,{method:'POST',credentials:'omit',cache:'no-store',referrerPolicy:'no-referrer',headers:{'content-type':'application/json'},body:JSON.stringify({token})});
+  if(!r.ok)throw new Error('This link is no longer available.');
+  const t=new URL((await r.json()).url);
+  if(t.origin!==BRIDGE_ORIGIN)throw new Error('Unexpected link.');
+  return t.href;
+}
+async function openBridge(url){
+  overlay.classList.add('on');document.body.style.overflow='hidden';ovtext.textContent='Loading…';
+  try{bridgeUrl=await resolveBridge(url)}catch(e){ovtext.textContent=e.message+' Ask for a new link below.';return}
+  frame.src=bridgeUrl;ovtext.textContent='Closes by itself when you are done.';pollRounds=0;schedulePoll(1500);
 }
 function closeBridge(){overlay.classList.remove('on');document.body.style.overflow='';frame.src='about:blank';bridgeUrl=''}
 document.getElementById('ovcancel').onclick=()=>{closeBridge();clearTimeout(pollTimer)};
@@ -511,7 +522,7 @@ window.addEventListener('message',e=>{
   if(e.data.state==='done'){ovtext.textContent='Done ✓';setTimeout(()=>{closeBridge();pollRounds=0;schedulePoll(200)},600)}
   if(e.data.state==='error'){ovtext.textContent='Something went wrong. Close and try again.'}
 });
-msgs.addEventListener('click',e=>{const a=e.target.closest('a[data-bridge]');if(!a)return;e.preventDefault();openBridge(a.href)});
+msgs.addEventListener('click',e=>{const a=e.target.closest('a[data-bridge]');if(!a)return;e.preventDefault();if(a.dataset.used){ask('I need a new approval link',true);return}a.dataset.used='1';openBridge(a.href)});
 let pollTimer=null,pollRounds=0;
 function schedulePoll(delay=3000){
   clearTimeout(pollTimer);
