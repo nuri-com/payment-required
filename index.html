@@ -380,7 +380,7 @@ function linkify(text){
   const re=/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<>]+)/gi;let out='',i=0;
   for(const m of text.matchAll(re)){out+=esc(text.slice(i,m.index));let u;try{u=new URL(m[2]||m[3])}catch{}
     if(!u||u.username||u.password){out+=esc(m[0])}else{const label=m[1]||m[3];const isCta=/connect|wallet|approve|verify|create|open|start|sign/i.test(label)||u.hostname.endsWith('nuri.com');
-      out+=`<a href="${u.href}" target="_blank" rel="noopener" class="${isCta?'cta':''}">${esc(label)}${isCta?' →':''}</a>`}
+      const shown=(!m[1]&&u.hostname.endsWith('nuri.com'))?'Connect my wallet':label;out+=`<a href="${u.href}" target="_blank" rel="noopener" class="${isCta?'cta':''}">${esc(shown)}${isCta?' →':''}</a>`}
     i=m.index+m[0].length}
   return out+esc(text.slice(i));
 }
@@ -401,7 +401,7 @@ Visitor context: browser language "${nav}", timezone "${tz}" (region hint: ${reg
 Tone: warm, short, human. Max 2-3 sentences per reply. No jargon, no protocol names (never say x402, MCP, MPP, stablecoin protocol). Never use markdown headings or bullet lists; plain sentences, one idea per line.
 What you offer: a real Visa card and a real bank account (IBAN, SEPA, ACH) in about 2 minutes, a wallet only the user owns (their keys, locked by their fingerprint/passkey), stablecoins and crypto, sending money home across borders in seconds (M-Pesa, GCash, bank), and an agent that signs in to the user's own accounts and pays for everyday things: food delivery (Wolt, Glovo, Uber Eats), rides (Bolt, Uber), Amazon and eBay orders and bids, phone top-ups and gift cards via Bitrefill, eSIM/VPN via nadanada, VPS via LNVPS with Hermes set up.
 If a user asks for one of those everyday tasks before they have a wallet, say you'd love to and it takes 2 minutes to get their card and account first, then start the setup.
-Goal: get the user to connect a wallet. Use the tools to do it: when they want to start, call the tool that connects or creates a wallet and give them the link it returns as a markdown link. If the user asks what they can do (pay bills, send money, freeze card), explain briefly and offer to set them up first.
+Goal: get the user to connect a wallet. Use the tools to do it: when they want to start, call the tool that connects or creates a wallet and give them the link it returns as a markdown link with a short action label, e.g. [Connect my wallet](URL) or [Approve](URL). Never paste a bare URL. If the user asks what they can do (pay bills, send money, freeze card), explain briefly and offer to set them up first.
 Never ask for private keys, seed phrases, passwords or card numbers.`;
 
 /* ---- chat ---- */
