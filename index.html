@@ -119,18 +119,19 @@ h1{text-shadow:none}
 .mbtn.wa:hover{background:var(--lime)}.mbtn.tg:hover{background:#cdeaff}.mbtn.sg:hover{background:#d9e2ff}
 .mbtn svg{width:17px;height:17px}
 
-/* approval overlay */
-.overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+/* approval overlay: full-screen sheet with the bridge inside */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}
 .overlay.on{display:flex}
-.ovbox{background:var(--white);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--green);padding:32px 28px;max-width:440px;width:100%;text-align:center}
-.ovbox h3{font-family:Silkscreen,monospace;font-size:19px;text-transform:uppercase;line-height:1.3;margin:14px 0 10px}
-.ovbox p{font-size:17px;color:var(--dim);font-weight:500;line-height:1.5}
-.ovspin{display:flex;gap:8px;justify-content:center}
-.ovspin i{width:12px;height:12px;background:var(--green2);animation:tp 1.1s steps(2) infinite}
+.sheet{background:var(--white);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--green);width:min(560px,100%);height:min(780px,100%);display:flex;flex-direction:column;overflow:hidden}
+.sheethead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:2px solid var(--ink);background:var(--green)}
+.sheettitle{font-family:Silkscreen,monospace;font-size:17px;text-transform:uppercase;line-height:1.25}
+.sheetclose{width:40px;height:40px;border:2px solid var(--ink);background:var(--white);font-size:18px;cursor:pointer;flex-shrink:0;box-shadow:2px 2px 0 var(--ink)}
+#bridgeframe{flex:1;width:100%;border:none;background:var(--white)}
+.sheetfoot{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:2px solid var(--ink);font-family:"Space Mono",monospace;font-size:17px;color:var(--ink)}
+.ovspin{display:flex;gap:6px}
+.ovspin i{width:10px;height:10px;background:var(--green2);animation:tp 1.1s steps(2) infinite}
 .ovspin i:nth-child(2){animation-delay:.18s;background:var(--bubble)}.ovspin i:nth-child(3){animation-delay:.36s;background:var(--yellow)}
-.ovbtn{margin-top:22px;width:100%;font-family:"Space Mono",monospace;font-size:17px;font-weight:700;background:var(--green);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:14px;cursor:pointer}
-.ovbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.ovlink{margin-top:14px;background:none;border:none;font-family:"Space Mono",monospace;font-size:17px;color:var(--dim);cursor:pointer;text-decoration:underline}
+@media(max-width:760px){.overlay{padding:0}.sheet{width:100%;height:100%;border:none;box-shadow:none}.sheethead{padding-top:max(12px,env(safe-area-inset-top))}}
 /* strip */
 .strip{border-bottom:3px solid var(--ink);background:var(--ink);color:var(--green);overflow:hidden}
 .strip .inner{display:flex;width:max-content;animation:mar 24s linear infinite;padding:11px 0}
@@ -300,12 +301,13 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 </header>
 
 <div class="overlay" id="overlay">
-  <div class="ovbox">
-    <div class="ovspin"><i></i><i></i><i></i></div>
-    <h3 id="ovtitle">Approve in the window that just opened</h3>
-    <p id="ovtext">Use Face ID or your fingerprint. This closes by itself when you're done.</p>
-    <button class="ovbtn" id="ovreopen">Open it again</button>
-    <button class="ovlink" id="ovcancel">cancel</button>
+  <div class="sheet">
+    <div class="sheethead">
+      <span class="sheettitle" id="ovtitle">Approve with Face ID or fingerprint</span>
+      <button class="sheetclose" id="ovcancel" aria-label="Close">✕</button>
+    </div>
+    <iframe id="bridgeframe" title="Wallet approval" allow="publickey-credentials-get *; publickey-credentials-create *; clipboard-write" referrerpolicy="no-referrer"></iframe>
+    <div class="sheetfoot"><span class="ovspin"><i></i><i></i><i></i></span><span id="ovtext">Closes by itself when you are done.</span></div>
   </div>
 </div>
 <div class="strip"><div class="inner" id="stripinner">
@@ -494,24 +496,22 @@ function onStarter(t,i){
   if(i===0){addMsg(esc(t),'me');ask(setupIntents[lang],true)}
   else{addMsg(esc(t),'me');ask(t,true)}
 }
-/* ---- bridge window (popup on desktop, tab on mobile), auto-closes on success ---- */
-const overlay=document.getElementById('overlay'),ovtitle=document.getElementById('ovtitle'),ovtext=document.getElementById('ovtext');
-let bridgeWin=null,bridgeUrl='';
-const isTouchDevice=matchMedia('(pointer:coarse)').matches;
+/* ---- bridge inside an on-page iframe; the bridge posts {type:'nuri-bridge',state} when done ---- */
+const overlay=document.getElementById('overlay'),frame=document.getElementById('bridgeframe'),ovtext=document.getElementById('ovtext');
+const BRIDGE_ORIGIN='https://wirex.nuri.com';
+let bridgeUrl='';
 function openBridge(url){
-  bridgeUrl=url;
-  if(isTouchDevice){bridgeWin=window.open(url,'_blank');}
-  else{const w=Math.min(520,screen.width-40),h=Math.min(760,screen.height-80),l=Math.round((screen.width-w)/2),t=Math.round((screen.height-h)/2);bridgeWin=window.open(url,'pr_bridge',`popup=yes,width=${w},height=${h},left=${l},top=${t}`);}
-  if(!bridgeWin){location.href=url;return}
-  ovtitle.textContent=isTouchDevice?'Finish in the tab that just opened':'Approve in the window that just opened';
-  ovtext.textContent=isTouchDevice?'Use Face ID or your fingerprint, then come back here. I keep watching and continue automatically.':'Use Face ID or your fingerprint. This closes by itself when you are done.';
-  overlay.classList.add('on');pollRounds=0;schedulePoll(1200);
+  bridgeUrl=url;frame.src=url;overlay.classList.add('on');document.body.style.overflow='hidden';
+  ovtext.textContent='Closes by itself when you are done.';pollRounds=0;schedulePoll(1500);
 }
-function closeBridge(){overlay.classList.remove('on');try{if(bridgeWin&&!bridgeWin.closed)bridgeWin.close()}catch{}bridgeWin=null}
-document.getElementById('ovreopen').onclick=()=>bridgeUrl&&openBridge(bridgeUrl);
+function closeBridge(){overlay.classList.remove('on');document.body.style.overflow='';frame.src='about:blank';bridgeUrl=''}
 document.getElementById('ovcancel').onclick=()=>{closeBridge();clearTimeout(pollTimer)};
+window.addEventListener('message',e=>{
+  if(e.origin!==BRIDGE_ORIGIN||!e.data||e.data.type!=='nuri-bridge')return;
+  if(e.data.state==='done'){ovtext.textContent='Done ✓';setTimeout(()=>{closeBridge();pollRounds=0;schedulePoll(200)},600)}
+  if(e.data.state==='error'){ovtext.textContent='Something went wrong. Close and try again.'}
+});
 msgs.addEventListener('click',e=>{const a=e.target.closest('a[data-bridge]');if(!a)return;e.preventDefault();openBridge(a.href)});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&overlay.classList.contains('on'))schedulePoll(300)});
 let pollTimer=null,pollRounds=0;
 function schedulePoll(delay=3000){
   clearTimeout(pollTimer);
