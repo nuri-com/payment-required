@@ -2,11 +2,23 @@
 // Talks to https://wirex.nuri.com/mcp (MCP) and /chat/api/llm (OpenRouter proxy). Same protocol as wirex.nuri.com/chat.
 const MAX_TOOL_ROUNDS = 8;
 export const ORIGIN = "https://wirex.nuri.com";
-export const MODEL = "~deepseek/deepseek-v4-flash-latest";
+export const MODEL = "qwen/qwen3.8-flash";
+
+// True when the last tool result is a state the user must act on out-of-band (approval, KYC) or that is still in flight.
+export function isDone(data) {
+  const text = JSON.stringify(data ?? "").toLowerCase();
+  return /"status"\s*:\s*"(connected|verified|approved|ready|active|completed|created)"|"connected"\s*:\s*true|"account_exists"\s*:\s*(true|false)/.test(text);
+}
+export function isPending(data) {
+  const text = JSON.stringify(data ?? "").toLowerCase();
+  if (/"(status|state|verification|next_action)"\s*:\s*"(pending|awaiting|waiting|processing|in_progress|check|poll|retry)/.test(text)) return true;
+  if (/approval_url|kyc_url|verification_url|retry_after_seconds/.test(text) && !/"connected"\s*:\s*true|"status"\s*:\s*"(verified|approved|ready|active|completed)"/.test(text)) return true;
+  return false;
+}
 
 export class McpChat {
-  constructor({ onMessage, onStatus, onTools, onError, persona = "" }) {
-    this.onMessage = onMessage; this.onStatus = onStatus; this.onTools = onTools; this.onError = onError;
+  constructor({ onMessage, onStatus, onTools, onTool, onError, persona = "" }) {
+    this.onMessage = onMessage; this.onStatus = onStatus; this.onTools = onTools; this.onTool = onTool; this.onError = onError;
     this.persona = persona;
     this.controller = new AbortController();
     this.messages = []; this.busy = false; this.id = 0; this.tools = [];
@@ -63,8 +75,9 @@ export class McpChat {
         if (!m || m.role !== "assistant") throw new Error("The model did not return a valid response.");
         const calls = m.tool_calls;
         if (!calls?.length) {
-          const c = m.content === null ? "" : m.content;
+          const c = m.content === null ? "" : String(m.content ?? "");
           if (c.trim()) this.say(c);
+          else if (this.messages.at(-1)?.role !== "tool") this.messages.push({ role: "assistant", content: "" });
           return;
         }
         this.messages.push(m);
@@ -72,6 +85,9 @@ export class McpChat {
         this.onStatus("working…");
         for (const call of calls) {
           const result = await this.rpc("tools/call", { name: call.function.name, arguments: JSON.parse(call.function.arguments || "{}") });
+          const data = result.structuredContent ?? result.content;
+          this.lastTool = { name: call.function.name, data };
+          this.onTool?.(call.function.name, data);
           this.messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify({ ...(result.structuredContent ? { structuredContent: result.structuredContent } : { content: result.content }), isError: result.isError === true }) });
         }
       }

@@ -91,7 +91,7 @@ h1{text-shadow:none}
 .msg.me{background:var(--blue);color:var(--white);border-color:var(--blue);align-self:flex-end;border-radius:14px 2px 14px 14px}
 .msg a{color:var(--blue);font-weight:600}
 .msg.me a{color:#cdd8ff}
-.msg .cta{display:inline-block;margin-top:8px;background:var(--blue);color:var(--white);text-decoration:none;padding:12px 18px;font-weight:700;font-size:17px;box-shadow:3px 3px 0 var(--ink);border:1.5px solid var(--ink)}
+.msg .cta{display:inline-block;cursor:pointer;font-family:inherit;margin-top:8px;background:var(--blue);color:var(--white);text-decoration:none;padding:12px 18px;font-weight:700;font-size:17px;box-shadow:3px 3px 0 var(--ink);border:1.5px solid var(--ink)}
 .msg .cta:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-self:flex-start;animation:pop .3s .1s ease both}
 .chip{padding:11px 18px;border:2px solid var(--ink);background:var(--white);font-size:17px;font-weight:700;cursor:pointer;font-family:inherit;border-radius:999px;transition:all .12s;box-shadow:3px 3px 0 var(--ink)}
@@ -116,6 +116,18 @@ h1{text-shadow:none}
 .mbtn.wa:hover{background:#c8f7d9}.mbtn.tg:hover{background:#cdeaff}.mbtn.sg:hover{background:#d9e2ff}
 .mbtn svg{width:17px;height:17px}
 
+/* approval overlay */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.on{display:flex}
+.ovbox{background:var(--white);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--yellow);padding:32px 28px;max-width:440px;width:100%;text-align:center}
+.ovbox h3{font-family:Silkscreen,monospace;font-size:19px;text-transform:uppercase;line-height:1.3;margin:14px 0 10px}
+.ovbox p{font-size:17px;color:var(--dim);font-weight:500;line-height:1.5}
+.ovspin{display:flex;gap:8px;justify-content:center}
+.ovspin i{width:12px;height:12px;background:var(--blue);animation:tp 1.1s steps(2) infinite}
+.ovspin i:nth-child(2){animation-delay:.18s;background:var(--bubble)}.ovspin i:nth-child(3){animation-delay:.36s;background:var(--yellow)}
+.ovbtn{margin-top:22px;width:100%;font-family:"Space Mono",monospace;font-size:17px;font-weight:700;background:var(--yellow);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:14px;cursor:pointer}
+.ovbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.ovlink{margin-top:14px;background:none;border:none;font-family:"Space Mono",monospace;font-size:17px;color:var(--dim);cursor:pointer;text-decoration:underline}
 /* strip */
 .strip{border-bottom:3px solid var(--ink);background:var(--yellow);overflow:hidden}
 .strip .inner{display:flex;width:max-content;animation:mar 24s linear infinite;padding:11px 0}
@@ -284,6 +296,15 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
   </div>
 </header>
 
+<div class="overlay" id="overlay">
+  <div class="ovbox">
+    <div class="ovspin"><i></i><i></i><i></i></div>
+    <h3 id="ovtitle">Approve in the window that just opened</h3>
+    <p id="ovtext">Use Face ID or your fingerprint. This closes by itself when you're done.</p>
+    <button class="ovbtn" id="ovreopen">Open it again</button>
+    <button class="ovlink" id="ovcancel">cancel</button>
+  </div>
+</div>
 <div class="strip"><div class="inner" id="stripinner">
   <span>Real Visa card</span><span class="dot">✦</span><span>Your own IBAN</span><span class="dot">✦</span><span>SEPA + ACH</span><span class="dot">✦</span><span>USDC · USDT · BTC · ETH</span><span class="dot">✦</span><span>Money home in seconds</span><span class="dot">✦</span><span>Self-custodial</span><span class="dot">✦</span><span>No transfer fees home</span><span class="dot">✦</span>
 </div></div>
@@ -374,13 +395,13 @@ It's my PaymentRequired account — wallet, Visa card, bank account (IBAN/SEPA/A
 <p class="shh">shhhh. it's early. <a href="#chat">try the door →</a></p>
 <footer>
   <div class="wrap">
-    <span>© 2026 PaymentRequired · a <a href="https://nuri.com">Nuri</a> product</span>
-    <span><a href="mailto:partners@paymentrequired.com">partners</a> · <a href="https://wirex.nuri.com/chat/">full app</a></span>
+    <span>© 2026 PaymentRequired</span>
+    <span><a href="mailto:partners@paymentrequired.com">partners</a></span>
   </div>
 </footer>
 
 <script type="module">
-import { McpChat } from "./chat-client.mjs";
+import { McpChat, isPending, isDone } from "./chat-client.mjs";
 
 const si=document.getElementById('stripinner');si.innerHTML+=si.innerHTML;
 document.getElementById('copyprompt').addEventListener('click',async e=>{
@@ -398,14 +419,13 @@ const hour=new Date().getHours();
 
 /* ---- UI ---- */
 const msgs=document.getElementById('msgs'),input=document.getElementById('chatinput'),send=document.getElementById('chatsend'),status=document.getElementById('chatstatus'),langsEl=document.getElementById('langs');
-const CONNECT='https://wirex.nuri.com/chat/';
 function esc(s){return s.replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]))}
 function linkify(text){
   // markdown links + bare urls, everything else escaped
   const re=/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<>]+)/gi;let out='',i=0;
   for(const m of text.matchAll(re)){out+=esc(text.slice(i,m.index));let u;try{u=new URL(m[2]||m[3])}catch{}
     if(!u||u.username||u.password){out+=esc(m[0])}else{const label=m[1]||m[3];const isCta=/connect|wallet|approve|verify|create|open|start|sign/i.test(label)||u.hostname.endsWith('nuri.com');
-      const shown=(!m[1]&&u.hostname.endsWith('nuri.com'))?'Connect my wallet':label;out+=`<a href="${u.href}" target="_blank" rel="noopener" class="${isCta?'cta':''}">${esc(shown)}${isCta?' →':''}</a>`}
+      const shown=(!m[1]&&u.hostname.endsWith('nuri.com'))?'Connect my wallet':label;const bridge=u.hostname.endsWith('nuri.com');out+=`<a href="${u.href}" target="_blank" rel="noopener" class="${isCta?'cta':''}" ${bridge?'data-bridge="1"':''}>${esc(shown)}${isCta?' →':''}</a>`}
     i=m.index+m[0].length}
   return out+esc(text.slice(i));
 }
@@ -422,13 +442,14 @@ function setBusy(b){input.disabled=b;send.disabled=b;if(!b&&!isTouch)input.focus
 function setStatus(t,err=false){status.textContent=t||'live · wirex.nuri.com';status.classList.toggle('err',err)}
 
 /* ---- persona ---- */
-const persona=()=>`You are the friendly money agent on paymentrequired.com (a Nuri product on the Wirex platform).
+const persona=()=>`You are the friendly money agent on paymentrequired.com.
 Visitor context: browser language "${nav}", timezone "${tz}" (region hint: ${region}), local hour ${hour}. Reply in the language with code "${lang}" (${LANGS[lang]}) unless the user writes in another language, then switch to theirs.
 Tone: warm, short, human. Max 2-3 sentences per reply. No jargon, no protocol names (never say x402, MCP, MPP, stablecoin protocol). Never use markdown headings or bullet lists; plain sentences, one idea per line.
 What you offer: a real Visa card and a real bank account (IBAN, SEPA, ACH) in about 2 minutes, a wallet only the user owns (their keys, locked by their fingerprint/passkey), stablecoins and crypto, sending money home across borders in seconds (M-Pesa, GCash, bank), and an agent that signs in to the user's own accounts and pays for everyday things: food delivery (Wolt, Glovo, Uber Eats), rides (Bolt, Uber), Amazon and eBay orders and bids, phone top-ups and gift cards via Bitrefill, eSIM/VPN via nadanada, VPS via LNVPS with Hermes set up.
 If a user asks for one of those everyday tasks before they have a wallet, say you'd love to and it takes 2 minutes to get their card and account first, then start the setup.
 Goal: get the user to connect a wallet. Use the tools to do it: when they want to start, call the tool that connects or creates a wallet and give them the link it returns as a markdown link with a short action label, e.g. [Connect my wallet](URL) or [Approve](URL). Never paste a bare URL. If the user asks what they can do (pay bills, send money, freeze card), explain briefly and offer to set them up first.
-Never ask for private keys, seed phrases, passwords or card numbers.`;
+Never ask for private keys, seed phrases, passwords or card numbers.
+Flow: connect_wallet with {} first. Show the approval link as [Connect my wallet](URL) with one short sentence. You will receive silent system nudges to check progress; on those, call the matching tool (connect_wallet with the same request_id, or get_account_status with wait_seconds 25) and say nothing unless the state changed. Never ask the user to tell you when they are done. When connected and no account exists, ask for email and residence country, then create_account. When a kyc_url comes back, show it as [Verify my identity](URL). When verified, congratulate briefly and show what is ready (card, IBAN).`;
 
 /* ---- chat ---- */
 let chat=null;
@@ -470,12 +491,43 @@ function onStarter(t,i){
   if(i===0){addMsg(esc(t),'me');ask(setupIntents[lang],true)}
   else{addMsg(esc(t),'me');ask(t,true)}
 }
+/* ---- bridge window (popup on desktop, tab on mobile), auto-closes on success ---- */
+const overlay=document.getElementById('overlay'),ovtitle=document.getElementById('ovtitle'),ovtext=document.getElementById('ovtext');
+let bridgeWin=null,bridgeUrl='';
+const isTouchDevice=matchMedia('(pointer:coarse)').matches;
+function openBridge(url){
+  bridgeUrl=url;
+  if(isTouchDevice){bridgeWin=window.open(url,'_blank');}
+  else{const w=Math.min(520,screen.width-40),h=Math.min(760,screen.height-80),l=Math.round((screen.width-w)/2),t=Math.round((screen.height-h)/2);bridgeWin=window.open(url,'pr_bridge',`popup=yes,width=${w},height=${h},left=${l},top=${t}`);}
+  if(!bridgeWin){location.href=url;return}
+  ovtitle.textContent=isTouchDevice?'Finish in the tab that just opened':'Approve in the window that just opened';
+  ovtext.textContent=isTouchDevice?'Use Face ID or your fingerprint, then come back here. I keep watching and continue automatically.':'Use Face ID or your fingerprint. This closes by itself when you are done.';
+  overlay.classList.add('on');pollRounds=0;schedulePoll(1200);
+}
+function closeBridge(){overlay.classList.remove('on');try{if(bridgeWin&&!bridgeWin.closed)bridgeWin.close()}catch{}bridgeWin=null}
+document.getElementById('ovreopen').onclick=()=>bridgeUrl&&openBridge(bridgeUrl);
+document.getElementById('ovcancel').onclick=()=>{closeBridge();clearTimeout(pollTimer)};
+msgs.addEventListener('click',e=>{const a=e.target.closest('a[data-bridge]');if(!a)return;e.preventDefault();openBridge(a.href)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&overlay.classList.contains('on'))schedulePoll(300)});
+let pollTimer=null,pollRounds=0;
+function schedulePoll(delay=3000){
+  clearTimeout(pollTimer);
+  if(!chat||!chat.lastTool||!isPending(chat.lastTool.data)||pollRounds>=60){if(chat&&chat.lastTool&&isDone(chat.lastTool.data))closeBridge();return}
+  pollTimer=setTimeout(async()=>{
+    if(!chat||chat.busy){schedulePoll();return}
+    pollRounds++;setStatus('waiting for your approval…');
+    try{await chat.send('(system: check progress now with the matching tool, wait up to 25 seconds, reply only if something changed)',{silent:true})}
+    catch(e){}
+    finally{setStatus('');if(chat&&chat.lastTool&&isDone(chat.lastTool.data))closeBridge();schedulePoll()}
+  },delay);
+}
 async function ask(text,silent=false){
   if(!chat||chat.busy)return;
+  clearTimeout(pollTimer);pollRounds=0;
   setBusy(true);typing(true);
   try{await chat.send(text,{silent})}
-  catch(e){typing(false);addMsg(`${esc(e.message)}<br><br><a class="cta" href="${CONNECT}" target="_blank" rel="noopener">Open the full app →</a>`,'bot')}
-  finally{typing(false);setBusy(false)}
+  catch(e){typing(false);addMsg(`${esc(e.message)}<br><br><button class="cta" onclick="location.reload()">Start again →</button>`,'bot')}
+  finally{typing(false);setBusy(false);schedulePoll()}
 }
 function submit(){const v=input.value.trim();if(!v)return;input.value='';addMsg(esc(v),'me');ask(v,true)}
 send.addEventListener('click',submit);
@@ -492,7 +544,7 @@ async function boot(){
     onError:()=>{},
   });
   try{await chat.start();setStatus('live · wirex.nuri.com');setBusy(false);addChips(starters[lang],onStarter)}
-  catch(e){setStatus('offline',true);addMsg(`I can't reach the agent from this address right now (${esc(e.message)}). <a class="cta" href="${CONNECT}" target="_blank" rel="noopener">Open the full app →</a>`,'bot');chat=null}
+  catch(e){setStatus('offline',true);addMsg(`I can't reach the agent right now (${esc(e.message)}). <button class="cta" onclick="location.reload()">Try again →</button>`,'bot');chat=null}
 }
 boot();
 </script>
