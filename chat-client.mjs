@@ -2,7 +2,7 @@
 // Talks to https://wirex.nuri.com/mcp (MCP) and /chat/api/llm (OpenRouter proxy). Same protocol as wirex.nuri.com/chat.
 const MAX_TOOL_ROUNDS = 8;
 export const ORIGIN = "https://wirex.nuri.com";
-export const MODEL = "qwen/qwen3.8-flash";
+export const MODEL = "deepseek/deepseek-v4-flash-0731";
 
 // True when the last tool result is a state the user must act on out-of-band (approval, KYC) or that is still in flight.
 export function isDone(data) {
