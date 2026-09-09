@@ -20,8 +20,12 @@ try {
     const context=await browser.newContext({...options,colorScheme:'light',reducedMotion:'reduce'});
     const page=await context.newPage();
     const errors=[];
+    const initialRequests=[];
+    page.on('request',request=>initialRequests.push(request.url()));
     page.on('pageerror',error=>errors.push(error.message));
     await page.goto(url,{waitUntil:'networkidle'});
+    assert.ok(!initialRequests.some(u=>new URL(u).pathname.endsWith('/chat-client.mjs')),'chat module is deferred until a real chat action');
+    assert.ok(!initialRequests.some(u=>new URL(u).hostname==='wirex.nuri.com'),'no unsolicited MCP session or model request on load');
     await page.screenshot({path:`${out}/${name}.png`,fullPage:true});
     const metrics=await page.evaluate(()=>{
       const visible=[...document.querySelectorAll('body *')].filter(e=>{

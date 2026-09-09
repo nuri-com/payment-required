@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Save public agent-readiness evidence. Never translate errors into passes."""
+from __future__ import annotations
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -16,6 +17,8 @@ a = p.parse_args()
 out = Path(a.out)
 out.mkdir(parents=True, exist_ok=True)
 started = datetime.now(timezone.utc).isoformat()
+parsed = urlsplit(a.url)
+origin = f'{parsed.scheme}://{parsed.netloc}'
 ua = {'User-Agent': 'PaymentRequired-V2-Readiness/1.0'}
 
 def request(name, url, data=None, form=False, timeout=150):
@@ -37,7 +40,7 @@ def request(name, url, data=None, form=False, timeout=150):
         body = json.loads(raw)
     except json.JSONDecodeError:
         body = raw
-    record = {'requested_url': url, 'target_url': a.url, 'scanned_at': started, 'final_url': response.url,
+    record = {'requested_url': url, 'target_url': origin if name.startswith('is-agentic') else a.url, 'scanned_at': started, 'final_url': response.url,
               'status': response.status, 'headers': dict(response.headers), 'body': body}
     (out / f'{name}.json').write_text(json.dumps(record, indent=2, ensure_ascii=False))
     brief = {'name': name, 'http': response.status, 'artifact': str(out / f'{name}.json')}
@@ -48,13 +51,13 @@ def request(name, url, data=None, form=False, timeout=150):
 jobs: list[tuple[str, str, dict | None, bool]] = [
     ('isitagentready', 'https://isitagentready.com/api/scan', {'url': a.url}, False),
     ('circle', 'https://agents.circle.com/sell/score/check', {'url': a.url}, False),
-    ('is-agentic-submit', 'https://is-agentic.com/scan', {'url': a.url}, True),
+    ('is-agentic-submit', 'https://is-agentic.com/scan', {'url': origin}, True),
 ]
 for device in ('mobile', 'desktop'):
     params = [('url', a.url), ('strategy', device)] + [('category', c) for c in ('performance', 'accessibility', 'best-practices', 'seo')]
     jobs.append((f'psi-{device}', 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?' + urlencode(params), None, False))
 with ThreadPoolExecutor(max_workers=5) as pool:
     results = list(pool.map(lambda job: request(*job), jobs))
-results.append(request('is-agentic-report', 'https://is-agentic.com/api/v1/report?' + urlencode({'url': a.url})))
+results.append(request('is-agentic-report', 'https://is-agentic.com/api/v1/report?' + urlencode({'url': origin})))
 (out / 'manifest.json').write_text(json.dumps({'target': a.url, 'started': started, 'results': results}, indent=2))
 print(json.dumps(results, indent=2))

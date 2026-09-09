@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'https://paymentrequired.com/'
 DATA = json.loads((ROOT / 'v2/content.json').read_text())
+CSS = (ROOT / 'v2/site.css').read_text()
 MCP = 'https://wirex.nuri.com/mcp'
 CHANNELS = ['Telegram', 'WhatsApp', 'iMessage', 'Signal', 'Email']
 SERVICE_URLS = ['https://nadanada.me/', 'https://www.bitrefill.com/', 'https://lnvps.net/', 'https://nuri.com/api/x402']
@@ -84,7 +85,7 @@ for lang, d in DATA.items():
 <meta property="og:title" content="{E(d['title'],quote=True)}"><meta property="og:description" content="{E(d['description'],quote=True)}"><meta property="og:url" content="{anchor(lang)}">
 <meta property="og:image" content="{BASE}v2/assets/everyday-agent.webp"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/v2/assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/v2/site.css">
+<style>{CSS}</style>
 <script type="application/ld+json">{schema_json}</script>
 <script id="page-data" type="application/json">{boot_json}</script>
 <script type="module" src="/v2/app.mjs"></script>

@@ -1,5 +1,3 @@
-import { McpChat } from '../chat-client.mjs';
-
 const page = JSON.parse(document.getElementById('page-data').textContent);
 const t = page.strings;
 const MCP_URL = 'https://wirex.nuri.com/mcp';
@@ -139,6 +137,7 @@ async function connect() {
   if (client) return client;
   if (starting) return starting;
   status.textContent = t.connecting;
+  const { McpChat } = await import('../chat-client.mjs');
   const candidate = new McpChat({
     persona,
     onMessage(text, role) { if (role === 'assistant' && text.trim()) renderMessage(text); },

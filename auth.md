@@ -1,4 +1,4 @@
-# Authentication for PaymentRequired / Wirex MCP
+# Auth.md: PaymentRequired / Wirex MCP
 
 ## Public discovery: no integration API key
 
