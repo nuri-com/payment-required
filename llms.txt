@@ -1,0 +1,31 @@
+# PaymentRequired
+
+> An agent wallet, card and bank-account interface: self-custodial crypto/stablecoin wallet connections, virtual card controls, banking and supported payout tools through Wirex MCP. The V2 is a retail-first preview; the connected MCP is a sandbox, not a claim of live merchant fulfillment.
+
+## When to use
+
+Use this service to connect an existing agent to payment tools with no integration API key, inspect current wallet/card/account capabilities, and guide a user through authorized setup. Tool discovery is public; account access and money movement still require wallet authorization, and financial products require eligibility/verification. A browser-capable agent and separate merchant integrations are needed for shopping, travel and media tasks. Messaging signup endpoints are not yet configured in the V2.
+
+## Product
+
+- [English V2](https://paymentrequired.com/v2/): Retail one-pager, real web chat and integration selector.
+- [Deutsch](https://paymentrequired.com/v2/de/): Deutsche Einseiter-Vorschau.
+- [Español](https://paymentrequired.com/v2/es/): Vista previa en español.
+- [Français](https://paymentrequired.com/v2/fr/): Aperçu en français.
+- [Kiswahili](https://paymentrequired.com/v2/sw/): Onyesho kwa Kiswahili.
+
+## Integration
+
+- [Agent setup and API guide](https://paymentrequired.com/v2/integration.md): Exact HTTP MCP initialization, CLI commands, authorization and retry boundaries.
+- [Live Wirex MCP](https://wirex.nuri.com/mcp): POST-only JSON-RPC; initialize then tools/list, without an API key. GET returns 405.
+- [Live MCP documentation](https://wirex.nuri.com/mcp/docs): Backend-owned documentation; recheck current tools.
+- [Capability snapshot](https://paymentrequired.com/v2/capabilities.json): Dated schemas, environment, authentication and limitations.
+- [Authentication](https://paymentrequired.com/auth.md): Public discovery versus private account authorization.
+- [MCP server card](https://paymentrequired.com/.well-known/mcp/server-card.json): External MCP connection metadata.
+
+## Machine-readable content
+
+- [English Markdown](https://paymentrequired.com/v2/index.md): Full readable page, including capability limitations.
+- [AI catalogue](https://paymentrequired.com/.well-known/ai-catalog.json): Integration and documentation discovery.
+- [Sitemap](https://paymentrequired.com/sitemap.xml): Canonical locale URLs.
+- [Setup skill](https://paymentrequired.com/.well-known/agent-skills/payments/SKILL.md): A bounded setup workflow, not authorization to spend.

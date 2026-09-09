@@ -1,0 +1,29 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "PaymentRequired",
+    "identifier": "did:web:paymentrequired.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:paymentrequired:agent-wallet",
+      "displayName": "Agent wallet, card and bank account",
+      "type": "application/mcp-server-card+json",
+      "url": "https://paymentrequired.com/.well-known/mcp/server-card.json",
+      "representativeQueries": [
+        "Connect my agent to a payment wallet without an integration API key",
+        "Show me what payment tools are currently available"
+      ]
+    },
+    {
+      "identifier": "urn:paymentrequired:v2-guide",
+      "displayName": "Retail and agent setup guide",
+      "type": "text/markdown",
+      "url": "https://paymentrequired.com/v2/integration.md",
+      "representativeQueries": [
+        "How do I add payment capabilities to Hermes?",
+        "What does wallet authorization allow and what still requires verification?"
+      ]
+    }
+  ]
+}

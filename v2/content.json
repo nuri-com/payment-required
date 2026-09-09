@@ -1,0 +1,997 @@
+{
+  "en": {
+    "language": "English",
+    "title": "Your agent wallet, card and bank account.",
+    "description": "A self-custodial wallet, Visa card and bank account for your agent. Explore everyday payments in chat, or connect your own agent with one MCP URL. No integration API key.",
+    "nav": [
+      "For everyday life",
+      "You're in control",
+      "Bring your agent"
+    ],
+    "eyebrow": "A new way to do everyday banking",
+    "headline": [
+      "Your agent wallet,",
+      "card and bank account."
+    ],
+    "intro": "Pay people. Buy things. Get on with life.",
+    "subintro": "Crypto, stablecoins and everyday money. Just tell your agent what you need.",
+    "start": "Get started",
+    "bring": "I already have an agent",
+    "channel_label": "Or choose the chat you already use",
+    "channels_note": "Messenger connections are being prepared. The web chat is available to try now.",
+    "chat_name": "Your personal money agent",
+    "greeting": "Hi. I'm here to help with your wallet, card and bank account. What would you like to do?",
+    "placeholder": "Ask anything about your money…",
+    "send": "Send message",
+    "starters": [
+      "Set up my wallet",
+      "What can I do?"
+    ],
+    "ready": "Ready when you are",
+    "connecting": "Connecting to your agent…",
+    "working": "Working on it…",
+    "live": "Connected to the payment tools",
+    "failed": "The agent couldn't connect. Your message is still here. Please try again.",
+    "retry": "Try again",
+    "approval": "Open secure approval",
+    "chat_notice": "Preview connected to the Wirex sandbox. No real-world purchase is promised by this demo.",
+    "proofline": [
+      "You own your wallet",
+      "You set the limits",
+      "No integration API key"
+    ],
+    "art_alt": "A person messaging an assistant about their card, travel and everyday payments.",
+    "control_eyebrow": "The essentials, together",
+    "control_title": "Your money. Your say.",
+    "control_intro": "A bank-like experience, with a wallet you control. Your agent helps. You decide what it can do.",
+    "features": [
+      {
+        "icon": "wallet",
+        "title": "Your own wallet",
+        "text": "Keep crypto and stablecoins in a self-custodial wallet. Connect the account you control."
+      },
+      {
+        "icon": "card",
+        "title": "A card for your agent",
+        "text": "Issue a Visa card, see its activity, set spending limits and freeze it from a conversation."
+      },
+      {
+        "icon": "bank",
+        "title": "Bank accounts, too",
+        "text": "EUR IBAN and SEPA, with USD ACH where available. Eligibility depends on residence and verification."
+      },
+      {
+        "icon": "sliders",
+        "title": "Permission, not a blank cheque",
+        "text": "Choose spending limits and permissions. Check the details before authorizing access or a payment."
+      },
+      {
+        "icon": "plane",
+        "title": "Money across borders",
+        "text": "Check available payout routes, fees and what the recipient receives before you confirm."
+      },
+      {
+        "icon": "chat",
+        "title": "Pay for useful services",
+        "text": "Pay per use for supported services, within the limits you set for your agent."
+      }
+    ],
+    "examples_eyebrow": "Less admin. More living.",
+    "examples_title": "What would you like done?",
+    "examples_intro": "Start with a sentence, not another app. These are example tasks: your agent needs the right connected services, account access and your payment permission.",
+    "example_cta": "Ask about this",
+    "examples": [
+      {
+        "icon": "ticket",
+        "category": "A night out",
+        "title": "Two tickets. Best seats.",
+        "prompt": "Book two cinema tickets for Friday evening. Find seats together and ask me before paying."
+      },
+      {
+        "icon": "heart",
+        "category": "People you love",
+        "title": "Send money home.",
+        "prompt": "Help me send money to my wife in Tanzania. Check the payout options, fee and amount she receives before I approve."
+      },
+      {
+        "icon": "plane",
+        "category": "A little escape",
+        "title": "Find the flight. Book it.",
+        "prompt": "Find flights for my next trip, compare the total price including baggage, and book my choice after I approve."
+      },
+      {
+        "icon": "phone",
+        "category": "Everyday shopping",
+        "title": "The right little thing.",
+        "prompt": "Find a screen protector for my iPhone SE. Ask which generation I have, check fit and delivery, and show me the total before buying."
+      },
+      {
+        "icon": "postcard",
+        "category": "Something personal",
+        "title": "A real postcard for Mum.",
+        "prompt": "Help me print and send a postcard to my mum. Ask for the photo, message and postal address, then show me the price."
+      },
+      {
+        "icon": "video",
+        "category": "Just for fun",
+        "title": "You, with a punchline.",
+        "prompt": "Using my own face and voice, help me make a funny avatar video for Instagram telling a joke. Ask for my consent and source clips; let me review it before posting."
+      }
+    ],
+    "services_title": "Small catalogue. Useful places.",
+    "services_intro": "Places we're evaluating for simple, useful checkouts. A listing is not a claim of a live integration or partnership.",
+    "services": [
+      [
+        "nadanada",
+        "eSIM, VPN and phone services"
+      ],
+      [
+        "Bitrefill",
+        "Gift cards and mobile top-ups"
+      ],
+      [
+        "LNVPS",
+        "VPS hosting, including an agent setup workflow"
+      ],
+      [
+        "Nuri postcards",
+        "A physical postcard, via x402 or MPP"
+      ]
+    ],
+    "dev_eyebrow": "For the agent you already have",
+    "dev_title": "Give your agent a bank.",
+    "dev_intro": "One URL connects the payment tools. No integration API key, no new dashboard to learn.",
+    "dev_step": "Set up your",
+    "choose_agent": "Choose your agent",
+    "other_agent": "Other agent",
+    "tab_prompt": "Copy a prompt",
+    "tab_cli": "CLI",
+    "tab_api": "MCP / API",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copy_failed": "Copy unavailable. Select and copy the text below.",
+    "prompt_label": "Paste this into your agent's chat",
+    "prompt": "Connect my agent to https://wirex.nuri.com/mcp using its native HTTP MCP client. No API key is needed to discover the tools. Initialize the server, read its instructions and list the current tools; don't assume a cached action list. Tell me the environment and what is available. When I choose to connect, call connect_wallet, open its exact secure approval link and keep the session private. Follow returned next steps, ask only for missing details and preserve payment references on retries. Do not claim a payment or checkout succeeded without a returned result. Help me get started in my language.",
+    "cli_label": "For Hermes Agent. Run locally.",
+    "api_label": "Discover the live tools. No API key.",
+    "dev_note": "Tool discovery is public. Your account remains protected by wallet authorization. Availability and verification still apply.",
+    "dev_links": [
+      "MCP integration guide",
+      "Live tool catalogue",
+      "Read this page as Markdown"
+    ],
+    "faq_title": "Good to know.",
+    "faqs": [
+      [
+        "Do I need to understand crypto?",
+        "No. Ask in everyday language. Your agent should explain the amount, fees and approval before you act. Wallet setup and identity verification may still be required."
+      ],
+      [
+        "Is everything self-custodial?",
+        "The wallet is self-custodial. Cards, fiat balances and bank transfers are provided through financial service partners and have their own eligibility, compliance and service terms. Self-custody does not mean bank or card balances cannot be restricted."
+      ],
+      [
+        "Can I start in Telegram or WhatsApp?",
+        "That's the intended experience, alongside iMessage, Signal and email. This V2 preview does not yet have verified public signup links for those channels. You can try the web chat or connect your own agent now."
+      ],
+      [
+        "Can it already do every example above?",
+        "Not from the payment MCP alone. Shopping and bookings also need a browser-capable agent, access to your merchant accounts and supported checkout services. Tanzania payouts and avatar creation need a verified provider. The examples are task ideas, not purchase confirmations."
+      ],
+      [
+        "What is live in this preview?",
+        "The web chat discovers the live Wirex MCP and uses its current payment tools. The connected environment is a sandbox; an available tool is not proof of a real card purchase, payout or completed KYC. Your agent must check current availability before acting."
+      ]
+    ],
+    "final_title": "Start with a message.",
+    "final_text": "A wallet, card and bank account for the agent on your side.",
+    "footer": "Independent V2 preview · Payment tools by Wirex MCP",
+    "status_link": "Capabilities & availability",
+    "channel_title": "Continue in {channel}",
+    "channel_body": "This channel is not connected to the preview yet. You can start in the web chat now, or add the MCP to an agent you already use there.",
+    "channel_web": "Continue in web chat",
+    "close": "Close",
+    "language_label": "Language",
+    "skip": "Skip to content",
+    "noscript": "You can read this entire page without JavaScript. The live web chat needs JavaScript; use the MCP setup prompt below to connect an existing agent.",
+    "preview_label": "V2 preview",
+    "show_chat": "Open chat",
+    "missing_copy": "Messaging endpoints are not configured in this preview."
+  },
+  "de": {
+    "language": "Deutsch",
+    "title": "Wallet, Karte und Bankkonto für deinen Agenten.",
+    "description": "Eine selbstverwahrte Wallet, Visa-Karte und ein Bankkonto für deinen Agenten. Alltag im Chat erledigen oder deinen Agenten per MCP verbinden. Kein Integrations-API-Key.",
+    "nav": [
+      "Für deinen Alltag",
+      "Du entscheidest",
+      "Deinen Agenten verbinden"
+    ],
+    "eyebrow": "Alltagsbanking, neu gedacht",
+    "headline": [
+      "Deine Agenten-Wallet,",
+      "Karte und Bankkonto."
+    ],
+    "intro": "Geld senden. Dinge kaufen. Zeit für dich.",
+    "subintro": "Krypto, Stablecoins und dein Geld im Alltag. Sag deinem Agenten einfach, was du brauchst.",
+    "start": "Loslegen",
+    "bring": "Ich habe schon einen Agenten",
+    "channel_label": "Oder wähle den Chat, den du ohnehin nutzt",
+    "channels_note": "Die Messenger-Verbindungen werden vorbereitet. Den Webchat kannst du schon ausprobieren.",
+    "chat_name": "Dein persönlicher Geld-Agent",
+    "greeting": "Hi. Ich helfe dir mit Wallet, Karte und Bankkonto. Was möchtest du erledigen?",
+    "placeholder": "Frag mich etwas über dein Geld…",
+    "send": "Nachricht senden",
+    "starters": [
+      "Meine Wallet einrichten",
+      "Was ist möglich?"
+    ],
+    "ready": "Bereit, wenn du es bist",
+    "connecting": "Verbinde deinen Agenten…",
+    "working": "Ich bin dran…",
+    "live": "Mit den Zahlungstools verbunden",
+    "failed": "Der Agent konnte sich nicht verbinden. Deine Nachricht ist noch da. Bitte versuche es erneut.",
+    "retry": "Erneut versuchen",
+    "approval": "Sichere Freigabe öffnen",
+    "chat_notice": "Vorschau mit der Wirex-Sandbox. Diese Demo verspricht keinen echten Kauf.",
+    "proofline": [
+      "Deine Wallet gehört dir",
+      "Du setzt die Limits",
+      "Kein Integrations-API-Key"
+    ],
+    "art_alt": "Eine Person bespricht Karte, Reisen und alltägliche Zahlungen mit einem Assistenten im Chat.",
+    "control_eyebrow": "Alles Wichtige zusammen",
+    "control_title": "Dein Geld. Deine Entscheidung.",
+    "control_intro": "So vertraut wie Banking, mit einer Wallet unter deiner Kontrolle. Dein Agent hilft. Du bestimmst, was er darf.",
+    "features": [
+      {
+        "icon": "wallet",
+        "title": "Deine eigene Wallet",
+        "text": "Krypto und Stablecoins in einer selbstverwahrten Wallet. Verbinde das Konto, das du kontrollierst."
+      },
+      {
+        "icon": "card",
+        "title": "Eine Karte für deinen Agenten",
+        "text": "Visa-Karte ausstellen, Umsätze ansehen, Limits setzen und die Karte einfrieren. Direkt im Gespräch."
+      },
+      {
+        "icon": "bank",
+        "title": "Ein Bankkonto dazu",
+        "text": "EUR-IBAN und SEPA, dazu USD-ACH, wo verfügbar. Wohnsitz und Verifizierung bestimmen die Verfügbarkeit."
+      },
+      {
+        "icon": "sliders",
+        "title": "Berechtigungen statt Blankoscheck",
+        "text": "Wähle Limits und Zugriffsrechte. Prüfe die Details, bevor du Zugriff oder eine Zahlung freigibst."
+      },
+      {
+        "icon": "plane",
+        "title": "Geld über Grenzen",
+        "text": "Prüfe verfügbare Auszahlungswege, Gebühren und den Empfangsbetrag, bevor du bestätigst."
+      },
+      {
+        "icon": "chat",
+        "title": "Nützliche Dienste bezahlen",
+        "text": "Unterstützte Dienste nach Nutzung bezahlen. Dein Agent bleibt innerhalb deiner gesetzten Limits."
+      }
+    ],
+    "examples_eyebrow": "Weniger Aufwand. Mehr Leben.",
+    "examples_title": "Was möchtest du erledigen?",
+    "examples_intro": "Ein Satz statt noch einer App. Das sind Beispielaufgaben: Dein Agent braucht passende Dienste, Zugang zu deinen Konten und deine Zahlungsfreigabe.",
+    "example_cta": "Danach fragen",
+    "examples": [
+      {
+        "icon": "ticket",
+        "category": "Ein schöner Abend",
+        "title": "Zwei Tickets. Gute Plätze.",
+        "prompt": "Buche zwei Kinotickets für Freitagabend. Suche Plätze nebeneinander und frage mich vor dem Bezahlen."
+      },
+      {
+        "icon": "heart",
+        "category": "Deine Lieblingsmenschen",
+        "title": "Geld nach Hause senden.",
+        "prompt": "Hilf mir, meiner Frau in Tansania Geld zu schicken. Prüfe Auszahlungsmöglichkeiten, Gebühren und ihren Empfangsbetrag, bevor ich freigebe."
+      },
+      {
+        "icon": "plane",
+        "category": "Mal rauskommen",
+        "title": "Flug finden. Flug buchen.",
+        "prompt": "Suche Flüge für meine nächste Reise, vergleiche den Gesamtpreis inklusive Gepäck und buche meine Auswahl nach meiner Freigabe."
+      },
+      {
+        "icon": "phone",
+        "category": "Einkäufe im Alltag",
+        "title": "Genau das richtige Teil.",
+        "prompt": "Finde einen Displayschutz für mein iPhone SE. Frage nach der Generation, prüfe Passform und Lieferung und zeige mir vor dem Kauf den Gesamtpreis."
+      },
+      {
+        "icon": "postcard",
+        "category": "Etwas Persönliches",
+        "title": "Eine echte Postkarte für Mama.",
+        "prompt": "Hilf mir, eine Postkarte zu drucken und an meine Mutter zu schicken. Frage nach Foto, Nachricht und Postanschrift und zeige mir den Preis."
+      },
+      {
+        "icon": "video",
+        "category": "Einfach zum Spaß",
+        "title": "Du, mit einer Pointe.",
+        "prompt": "Hilf mir mit meinem eigenen Gesicht und meiner Stimme, ein lustiges Avatar-Video mit einem Witz für Instagram zu machen. Frage nach meiner Einwilligung und den Aufnahmen. Vor dem Posten möchte ich es prüfen."
+      }
+    ],
+    "services_title": "Kleine Auswahl. Nützliche Orte.",
+    "services_intro": "Diese Dienste prüfen wir für einfache, nützliche Checkouts. Ein Eintrag bedeutet weder eine fertige Integration noch eine Partnerschaft.",
+    "services": [
+      [
+        "nadanada",
+        "eSIM, VPN und Telefondienste"
+      ],
+      [
+        "Bitrefill",
+        "Gutscheine und Handyguthaben"
+      ],
+      [
+        "LNVPS",
+        "VPS-Hosting, auch für ein eigenes Agenten-Setup"
+      ],
+      [
+        "Nuri postcards",
+        "Echte Postkarten per x402 oder MPP"
+      ]
+    ],
+    "dev_eyebrow": "Für den Agenten, den du schon hast",
+    "dev_title": "Gib deinem Agenten eine Bank.",
+    "dev_intro": "Eine URL verbindet die Zahlungstools. Kein Integrations-API-Key. Kein neues Dashboard lernen.",
+    "dev_step": "Verbinde deinen",
+    "choose_agent": "Agenten wählen",
+    "other_agent": "Anderer Agent",
+    "tab_prompt": "Prompt kopieren",
+    "tab_cli": "CLI",
+    "tab_api": "MCP / API",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "copy_failed": "Kopieren nicht verfügbar. Markiere und kopiere den Text unten.",
+    "prompt_label": "In den Chat deines Agenten einfügen",
+    "prompt": "Verbinde meinen Agenten über seinen nativen HTTP-MCP-Client mit https://wirex.nuri.com/mcp. Für die Tool-Erkennung ist kein API-Key nötig. Initialisiere den Server, lies seine Anweisungen und lade den aktuellen Tool-Katalog. Verlasse dich nicht auf zwischengespeicherte Aktionen. Nenne mir die Umgebung und Verfügbarkeit. Wenn ich mich verbinden möchte, rufe connect_wallet auf, öffne den exakten sicheren Freigabelink und behalte die Session privat. Folge den zurückgegebenen nächsten Schritten, frage nur nach fehlenden Angaben und erhalte Zahlungsreferenzen bei Wiederholungen. Behaupte keinen Zahlungs- oder Kauferfolg ohne zurückgegebenes Ergebnis. Hilf mir auf Deutsch beim Start.",
+    "cli_label": "Für Hermes Agent. Lokal ausführen.",
+    "api_label": "Aktuelle Tools entdecken. Kein API-Key.",
+    "dev_note": "Tool-Erkennung ist öffentlich. Dein Konto bleibt durch die Wallet-Freigabe geschützt. Verfügbarkeit und Verifizierung gelten weiterhin.",
+    "dev_links": [
+      "MCP-Anleitung",
+      "Aktueller Tool-Katalog",
+      "Diese Seite als Markdown"
+    ],
+    "faq_title": "Gut zu wissen.",
+    "faqs": [
+      [
+        "Muss ich Krypto verstehen?",
+        "Nein. Frag in Alltagssprache. Dein Agent sollte Betrag, Gebühren und Freigabe erklären, bevor du handelst. Wallet-Einrichtung und Identitätsprüfung können trotzdem nötig sein."
+      ],
+      [
+        "Ist alles selbstverwahrt?",
+        "Die Wallet ist selbstverwahrt. Karten, Fiat-Guthaben und Banküberweisungen laufen über Finanzdienstleister mit eigenen Bedingungen und Compliance-Regeln. Selbstverwahrung bedeutet nicht, dass Bank- oder Kartenguthaben niemals eingeschränkt werden können."
+      ],
+      [
+        "Kann ich in Telegram oder WhatsApp starten?",
+        "Das ist das Ziel, ebenso wie iMessage, Signal und E-Mail. Diese V2-Vorschau hat noch keine verifizierten öffentlichen Anmeldelinks für diese Kanäle. Webchat und dein eigener Agent per MCP sind jetzt nutzbar."
+      ],
+      [
+        "Kann der Agent schon alle Beispiele erledigen?",
+        "Nicht allein mit dem Zahlungs-MCP. Shopping und Buchungen brauchen zusätzlich Browser-Funktionen, Zugang zu deinen Händlerkonten und unterstützte Checkouts. Tansania-Auszahlungen und Avatar-Videos benötigen einen geprüften Anbieter. Die Beispiele sind Aufgabenideen, keine Kaufbestätigungen."
+      ],
+      [
+        "Was ist in dieser Vorschau live?",
+        "Der Webchat lädt den aktuellen Wirex-MCP und nutzt dessen Zahlungstools. Die verbundene Umgebung ist eine Sandbox. Ein verfügbares Tool beweist weder einen echten Kartenkauf noch eine Auszahlung oder abgeschlossenes KYC. Dein Agent muss vor dem Handeln die aktuelle Verfügbarkeit prüfen."
+      ]
+    ],
+    "final_title": "Fang mit einer Nachricht an.",
+    "final_text": "Wallet, Karte und Bankkonto für den Agenten an deiner Seite.",
+    "footer": "Eigenständige V2-Vorschau · Zahlungstools über Wirex MCP",
+    "status_link": "Funktionen & Verfügbarkeit",
+    "channel_title": "Weiter in {channel}",
+    "channel_body": "Dieser Kanal ist noch nicht mit der Vorschau verbunden. Starte jetzt im Webchat oder verbinde den MCP mit einem Agenten, den du dort schon nutzt.",
+    "channel_web": "Weiter im Webchat",
+    "close": "Schließen",
+    "language_label": "Sprache",
+    "skip": "Zum Inhalt springen",
+    "noscript": "Die ganze Seite ist ohne JavaScript lesbar. Der Live-Webchat benötigt JavaScript. Mit dem MCP-Prompt unten kannst du deinen eigenen Agenten verbinden.",
+    "preview_label": "V2-Vorschau",
+    "show_chat": "Chat öffnen",
+    "missing_copy": "Die Messenger-Ziele sind in dieser Vorschau noch nicht eingerichtet."
+  },
+  "es": {
+    "language": "Español",
+    "title": "Tu wallet, tarjeta y cuenta bancaria para tu agente.",
+    "description": "Una wallet de autocustodia, tarjeta Visa y cuenta bancaria para tu agente. Pagos cotidianos por chat o una URL MCP para tu agente. Sin clave API de integración.",
+    "nav": [
+      "Para tu día a día",
+      "Tú decides",
+      "Conecta tu agente"
+    ],
+    "eyebrow": "Otra forma de gestionar tu dinero",
+    "headline": [
+      "Tu wallet para agentes,",
+      "tarjeta y cuenta bancaria."
+    ],
+    "intro": "Envía dinero. Compra cosas. Sigue con tu vida.",
+    "subintro": "Cripto, stablecoins y tu dinero del día a día. Dile a tu agente lo que necesitas.",
+    "start": "Empezar",
+    "bring": "Ya tengo un agente",
+    "channel_label": "O elige el chat que ya utilizas",
+    "channels_note": "Estamos preparando las conexiones de mensajería. Ya puedes probar el chat web.",
+    "chat_name": "Tu agente personal de dinero",
+    "greeting": "Hola. Te ayudo con tu wallet, tarjeta y cuenta bancaria. ¿Qué quieres hacer?",
+    "placeholder": "Pregúntame sobre tu dinero…",
+    "send": "Enviar mensaje",
+    "starters": [
+      "Configurar mi wallet",
+      "¿Qué puedo hacer?"
+    ],
+    "ready": "Cuando tú quieras",
+    "connecting": "Conectando con tu agente…",
+    "working": "Estoy en ello…",
+    "live": "Conectado a las herramientas de pago",
+    "failed": "No se pudo conectar el agente. Tu mensaje sigue aquí. Inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "approval": "Abrir autorización segura",
+    "chat_notice": "Vista previa conectada al sandbox de Wirex. Esta demo no promete compras reales.",
+    "proofline": [
+      "Tu wallet te pertenece",
+      "Tú fijas los límites",
+      "Sin clave API de integración"
+    ],
+    "art_alt": "Una persona conversa con un asistente sobre su tarjeta, viajes y pagos cotidianos.",
+    "control_eyebrow": "Lo esencial, junto",
+    "control_title": "Tu dinero. Tú decides.",
+    "control_intro": "Una experiencia bancaria familiar, con una wallet bajo tu control. Tu agente ayuda. Tú decides qué puede hacer.",
+    "features": [
+      {
+        "icon": "wallet",
+        "title": "Tu propia wallet",
+        "text": "Guarda cripto y stablecoins en una wallet de autocustodia. Conecta la cuenta que controlas."
+      },
+      {
+        "icon": "card",
+        "title": "Una tarjeta para tu agente",
+        "text": "Emite una Visa, consulta la actividad, fija límites de gasto y congélala desde una conversación."
+      },
+      {
+        "icon": "bank",
+        "title": "También cuentas bancarias",
+        "text": "IBAN en euros y SEPA, con ACH en dólares donde esté disponible. Depende de tu residencia y verificación."
+      },
+      {
+        "icon": "sliders",
+        "title": "Permisos, no un cheque en blanco",
+        "text": "Elige límites y permisos. Revisa los detalles antes de autorizar acceso o un pago."
+      },
+      {
+        "icon": "plane",
+        "title": "Dinero sin fronteras",
+        "text": "Comprueba rutas disponibles, comisiones y cuánto recibe la otra persona antes de confirmar."
+      },
+      {
+        "icon": "chat",
+        "title": "Paga servicios útiles",
+        "text": "Paga por uso en servicios compatibles, dentro de los límites que fijes para tu agente."
+      }
+    ],
+    "examples_eyebrow": "Menos gestiones. Más vida.",
+    "examples_title": "¿Qué quieres resolver?",
+    "examples_intro": "Una frase, no otra app. Son tareas de ejemplo: tu agente necesita servicios conectados, acceso a tus cuentas y autorización para pagar.",
+    "example_cta": "Preguntar por esto",
+    "examples": [
+      {
+        "icon": "ticket",
+        "category": "Una noche fuera",
+        "title": "Dos entradas. Buenos sitios.",
+        "prompt": "Reserva dos entradas de cine para el viernes por la noche. Busca asientos juntos y pregúntame antes de pagar."
+      },
+      {
+        "icon": "heart",
+        "category": "Tus seres queridos",
+        "title": "Envía dinero a casa.",
+        "prompt": "Ayúdame a enviar dinero a mi esposa en Tanzania. Comprueba opciones de cobro, comisión e importe que recibe antes de mi aprobación."
+      },
+      {
+        "icon": "plane",
+        "category": "Una escapada",
+        "title": "Encuentra el vuelo. Resérvalo.",
+        "prompt": "Busca vuelos para mi próximo viaje, compara el precio total con equipaje y reserva mi elección después de mi aprobación."
+      },
+      {
+        "icon": "phone",
+        "category": "Compras cotidianas",
+        "title": "Justo lo que necesitas.",
+        "prompt": "Busca un protector de pantalla para mi iPhone SE. Pregunta qué generación tengo, comprueba compatibilidad y entrega y muéstrame el total antes de comprar."
+      },
+      {
+        "icon": "postcard",
+        "category": "Algo personal",
+        "title": "Una postal de verdad para mamá.",
+        "prompt": "Ayúdame a imprimir y enviar una postal a mi madre. Pide la foto, el mensaje y la dirección postal, y enséñame el precio."
+      },
+      {
+        "icon": "video",
+        "category": "Por diversión",
+        "title": "Tú, contando un chiste.",
+        "prompt": "Con mi propio rostro y voz, ayúdame a crear un vídeo divertido con un avatar contando un chiste para Instagram. Pide mi consentimiento y grabaciones; déjame revisarlo antes de publicar."
+      }
+    ],
+    "services_title": "Pocos sitios. Muy útiles.",
+    "services_intro": "Servicios que evaluamos para pagos sencillos. Aparecer aquí no implica una integración activa ni una colaboración.",
+    "services": [
+      [
+        "nadanada",
+        "eSIM, VPN y servicios telefónicos"
+      ],
+      [
+        "Bitrefill",
+        "Tarjetas regalo y recargas"
+      ],
+      [
+        "LNVPS",
+        "VPS para alojar tu propio agente"
+      ],
+      [
+        "Nuri postcards",
+        "Postales físicas por x402 o MPP"
+      ]
+    ],
+    "dev_eyebrow": "Para el agente que ya tienes",
+    "dev_title": "Dale un banco a tu agente.",
+    "dev_intro": "Una URL conecta las herramientas de pago. Sin clave API de integración ni otro panel que aprender.",
+    "dev_step": "Configura tu",
+    "choose_agent": "Elige tu agente",
+    "other_agent": "Otro agente",
+    "tab_prompt": "Copia un prompt",
+    "tab_cli": "CLI",
+    "tab_api": "MCP / API",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copy_failed": "No se pudo copiar. Selecciona el texto y cópialo.",
+    "prompt_label": "Pégalo en el chat de tu agente",
+    "prompt": "Conecta mi agente a https://wirex.nuri.com/mcp con su cliente HTTP MCP nativo. No hace falta una clave API para descubrir herramientas. Inicializa el servidor, lee las instrucciones y carga las herramientas actuales, sin asumir acciones almacenadas. Dime el entorno y la disponibilidad. Cuando decida conectar, llama a connect_wallet, abre su enlace seguro exacto y mantén la sesión privada. Sigue los pasos devueltos, pide solo los datos que falten y conserva las referencias de pago en reintentos. No afirmes que un pago o compra se completó sin un resultado. Ayúdame a empezar en español.",
+    "cli_label": "Para Hermes Agent. Ejecuta localmente.",
+    "api_label": "Descubre las herramientas actuales. Sin clave API.",
+    "dev_note": "Las herramientas se pueden descubrir públicamente. Tu cuenta requiere autorización de la wallet. Se aplican requisitos de disponibilidad y verificación.",
+    "dev_links": [
+      "Guía MCP",
+      "Catálogo de herramientas",
+      "Leer en Markdown"
+    ],
+    "faq_title": "Lo que conviene saber.",
+    "faqs": [
+      [
+        "¿Necesito entender cripto?",
+        "No. Pregunta como hablarías normalmente. Tu agente debe explicar importe, comisiones y autorización. Puede ser necesario configurar una wallet y verificar tu identidad."
+      ],
+      [
+        "¿Todo es autocustodia?",
+        "La wallet es de autocustodia. Las tarjetas, saldos fiat y transferencias dependen de proveedores financieros con sus propias condiciones. La autocustodia no impide restricciones sobre saldos bancarios o de tarjetas."
+      ],
+      [
+        "¿Puedo empezar en Telegram o WhatsApp?",
+        "Ese es el objetivo, junto con iMessage, Signal y email. Esta vista previa aún no tiene enlaces públicos verificados para esos canales. Puedes probar el chat web o conectar tu agente por MCP."
+      ],
+      [
+        "¿Ya puede hacer todos los ejemplos?",
+        "No solo con el MCP de pagos. Las compras y reservas necesitan un agente con navegador, tus cuentas de comercio y servicios compatibles. Los pagos a Tanzania y avatares necesitan proveedores verificados. Son ideas de tareas, no confirmaciones de compra."
+      ],
+      [
+        "¿Qué funciona en esta vista previa?",
+        "El chat web descubre el MCP de Wirex y utiliza sus herramientas actuales. El entorno es un sandbox. Una herramienta disponible no demuestra una compra real, un envío de dinero ni un KYC completo. El agente debe comprobarlo antes de actuar."
+      ]
+    ],
+    "final_title": "Empieza con un mensaje.",
+    "final_text": "Wallet, tarjeta y cuenta bancaria para el agente que está de tu lado.",
+    "footer": "Vista previa V2 independiente · Pagos mediante Wirex MCP",
+    "status_link": "Funciones y disponibilidad",
+    "channel_title": "Continuar en {channel}",
+    "channel_body": "Este canal aún no está conectado. Puedes empezar en el chat web o añadir el MCP a un agente que ya uses allí.",
+    "channel_web": "Continuar en el chat web",
+    "close": "Cerrar",
+    "language_label": "Idioma",
+    "skip": "Ir al contenido",
+    "noscript": "Puedes leer toda la página sin JavaScript. El chat web lo necesita; usa el prompt MCP para conectar tu propio agente.",
+    "preview_label": "Vista previa V2",
+    "show_chat": "Abrir chat",
+    "missing_copy": "Los canales de mensajería aún no están configurados."
+  },
+  "fr": {
+    "language": "Français",
+    "title": "Le portefeuille, la carte et le compte bancaire de votre agent.",
+    "description": "Un portefeuille en garde autonome, une carte Visa et un compte bancaire pour votre agent. Des paiements par chat ou une URL MCP pour votre agent. Sans clé API d'intégration.",
+    "nav": [
+      "Au quotidien",
+      "Vous décidez",
+      "Connecter votre agent"
+    ],
+    "eyebrow": "Une autre façon de gérer votre argent",
+    "headline": [
+      "Votre portefeuille d'agent,",
+      "carte et compte bancaire."
+    ],
+    "intro": "Envoyez. Achetez. Profitez de votre journée.",
+    "subintro": "Crypto, stablecoins et argent du quotidien. Dites simplement à votre agent ce dont vous avez besoin.",
+    "start": "Commencer",
+    "bring": "J'ai déjà un agent",
+    "channel_label": "Ou choisissez la messagerie que vous utilisez déjà",
+    "channels_note": "Les connexions aux messageries sont en préparation. Vous pouvez déjà essayer le chat web.",
+    "chat_name": "Votre agent financier personnel",
+    "greeting": "Bonjour. Je vous aide avec votre portefeuille, votre carte et votre compte bancaire. Que souhaitez-vous faire ?",
+    "placeholder": "Posez une question sur votre argent…",
+    "send": "Envoyer le message",
+    "starters": [
+      "Configurer mon portefeuille",
+      "Que puis-je faire ?"
+    ],
+    "ready": "Quand vous voulez",
+    "connecting": "Connexion à votre agent…",
+    "working": "Je m'en occupe…",
+    "live": "Connecté aux outils de paiement",
+    "failed": "La connexion a échoué. Votre message est toujours là. Veuillez réessayer.",
+    "retry": "Réessayer",
+    "approval": "Ouvrir l'autorisation sécurisée",
+    "chat_notice": "Aperçu connecté au sandbox Wirex. Cette démo ne promet aucun achat réel.",
+    "proofline": [
+      "Votre portefeuille vous appartient",
+      "Vous fixez les limites",
+      "Sans clé API d'intégration"
+    ],
+    "art_alt": "Une personne discute avec un assistant de sa carte, de voyages et de paiements quotidiens.",
+    "control_eyebrow": "L'essentiel, réuni",
+    "control_title": "Votre argent. Votre décision.",
+    "control_intro": "Une expérience bancaire familière, avec un portefeuille sous votre contrôle. L'agent vous aide. Vous choisissez ses permissions.",
+    "features": [
+      {
+        "icon": "wallet",
+        "title": "Votre propre portefeuille",
+        "text": "Gardez vos cryptos et stablecoins dans un portefeuille en garde autonome. Connectez le compte que vous contrôlez."
+      },
+      {
+        "icon": "card",
+        "title": "Une carte pour votre agent",
+        "text": "Créez une Visa, consultez l'activité, fixez les plafonds et bloquez-la depuis une conversation."
+      },
+      {
+        "icon": "bank",
+        "title": "Un compte bancaire aussi",
+        "text": "IBAN en euros et SEPA, plus ACH en dollars selon disponibilité. L'accès dépend du pays de résidence et de la vérification."
+      },
+      {
+        "icon": "sliders",
+        "title": "Des permissions, pas un chèque en blanc",
+        "text": "Choisissez limites et accès. Vérifiez les détails avant d'autoriser un accès ou un paiement."
+      },
+      {
+        "icon": "plane",
+        "title": "De l’argent au-delà des frontières",
+        "text": "Vérifiez les moyens de réception, les frais et le montant reçu avant de confirmer."
+      },
+      {
+        "icon": "chat",
+        "title": "Payer des services utiles",
+        "text": "Payez à l’usage les services compatibles, dans les limites fixées pour votre agent."
+      }
+    ],
+    "examples_eyebrow": "Moins de démarches. Plus de vie.",
+    "examples_title": "Que souhaitez-vous faire ?",
+    "examples_intro": "Une phrase plutôt qu'une application de plus. Ces exemples nécessitent les bons services, l'accès à vos comptes et votre autorisation de paiement.",
+    "example_cta": "Poser la question",
+    "examples": [
+      {
+        "icon": "ticket",
+        "category": "Une soirée à deux",
+        "title": "Deux billets. Les bonnes places.",
+        "prompt": "Réserve deux places de cinéma pour vendredi soir. Trouve deux sièges côte à côte et demande-moi avant de payer."
+      },
+      {
+        "icon": "heart",
+        "category": "Vos proches",
+        "title": "Envoyer de l'argent au pays.",
+        "prompt": "Aide-moi à envoyer de l'argent à ma femme en Tanzanie. Vérifie les options de réception, les frais et le montant reçu avant mon accord."
+      },
+      {
+        "icon": "plane",
+        "category": "Une escapade",
+        "title": "Trouver le vol. Le réserver.",
+        "prompt": "Cherche des vols pour mon prochain voyage, compare le prix total avec bagages et réserve mon choix après mon accord."
+      },
+      {
+        "icon": "phone",
+        "category": "Les achats du quotidien",
+        "title": "Le petit accessoire parfait.",
+        "prompt": "Trouve une protection d'écran pour mon iPhone SE. Demande la génération, vérifie la compatibilité et la livraison puis montre-moi le total avant achat."
+      },
+      {
+        "icon": "postcard",
+        "category": "Une attention personnelle",
+        "title": "Une vraie carte postale pour maman.",
+        "prompt": "Aide-moi à imprimer et envoyer une carte postale à ma mère. Demande la photo, le message et l'adresse postale puis montre-moi le prix."
+      },
+      {
+        "icon": "video",
+        "category": "Juste pour rire",
+        "title": "Vous, avec la chute.",
+        "prompt": "Avec mon propre visage et ma voix, aide-moi à créer une vidéo drôle d'avatar racontant une blague pour Instagram. Demande mon consentement et les enregistrements ; laisse-moi vérifier avant publication."
+      }
+    ],
+    "services_title": "Petite sélection. Grande utilité.",
+    "services_intro": "Des services que nous évaluons pour des paiements simples. Une présence ici ne signifie ni intégration active ni partenariat.",
+    "services": [
+      [
+        "nadanada",
+        "eSIM, VPN et téléphonie"
+      ],
+      [
+        "Bitrefill",
+        "Cartes cadeaux et recharges"
+      ],
+      [
+        "LNVPS",
+        "VPS pour héberger votre agent"
+      ],
+      [
+        "Nuri postcards",
+        "Cartes postales physiques via x402 ou MPP"
+      ]
+    ],
+    "dev_eyebrow": "Pour l'agent que vous avez déjà",
+    "dev_title": "Donnez une banque à votre agent.",
+    "dev_intro": "Une URL connecte les outils de paiement. Sans clé API d'intégration ni nouveau tableau de bord.",
+    "dev_step": "Configurer votre",
+    "choose_agent": "Choisir votre agent",
+    "other_agent": "Autre agent",
+    "tab_prompt": "Copier un prompt",
+    "tab_cli": "CLI",
+    "tab_api": "MCP / API",
+    "copy": "Copier",
+    "copied": "Copié",
+    "copy_failed": "Copie indisponible. Sélectionnez et copiez le texte.",
+    "prompt_label": "À coller dans le chat de votre agent",
+    "prompt": "Connecte mon agent à https://wirex.nuri.com/mcp avec son client HTTP MCP natif. Aucune clé API n'est nécessaire pour découvrir les outils. Initialise le serveur, lis ses instructions et charge les outils actuels sans supposer une liste en cache. Indique l'environnement et la disponibilité. Quand je choisis de me connecter, appelle connect_wallet, ouvre son lien sécurisé exact et garde la session privée. Suis les étapes renvoyées, demande seulement les informations manquantes et conserve les références de paiement lors des reprises. N'annonce aucun paiement ou achat réussi sans résultat reçu. Aide-moi à commencer en français.",
+    "cli_label": "Pour Hermes Agent. Exécuter localement.",
+    "api_label": "Découvrir les outils actuels. Sans clé API.",
+    "dev_note": "La découverte des outils est publique. Le compte reste protégé par l'autorisation du portefeuille. Disponibilité et vérification restent applicables.",
+    "dev_links": [
+      "Guide MCP",
+      "Catalogue des outils",
+      "Lire en Markdown"
+    ],
+    "faq_title": "Bon à savoir.",
+    "faqs": [
+      [
+        "Faut-il comprendre la crypto ?",
+        "Non. Posez vos questions normalement. L'agent doit expliquer montant, frais et autorisation. La configuration du portefeuille et une vérification d'identité peuvent rester nécessaires."
+      ],
+      [
+        "Tout est-il en garde autonome ?",
+        "Le portefeuille l'est. Les cartes, soldes fiat et virements passent par des prestataires financiers avec leurs propres conditions. La garde autonome ne garantit pas l'absence de restrictions sur les comptes bancaires ou cartes."
+      ],
+      [
+        "Puis-je commencer sur Telegram ou WhatsApp ?",
+        "C'est l'objectif, avec iMessage, Signal et email. Cet aperçu V2 ne dispose pas encore de liens publics d'inscription vérifiés pour ces canaux. Le chat web et la connexion de votre agent via MCP sont disponibles."
+      ],
+      [
+        "L'agent peut-il déjà faire tous ces exemples ?",
+        "Pas avec le seul MCP de paiement. Achats et réservations demandent un navigateur, vos comptes marchands et des services compatibles. La Tanzanie et les avatars demandent des prestataires vérifiés. Ce sont des idées, pas des confirmations d'achat."
+      ],
+      [
+        "Qu'est-ce qui fonctionne dans cet aperçu ?",
+        "Le chat web découvre le MCP Wirex et utilise ses outils actuels. L'environnement est un sandbox. Un outil disponible ne prouve ni achat réel, ni versement, ni KYC terminé. L'agent doit vérifier avant d'agir."
+      ]
+    ],
+    "final_title": "Commencez par un message.",
+    "final_text": "Portefeuille, carte et compte bancaire pour l'agent à vos côtés.",
+    "footer": "Aperçu V2 indépendant · Paiements via Wirex MCP",
+    "status_link": "Fonctions et disponibilité",
+    "channel_title": "Continuer sur {channel}",
+    "channel_body": "Ce canal n'est pas encore connecté à l'aperçu. Commencez dans le chat web ou ajoutez le MCP à votre agent existant.",
+    "channel_web": "Continuer dans le chat web",
+    "close": "Fermer",
+    "language_label": "Langue",
+    "skip": "Aller au contenu",
+    "noscript": "Toute cette page est lisible sans JavaScript. Le chat web en a besoin ; utilisez le prompt MCP pour connecter votre agent.",
+    "preview_label": "Aperçu V2",
+    "show_chat": "Ouvrir le chat",
+    "missing_copy": "Les canaux de messagerie ne sont pas encore configurés."
+  },
+  "sw": {
+    "language": "Kiswahili",
+    "title": "Pochi, kadi na akaunti ya benki kwa wakala wako.",
+    "description": "Pochi unayoidhibiti mwenyewe, kadi ya Visa na akaunti ya benki kwa wakala wako. Tumia mazungumzo au unganisha wakala kwa URL moja ya MCP. Hakuna ufunguo wa API wa kuunganisha.",
+    "nav": [
+      "Maisha ya kila siku",
+      "Wewe unaamua",
+      "Unganisha wakala"
+    ],
+    "eyebrow": "Njia mpya ya kusimamia pesa",
+    "headline": [
+      "Pochi ya wakala wako,",
+      "kadi na akaunti ya benki."
+    ],
+    "intro": "Tuma pesa. Nunua vitu. Endelea na maisha.",
+    "subintro": "Kripto, stablecoins na pesa za kila siku. Mwambie wakala wako unachohitaji.",
+    "start": "Anza",
+    "bring": "Tayari nina wakala",
+    "channel_label": "Au chagua programu yako ya mazungumzo",
+    "channels_note": "Tunaandaa miunganisho ya programu za ujumbe. Unaweza kujaribu mazungumzo hapa sasa.",
+    "chat_name": "Wakala wako binafsi wa pesa",
+    "greeting": "Habari. Nitakusaidia kuhusu pochi, kadi na akaunti ya benki. Ungependa kufanya nini?",
+    "placeholder": "Uliza kuhusu pesa zako…",
+    "send": "Tuma ujumbe",
+    "starters": [
+      "Weka pochi yangu",
+      "Ninaweza kufanya nini?"
+    ],
+    "ready": "Nipo tayari",
+    "connecting": "Naunganisha wakala wako…",
+    "working": "Nashughulikia…",
+    "live": "Imeunganishwa na zana za malipo",
+    "failed": "Wakala hajaunganishwa. Ujumbe wako bado upo. Tafadhali jaribu tena.",
+    "retry": "Jaribu tena",
+    "approval": "Fungua idhini salama",
+    "chat_notice": "Onyesho limeunganishwa na sandbox ya Wirex. Halihakikishi ununuzi halisi.",
+    "proofline": [
+      "Pochi ni yako",
+      "Wewe unaweka mipaka",
+      "Hakuna ufunguo wa API wa kuunganisha"
+    ],
+    "art_alt": "Mtu akizungumza na msaidizi kuhusu kadi, safari na malipo ya kila siku.",
+    "control_eyebrow": "Muhimu vyote pamoja",
+    "control_title": "Pesa zako. Uamuzi wako.",
+    "control_intro": "Huduma zinazofahamika kama benki, na pochi chini ya udhibiti wako. Wakala anasaidia. Wewe unaamua anachoruhusiwa kufanya.",
+    "features": [
+      {
+        "icon": "wallet",
+        "title": "Pochi yako mwenyewe",
+        "text": "Weka kripto na stablecoins kwenye pochi unayoidhibiti mwenyewe. Unganisha akaunti unayodhibiti."
+      },
+      {
+        "icon": "card",
+        "title": "Kadi kwa wakala wako",
+        "text": "Tengeneza kadi ya Visa, angalia miamala, weka mipaka ya matumizi na isimamishe kupitia mazungumzo."
+      },
+      {
+        "icon": "bank",
+        "title": "Akaunti ya benki pia",
+        "text": "IBAN ya euro na SEPA, pamoja na ACH ya dola inapopatikana. Ustahiki hutegemea makazi na uthibitishaji."
+      },
+      {
+        "icon": "sliders",
+        "title": "Ruhusa, si matumizi bila mipaka",
+        "text": "Chagua mipaka na ruhusa. Angalia maelezo kabla ya kuruhusu ufikiaji au malipo."
+      },
+      {
+        "icon": "plane",
+        "title": "Pesa kuvuka mipaka",
+        "text": "Kagua njia zinazopatikana, ada na kiasi cha kupokelewa kabla ya kuthibitisha."
+      },
+      {
+        "icon": "chat",
+        "title": "Lipia huduma muhimu",
+        "text": "Lipia huduma zinazotumika kwa kila matumizi, ndani ya mipaka unayoweka kwa wakala wako."
+      }
+    ],
+    "examples_eyebrow": "Shughuli chache. Maisha zaidi.",
+    "examples_title": "Unataka kusaidiwa na nini?",
+    "examples_intro": "Anza na sentensi, si programu nyingine. Hii ni mifano: wakala anahitaji huduma husika, ufikiaji wa akaunti zako na ruhusa ya malipo.",
+    "example_cta": "Uliza kuhusu hili",
+    "examples": [
+      {
+        "icon": "ticket",
+        "category": "Jioni ya burudani",
+        "title": "Tiketi mbili. Viti vizuri.",
+        "prompt": "Tafuta tiketi mbili za sinema Ijumaa jioni. Chagua viti vilivyo pamoja na uniulize kabla ya kulipa."
+      },
+      {
+        "icon": "heart",
+        "category": "Wapendwa wako",
+        "title": "Tuma pesa nyumbani.",
+        "prompt": "Nisaidie kumtumia mke wangu Tanzania pesa. Hakikisha njia ya kupokea, ada na kiasi atakachopokea kabla sijatoa idhini."
+      },
+      {
+        "icon": "plane",
+        "category": "Safari ndogo",
+        "title": "Tafuta ndege. Weka nafasi.",
+        "prompt": "Tafuta ndege kwa safari yangu ijayo, linganisha bei yote pamoja na mizigo, kisha weka nafasi niliyokubali baada ya idhini yangu."
+      },
+      {
+        "icon": "phone",
+        "category": "Ununuzi wa kila siku",
+        "title": "Kitu kidogo kinachofaa.",
+        "prompt": "Tafuta kinga ya skrini ya iPhone SE yangu. Uliza kizazi chake, hakikisha inafaa na usafirishaji, kisha nionyeshe jumla kabla ya kununua."
+      },
+      {
+        "icon": "postcard",
+        "category": "Ujumbe wa kipekee",
+        "title": "Postikadi halisi kwa mama.",
+        "prompt": "Nisaidie kuchapisha na kumtumia mama postikadi. Uliza picha, ujumbe na anwani ya posta, kisha nionyeshe bei."
+      },
+      {
+        "icon": "video",
+        "category": "Kwa furaha",
+        "title": "Wewe, ukisimulia utani.",
+        "prompt": "Kwa uso na sauti yangu mwenyewe, nisaidie kutengeneza video ya avatar ikisimulia utani kwa Instagram. Omba idhini yangu na rekodi zangu; niache niikague kabla ya kuchapisha."
+      }
+    ],
+    "services_title": "Orodha ndogo. Huduma muhimu.",
+    "services_intro": "Huduma tunazotathmini kwa malipo rahisi. Kuorodheshwa si uthibitisho wa muunganisho hai au ushirikiano.",
+    "services": [
+      [
+        "nadanada",
+        "eSIM, VPN na huduma za simu"
+      ],
+      [
+        "Bitrefill",
+        "Vocha na salio la simu"
+      ],
+      [
+        "LNVPS",
+        "VPS kwa wakala wako binafsi"
+      ],
+      [
+        "Nuri postcards",
+        "Postikadi halisi kupitia x402 au MPP"
+      ]
+    ],
+    "dev_eyebrow": "Kwa wakala uliyenaye tayari",
+    "dev_title": "Mpe wakala wako huduma za benki.",
+    "dev_intro": "URL moja inaunganisha zana za malipo. Hakuna ufunguo wa API wa kuunganisha wala dashibodi mpya ya kujifunza.",
+    "dev_step": "Unganisha",
+    "choose_agent": "Chagua wakala",
+    "other_agent": "Wakala mwingine",
+    "tab_prompt": "Nakili maagizo",
+    "tab_cli": "CLI",
+    "tab_api": "MCP / API",
+    "copy": "Nakili",
+    "copied": "Imenakiliwa",
+    "copy_failed": "Haikunakiliwa. Chagua maandishi na unakili.",
+    "prompt_label": "Bandika kwenye mazungumzo ya wakala wako",
+    "prompt": "Unganisha wakala wangu na https://wirex.nuri.com/mcp kupitia mteja wake wa HTTP MCP. Hakuna ufunguo wa API unaohitajika kugundua zana. Anzisha seva, soma maagizo na orodhesha zana za sasa bila kutegemea orodha ya zamani. Niambie mazingira na upatikanaji. Nikichagua kuunganisha, tumia connect_wallet, fungua kiungo halisi cha idhini salama na linda session. Fuata hatua zinazorudishwa, uliza maelezo yanayokosekana tu na uhifadhi rejea za malipo katika majaribio ya kurudia. Usidai malipo au ununuzi umefaulu bila matokeo yaliyothibitishwa. Nisaidie kuanza kwa Kiswahili.",
+    "cli_label": "Kwa Hermes Agent. Endesha kwenye kifaa chako.",
+    "api_label": "Gundua zana za sasa. Hakuna ufunguo wa API.",
+    "dev_note": "Ugunduzi wa zana ni wa umma. Akaunti yako inalindwa na idhini ya pochi. Masharti ya upatikanaji na uthibitishaji yanaendelea kutumika.",
+    "dev_links": [
+      "Mwongozo wa MCP",
+      "Orodha ya zana",
+      "Soma ukurasa kwa Markdown"
+    ],
+    "faq_title": "Ni vizuri kujua.",
+    "faqs": [
+      [
+        "Ninahitaji kuelewa kripto?",
+        "Hapana. Uliza kwa lugha ya kawaida. Wakala anapaswa kueleza kiasi, ada na idhini kabla ya hatua. Unaweza bado kuhitaji kuweka pochi na kuthibitisha utambulisho."
+      ],
+      [
+        "Pesa zote zinadhibitiwa nami?",
+        "Pochi ni ya kujidhibiti mwenyewe. Kadi, salio la fedha za kawaida na miamala ya benki hutolewa kupitia watoa huduma za kifedha wenye masharti yao. Kujidhibiti kwa pochi hakuondoi uwezekano wa vikwazo vya benki au kadi."
+      ],
+      [
+        "Naweza kuanza kwa Telegram au WhatsApp?",
+        "Hilo ndilo lengo, pamoja na iMessage, Signal na barua pepe. Onyesho hili halina viungo vya kujiunga vilivyothibitishwa kwa njia hizo bado. Tumia chat ya tovuti au unganisha wakala wako kupitia MCP sasa."
+      ],
+      [
+        "Wakala anaweza kufanya mifano yote sasa?",
+        "Si kupitia MCP ya malipo pekee. Ununuzi na uhifadhi vinahitaji kivinjari, akaunti za wafanyabiashara na huduma zinazofaa. Malipo ya Tanzania na avatar yanahitaji mtoa huduma aliyethibitishwa. Haya ni mawazo ya kazi, si risiti."
+      ],
+      [
+        "Nini kinafanya kazi katika onyesho?",
+        "Chat ya tovuti inagundua Wirex MCP na kutumia zana zake za sasa. Mazingira ni sandbox. Zana kuwepo hakuthibitishi ununuzi halisi, kutuma pesa au KYC kukamilika. Wakala anapaswa kukagua kabla ya kutenda."
+      ]
+    ],
+    "final_title": "Anza kwa ujumbe.",
+    "final_text": "Pochi, kadi na akaunti ya benki kwa wakala aliye upande wako.",
+    "footer": "Onyesho huru la V2 · Zana za malipo kupitia Wirex MCP",
+    "status_link": "Uwezo na upatikanaji",
+    "channel_title": "Endelea kwenye {channel}",
+    "channel_body": "Njia hii haijaunganishwa na onyesho bado. Anza kwenye chat ya tovuti au ongeza MCP kwa wakala unaotumia huko.",
+    "channel_web": "Endelea kwenye chat ya tovuti",
+    "close": "Funga",
+    "language_label": "Lugha",
+    "skip": "Nenda kwenye maudhui",
+    "noscript": "Ukurasa wote unasomeka bila JavaScript. Chat hai inahitaji JavaScript; tumia maagizo ya MCP kuunganisha wakala wako.",
+    "preview_label": "Onyesho la V2",
+    "show_chat": "Fungua chat",
+    "missing_copy": "Njia za ujumbe hazijawekwa katika onyesho hili."
+  }
+}

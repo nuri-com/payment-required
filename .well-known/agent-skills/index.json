@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-skills.org/schemas/discovery-index.json",
+  "version": "0.2.0",
+  "skills": [
+    {
+      "name": "paymentrequired-payments",
+      "description": "Connect to the live payment MCP without an integration API key; observe wallet authorization and sandbox boundaries.",
+      "type": "skill-md",
+      "url": "/.well-known/agent-skills/payments/SKILL.md"
+    }
+  ]
+}
