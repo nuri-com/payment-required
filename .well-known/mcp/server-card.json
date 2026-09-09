@@ -1,0 +1,37 @@
+{
+  "name": "Wirex MCP (PaymentRequired integration)",
+  "description": "External payment MCP for wallet connection, cards, banking, corridor payouts and x402/MPP. Preview connected to a sandbox. Discover live tools; no integration API key. Account authorization and verification still apply.",
+  "version": "0.62.0",
+  "url": "https://wirex.nuri.com/mcp",
+  "transport": {
+    "type": "streamable-http",
+    "url": "https://wirex.nuri.com/mcp"
+  },
+  "authentication": {
+    "discovery": "none",
+    "account": "wallet approval"
+  },
+  "documentationUrl": "https://paymentrequired.com/v2/integration.md",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  },
+  "serverInfo": {
+    "name": "wallet-connection",
+    "title": "Wallet connection",
+    "version": "0.62.0"
+  },
+  "serverUrl": "https://wirex.nuri.com/mcp",
+  "tools": [
+    "connect_wallet",
+    "create_account",
+    "get_account_status",
+    "provision_virtual_card_and_bank_account",
+    "cards",
+    "bank",
+    "payouts",
+    "agents",
+    "sandbox"
+  ]
+}

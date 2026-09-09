@@ -1,0 +1,2012 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-09-09T12:52:21.876015+00:00",
+  "endpoint": "https://wirex.nuri.com/mcp",
+  "transport": "streamable-http",
+  "server": {
+    "name": "wallet-connection",
+    "title": "Wallet connection",
+    "version": "0.62.0"
+  },
+  "protocol": "2025-11-25",
+  "environment": {
+    "name": "sandbox",
+    "chain_id": 84532,
+    "real_world_fulfillment_verified": false
+  },
+  "authentication": {
+    "discovery_api_key_required": false,
+    "account_wallet_authorization_required": true,
+    "account_email_and_residence_required": true,
+    "identity_verification_required_for_financial_products": true
+  },
+  "messaging_channels": {
+    "telegram": {
+      "configured": false,
+      "signup_url": null
+    },
+    "whatsapp": {
+      "configured": false,
+      "signup_url": null
+    },
+    "imessage": {
+      "configured": false,
+      "signup_url": null
+    },
+    "signal": {
+      "configured": false,
+      "signup_url": null
+    },
+    "email": {
+      "configured": false,
+      "signup_url": null
+    }
+  },
+  "tools": [
+    {
+      "name": "connect_wallet",
+      "title": "Connect or create a wallet",
+      "description": "Connect or create a wallet and prepare its account. First call: {} (empty object). Never generate request_id. Omit it to obtain approval_url; show it before checking with the same request_id. Each check waits up to 25 seconds. Keep checks silent. Retain the private session returned only on the initial call; never display it. On connected, account_exists selects create_account or get_account_status. Errors do not imply a missing account. Agents, pay, withdraw and onchain deposits need only this connection; card, IBAN, payouts and provider balance reads need a verified account.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$",
+            "description": "Only a request_id previously returned by this tool. Do not generate one. First call must be {}."
+          },
+          "signer": {
+            "type": "string",
+            "description": "Wallet signer for a new connection. Only the first call uses it; checks reuse request_id."
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approval_required",
+              "processing",
+              "connected"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}$"
+          },
+          "account_exists": {
+            "type": "boolean",
+            "description": "Whether the verified wallet has an existing account. False only when the provider explicitly reports no user."
+          },
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$",
+            "description": "Private credential returned only when starting a connection. Retain it; never display it."
+          },
+          "smart_account_address": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$"
+          },
+          "approval_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "ok": {
+                "const": true
+              },
+              "status": {
+                "const": "approval_required"
+              }
+            },
+            "required": [
+              "status",
+              "message",
+              "request_id",
+              "approval_url"
+            ]
+          },
+          {
+            "properties": {
+              "ok": {
+                "const": true
+              },
+              "status": {
+                "const": "connected"
+              }
+            },
+            "required": [
+              "status",
+              "message",
+              "request_id",
+              "account_exists",
+              "smart_account_address"
+            ]
+          },
+          {
+            "properties": {
+              "ok": {
+                "const": true
+              },
+              "status": {
+                "const": "processing"
+              }
+            },
+            "required": [
+              "status",
+              "message",
+              "request_id"
+            ]
+          },
+          {
+            "properties": {
+              "ok": {
+                "const": false
+              }
+            },
+            "required": [
+              "error"
+            ]
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "create_account",
+      "title": "Create account",
+      "description": "Create an account after connect_wallet reports connected. Requires session and the user's email and residence country. Ask only for missing inputs; never guess. Retry with identical inputs to resume. Show kyc_url when required; pending means check get_account_status, and rejected means contact support. Only verified confirms SDD approval. No further connection approval. Creation does not mean verification is complete. Only card, IBAN and payouts need this; agents, pay, withdraw and deposits work on the connection alone.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session",
+          "email",
+          "country"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$",
+            "description": "Private session returned by the initial connect_wallet call"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "country": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$",
+            "description": "Residence country, ISO 3166-1 alpha-2. Required before hosted verification. Reuse the user's answer; ask only if unknown. Never guess or default it."
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "ok": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "created",
+              "already_exists"
+            ]
+          },
+          "smart_account_address": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$"
+          },
+          "kyc_status": {
+            "enum": [
+              "required",
+              "pending",
+              "verified",
+              "rejected"
+            ]
+          },
+          "kyc_url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "oneOf": [
+          {
+            "properties": {
+              "ok": {
+                "const": true
+              }
+            },
+            "required": [
+              "status",
+              "smart_account_address",
+              "kyc_status"
+            ]
+          },
+          {
+            "properties": {
+              "ok": {
+                "const": false
+              }
+            },
+            "required": [
+              "error"
+            ]
+          }
+        ]
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "get_account_status",
+      "title": "Check account setup",
+      "description": "Check verification, virtual card and EUR IBAN using session. Answers what the user can do: capabilities lists every account feature in plain language with its status and a one-line unlock instruction. Call after connection to an existing account, after showing a verification link and on later messages. wait_seconds holds the check up to 25 seconds. Follow next_action and retry_after_seconds. Approved verification starts missing-product setup automatically; pending verification must not be restarted.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$"
+          },
+          "wait_seconds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 25
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "kyc_required",
+              "kyc_pending",
+              "processing",
+              "ready",
+              "action_required"
+            ]
+          },
+          "kyc_status": {
+            "type": "string"
+          },
+          "kyc_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next_action": {
+            "enum": [
+              "complete_kyc",
+              "wait",
+              "provision_virtual_card_and_bank_account",
+              "contact_support",
+              "none"
+            ]
+          },
+          "retry_after_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "capabilities": {
+            "type": "array",
+            "description": "Plain-language account features from GET /api/v2/user: what the user can do and how to unlock the rest.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "feature",
+                "status",
+                "reason",
+                "unlock"
+              ],
+              "properties": {
+                "feature": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "unlock": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "setup_errors": {
+            "type": "array",
+            "description": "Safe creation diagnostics. An upstream failure does not mean manual account activation is required; an unknown outcome is checked without issuing a duplicate.",
+            "items": {
+              "type": "object"
+            }
+          },
+          "virtual_card": {
+            "type": "object",
+            "description": "Existing or issued virtual card: id, status and last4. No full card number or CVV."
+          },
+          "bank_account": {
+            "type": "object",
+            "description": "EUR SEPA account: id, status, currency, account_holder, iban, bic and mandatory_reference. Details may be null while pending."
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "provision_virtual_card_and_bank_account",
+      "title": "Provision virtual card and bank account",
+      "description": "Finish initial virtual card and EUR IBAN setup using session after verification is approved. Reuse existing products; create only missing ones. Safe to repeat after retry_after_seconds. Early calls return verification state without issuing products. Stop on ready or action_required. No additional signature or personal details required.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$"
+          }
+        }
+      },
+      "outputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ok"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "kyc_required",
+              "kyc_pending",
+              "processing",
+              "ready",
+              "action_required"
+            ]
+          },
+          "kyc_status": {
+            "type": "string"
+          },
+          "kyc_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "next_action": {
+            "enum": [
+              "complete_kyc",
+              "wait",
+              "provision_virtual_card_and_bank_account",
+              "contact_support",
+              "none"
+            ]
+          },
+          "retry_after_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "capabilities": {
+            "type": "array",
+            "description": "Plain-language account features from GET /api/v2/user: what the user can do and how to unlock the rest.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "feature",
+                "status",
+                "reason",
+                "unlock"
+              ],
+              "properties": {
+                "feature": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "unlock": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "setup_errors": {
+            "type": "array",
+            "description": "Safe creation diagnostics. An upstream failure does not mean manual account activation is required; an unknown outcome is checked without issuing a duplicate.",
+            "items": {
+              "type": "object"
+            }
+          },
+          "virtual_card": {
+            "type": "object",
+            "description": "Existing or issued virtual card: id, status and last4. No full card number or CVV."
+          },
+          "bank_account": {
+            "type": "object",
+            "description": "EUR SEPA account: id, status, currency, account_holder, iban, bic and mandatory_reference. Details may be null while pending."
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "cards",
+      "title": "Manage and use cards",
+      "description": "list returns cards without secrets. issue creates one additional virtual card with limits; reuse request_id on every retry. Pass currency as the expected limit currency, and limits as JSON numbers, never quoted strings. This does not select issuer currency. At least one cap must be finite; omitted caps are unlimited. get_limits reads status, spending caps and usage. freeze/unfreeze pauses/resumes spending. close permanently closes that card and cannot be undone; use only on explicit request. set_limits changes daily_limit, monthly_limit or transaction_limit: omit unchanged fields; 0 blocks spending, -1 removes that cap. Verify returned state. get returns the full card number, CVV, expiry, name and residence address when the user asks or needs checkout details. No purchase or merchant is required. A failed get does not imply a security restriction. Show requested card details; verify billing address, never invent it. 3ds_pending lists challenges; 3ds_approve/3ds_decline requires transaction_id, merchant_name, amount and currency copied from the matching purchase. Authentication is not settlement. Use the connected session; never display session credentials or volunteer card secrets. recipients lists saved EUR payout cards by recipient_id, name and last4. transfer_quote uses recipient_id, EUR amount and token_address from bank balances. Show the quote and obtain explicit payment authorization before transfer with estimate_id+confirmed:true; initial connection is insufficient payment consent. transfer accepts exactly session, action=transfer, estimate_id and confirmed=true; all payment terms come from the stored quote. transfer_status tracks that estimate after reconnect. Unknown outcomes must not be resubmitted; candidate activities are unconfirmed. No card numbers or card tokens are accepted as payout arguments.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "recipient_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "For transfer_quote only: saved destination card ID returned by recipients."
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$",
+            "description": "JSON string. transfer_quote: positive EUR amount with at most two decimals. 3DS decision: copy the exact pending purchase amount."
+          },
+          "token_address": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$",
+            "description": "For transfer_quote only: token to debit, selected from bank balances."
+          },
+          "estimate_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "For transfer or transfer_status: exact estimate_id returned by transfer_quote."
+          },
+          "confirmed": {
+            "type": "boolean",
+            "const": true,
+            "description": "For transfer only: JSON true after explicit authorization of this quote's recipient, amount and cost."
+          },
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$",
+            "description": "Private session from the initial connect_wallet call. Never display it."
+          },
+          "card_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Owned card ID from list or get_account_status. Omit for list, issue, recipients and transfer actions."
+          },
+          "action": {
+            "enum": [
+              "list",
+              "issue",
+              "get_limits",
+              "freeze",
+              "unfreeze",
+              "set_limits",
+              "close",
+              "get",
+              "3ds_pending",
+              "3ds_approve",
+              "3ds_decline",
+              "recipients",
+              "transfer_quote",
+              "transfer",
+              "transfer_status"
+            ]
+          },
+          "transaction_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "merchant_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "For issue: expected currency of the spending caps, verified against the new card. This does not select issuer currency. For 3ds_approve/3ds_decline: currency of the matching purchase. Omit for other actions."
+          },
+          "limits": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": false,
+            "properties": {
+              "daily_limit": {
+                "type": "number",
+                "minimum": -1,
+                "description": "JSON number: nonnegative spending cap in card currency, or -1 for unlimited. Never a quoted string."
+              },
+              "monthly_limit": {
+                "type": "number",
+                "minimum": -1,
+                "description": "JSON number: nonnegative spending cap in card currency, or -1 for unlimited. Never a quoted string."
+              },
+              "transaction_limit": {
+                "type": "number",
+                "minimum": -1,
+                "description": "JSON number: nonnegative spending cap in card currency, or -1 for unlimited. Never a quoted string."
+              }
+            }
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "description": "Stable label for this new card, reused unchanged on retries."
+          }
+        },
+        "required": [
+          "session",
+          "action"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "action": {
+              "enum": [
+                "3ds_approve",
+                "3ds_decline"
+              ]
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "card_id",
+            "transaction_id",
+            "merchant_name",
+            "amount",
+            "currency"
+          ],
+          "maxProperties": 7
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "action": {
+                "enum": [
+                  "list",
+                  "recipients"
+                ]
+              }
+            }
+          },
+          "then": {
+            "maxProperties": 2
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "issue"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "request_id",
+                "limits",
+                "currency"
+              ],
+              "maxProperties": 5
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "action": {
+                    "const": "transfer_quote"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "recipient_id",
+                  "amount",
+                  "token_address"
+                ],
+                "maxProperties": 5,
+                "properties": {
+                  "amount": {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,2})?$",
+                    "description": "For transfer_quote: positive EUR amount received by the card, at most two decimals."
+                  }
+                }
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "const": "transfer"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "estimate_id",
+                    "confirmed"
+                  ],
+                  "maxProperties": 4
+                },
+                "else": {
+                  "if": {
+                    "properties": {
+                      "action": {
+                        "const": "transfer_status"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "estimate_id"
+                    ],
+                    "maxProperties": 3
+                  },
+                  "else": {
+                    "required": [
+                      "card_id"
+                    ],
+                    "if": {
+                      "properties": {
+                        "action": {
+                          "const": "set_limits"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "limits"
+                      ],
+                      "maxProperties": 4
+                    },
+                    "else": {
+                      "maxProperties": 3
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "bank",
+      "title": "Wallets, bank accounts and payments",
+      "description": "accounts returns bank receiving details; wallets lists owned addresses and the primary smart account. Listed Global addresses alone do not establish supported deposit networks or tokens. balances returns current exact wallet balances. rates returns indicative ask/bid rates only; use quote for executable terms. activity reads the legacy card and bank feed with filter=all/card/bank and next_page; activity_get reads an exact activity_id from that feed. These are provider records, not complete onchain history or recipient-credit proof. Preserve statuses and amount decimals; failed attempts and pending reversals are not settled payments. statement takes UTC start_date/end_date, at most six calendar months apart; continue with statement_id and page=next_page until null. It may omit agent transfers; use balances for current funds. download_url accepts Bearer session. For a SEPA transfer, use quote with account_id, EUR amount, token_address, recipient, iban and bic. Show exact credit, token debit, fee currency and expiry, then obtain payment authorization before transfer with estimate_id and confirmed:true. Initial connection is not payment consent. transfer_status reads the same estimate across reconnects; report completion only from provider Completed. Never resubmit an unknown outcome. Sandbox withdraw moves WUSD/WEUR to the chosen destination through the on-chain delay policy as the base token (USDC/EURC); it refuses with withdrawal_backing_insufficient when the vault cover is short. withdraw_status only reads withdrawal_id receipts; repeat withdraw with that ID to continue the same journaled withdrawal (approval, submission, reconciliation) and never start a second one. pay buys an x402 or MPP resource in two clicks with your own root EOA (the smart account cannot sign EIP-3009, so from:kernel is refused with payment_requires_eoa): quote shows amount and payee, withdraw with payment_id and confirmed:true moves exactly the challenge amount to your own EOA, authorize returns the EIP-3009 typed data to sign with that EOA and settles on the second call with signature, status reconciles the same authorization. withdraw and authorize first read the EOA canonical-USDC balance and refuse with payment_eoa_canonical_usdc_insufficient:<have>:<need> (or payment_eoa_canonical_usdc_unreadable when the read fails) before any withdrawal broadcast or typed-data hand-out; fund the EOA out of band and retry the same payment id. An expired challenge ends terminally as expired with payment_challenge_expired only when nothing was ever submitted (quote again); a submitted authorization reconciles via status instead (same authorization re-query, then the on-chain EIP-3009 nonce, else non-terminal payment_expired_unreconciled). At most 0.01 USDC per test payment. pay quote, withdraw and agent payments need only a connected wallet; quote, transfer, accounts, wallets, balances and payouts need a verified account (kyc_required otherwise). Report tool errors accurately; never invent a refusal. Never display the session.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$",
+            "description": "Private session from connect_wallet. Never display it."
+          },
+          "action": {
+            "enum": [
+              "accounts",
+              "wallets",
+              "balances",
+              "rates",
+              "statement",
+              "quote",
+              "transfer",
+              "transfer_status",
+              "withdraw",
+              "withdraw_status",
+              "pay",
+              "activity",
+              "activity_get"
+            ]
+          },
+          "activity_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$",
+            "description": "Exact ID returned by activity. For activity_get only."
+          },
+          "filter": {
+            "enum": [
+              "all",
+              "card",
+              "bank"
+            ],
+            "description": "For activity only; defaults to all (the union of the legacy card and bank rail types, not all onchain activity)."
+          },
+          "page_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "For activity only; defaults to 25."
+          },
+          "tickers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{2,10}/[A-Z0-9]{2,10}$"
+            },
+            "description": "For rates only: uppercase asset/currency pairs with different assets, e.g. USDC/EUR. Each asset is 2-10 letters or digits."
+          },
+          "start_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "end_date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "statement_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Snapshot ID returned by statement. Use with page instead of dates."
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Page number from next_page. statement is zero-based; activity is one-based (1-1000, default 1). Each page has up to 50 transactions."
+          },
+          "account_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Required for quote: owned active EUR SEPA account ID from accounts. Omit for other actions."
+          },
+          "amount": {
+            "type": "string",
+            "maxLength": 79,
+            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,18})?$",
+            "description": "Positive display amount. quote: EUR, at most two decimals. withdraw: source token units, limited to the destination token's precision."
+          },
+          "token_address": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$",
+            "description": "Token to debit for quote, selected from balances. For withdraw: the unified token address (WUSD/WEUR)."
+          },
+          "destination_address": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$",
+            "description": "For withdraw: exact recipient address on this account's chain."
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "For the first withdraw: unique payment identity. Reuse with identical terms after a lost response; never create a replacement to retry."
+          },
+          "withdrawal_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f-]{36}$",
+            "description": "Existing withdrawal ID. withdraw_status only reads it; repeat withdraw with it to continue the same journaled withdrawal (approval, submission, reconciliation) and never start a second one."
+          },
+          "recipient": {
+            "type": "object",
+            "description": "For quote: use only first_name and last_name for a person, or only company_name for a company. Never combine these forms.",
+            "additionalProperties": false,
+            "properties": {
+              "first_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "last_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "company_name": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "first_name",
+                  "last_name"
+                ],
+                "maxProperties": 2
+              },
+              {
+                "required": [
+                  "company_name"
+                ],
+                "maxProperties": 1
+              }
+            ]
+          },
+          "iban": {
+            "type": "string",
+            "minLength": 1
+          },
+          "bic": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reference": {
+            "type": "string",
+            "maxLength": 140
+          },
+          "estimate_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stored estimate from quote. Never invent or reuse another session's quote for execution."
+          },
+          "confirmed": {
+            "type": "boolean",
+            "const": true,
+            "description": "For transfer only: JSON true after explicit authorization of this quote's amount, recipient and cost."
+          },
+          "pay_action": {
+            "type": "string",
+            "enum": [
+              "quote",
+              "withdraw",
+              "authorize",
+              "status"
+            ],
+            "description": "For pay only: quote discovers the 402 challenge; withdraw moves exactly the challenge amount to your own EOA; authorize returns the EIP-3009 typed data (first call) then settles with signature (second call); status reconciles the same authorization."
+          },
+          "url": {
+            "type": "string",
+            "maxLength": 4096,
+            "description": "For pay quote only: exact HTTPS resource URL of the x402/MPP merchant."
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "x402",
+              "mpp"
+            ],
+            "description": "For pay quote only: which 402 challenge to accept (default auto)."
+          },
+          "max_amount": {
+            "type": "string",
+            "maxLength": 79,
+            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,18})?$",
+            "description": "For pay quote only: ceiling in USDC display units, at most 0.01 on the sandbox."
+          },
+          "from": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$",
+            "description": "For pay only: must be your own root EOA when present; from:kernel is refused with payment_requires_eoa."
+          },
+          "payment_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f-]{36}$",
+            "description": "For pay withdraw/authorize/status: the payment ID returned by pay quote."
+          },
+          "signature": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{130}$",
+            "description": "For pay authorize only: the root EOA signature over the returned typed_data."
+          }
+        },
+        "required": [
+          "session",
+          "action"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "action": {
+              "const": "activity"
+            }
+          }
+        },
+        "then": {
+          "maxProperties": 5,
+          "additionalProperties": false,
+          "properties": {
+            "session": {},
+            "action": {},
+            "filter": {},
+            "page_size": {},
+            "page": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            }
+          }
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "activity_get"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "activity_id"
+            ],
+            "maxProperties": 3,
+            "additionalProperties": false,
+            "properties": {
+              "session": {},
+              "action": {},
+              "activity_id": {}
+            }
+          },
+          "else": {
+            "properties": {
+              "activity_id": false,
+              "filter": false,
+              "page_size": false
+            },
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "statement"
+                }
+              }
+            },
+            "then": {
+              "maxProperties": 4,
+              "if": {
+                "required": [
+                  "statement_id"
+                ]
+              },
+              "then": {
+                "required": [
+                  "statement_id",
+                  "page"
+                ]
+              },
+              "else": {
+                "required": [
+                  "start_date",
+                  "end_date"
+                ]
+              }
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "action": {
+                    "const": "quote"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "account_id",
+                  "amount",
+                  "token_address",
+                  "recipient",
+                  "iban",
+                  "bic"
+                ],
+                "maxProperties": 9,
+                "properties": {
+                  "amount": {
+                    "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,2})?$"
+                  }
+                }
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "const": "transfer"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "estimate_id",
+                    "confirmed"
+                  ],
+                  "maxProperties": 4
+                },
+                "else": {
+                  "if": {
+                    "properties": {
+                      "action": {
+                        "const": "transfer_status"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "estimate_id"
+                    ],
+                    "maxProperties": 3
+                  },
+                  "else": {
+                    "if": {
+                      "properties": {
+                        "action": {
+                          "const": "rates"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "tickers"
+                      ],
+                      "maxProperties": 3
+                    },
+                    "else": {
+                      "if": {
+                        "properties": {
+                          "action": {
+                            "const": "withdraw"
+                          }
+                        }
+                      },
+                      "then": {
+                        "if": {
+                          "required": [
+                            "withdrawal_id"
+                          ]
+                        },
+                        "then": {
+                          "maxProperties": 3
+                        },
+                        "else": {
+                          "required": [
+                            "amount",
+                            "token_address",
+                            "destination_address",
+                            "idempotency_key"
+                          ],
+                          "maxProperties": 6
+                        }
+                      },
+                      "else": {
+                        "if": {
+                          "properties": {
+                            "action": {
+                              "const": "withdraw_status"
+                            }
+                          }
+                        },
+                        "then": {
+                          "required": [
+                            "withdrawal_id"
+                          ],
+                          "maxProperties": 3
+                        },
+                        "else": {
+                          "if": {
+                            "properties": {
+                              "action": {
+                                "const": "pay"
+                              }
+                            }
+                          },
+                          "then": {
+                            "required": [
+                              "pay_action"
+                            ],
+                            "maxProperties": 9,
+                            "properties": {
+                              "pay_action": {},
+                              "url": {
+                                "maxLength": 4096
+                              },
+                              "protocol": {},
+                              "max_amount": {},
+                              "from": {
+                                "pattern": "^0x[0-9a-fA-F]{40}$"
+                              },
+                              "payment_id": {
+                                "pattern": "^[0-9a-f-]{36}$"
+                              },
+                              "destination_address": {},
+                              "confirmed": {},
+                              "signature": {
+                                "pattern": "^0x[0-9a-fA-F]{130}$"
+                              }
+                            }
+                          },
+                          "else": {
+                            "maxProperties": 2
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "payouts",
+      "title": "Corridor payouts to saved recipients",
+      "description": "Pay out over 16 bank rails through the v3 bank API. corridors lists every rail with its provider, steps and capability status. recipients lists saved bank recipients with payment-detail ids; recipient_add creates one for a corridor (details validated per rail before calling); recipient_remove deletes one. quote takes corridor, recipient_id, recipient_payment_details_id, destination_amount and optional account_id (required for sepa/ach/faster-payments; picked from owned active accounts when omitted) and token (WUSD/WEUR/USDC/EURC). Show the quote and obtain explicit payment authorization before send with estimate_id and confirmed:true; initial connection is insufficient payment consent. send initiates; CPN corridors (pix, spei, fedwire, swift, cips, chats, fps_hk) additionally need an on-chain FundTransfer from the owner's wallet, then confirm with the transaction hash. status tracks the estimate after reconnect. resolve recovers an uncertain payout (initiating or unknown with no provider transfer) after status shows reconciliation candidates: with candidate_activity_id it links the provider transfer, without it abandons the payout when no candidate exists. Sandbox payouts are at most 2.00 per test. Report tool errors accurately; never invent a refusal. Never display the session.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$",
+            "description": "Private session from connect_wallet. Never display it."
+          },
+          "action": {
+            "enum": [
+              "corridors",
+              "recipients",
+              "recipient_add",
+              "recipient_remove",
+              "quote",
+              "send",
+              "confirm",
+              "status",
+              "resolve"
+            ]
+          },
+          "corridor": {
+            "type": "string",
+            "enum": [
+              "sepa",
+              "ach",
+              "faster-payments",
+              "pix",
+              "spei",
+              "fedwire",
+              "swift",
+              "cips",
+              "chats",
+              "fps_hk",
+              "imps",
+              "instapay",
+              "bi-fast",
+              "nip",
+              "ipp",
+              "pse"
+            ]
+          },
+          "recipient_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Saved recipient UUID from recipients."
+          },
+          "recipient_payment_details_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Payment-detail UUID from recipients."
+          },
+          "destination_amount": {
+            "type": "string",
+            "maxLength": 79,
+            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,18})?$",
+            "description": "Positive amount the recipient receives, in the corridor currency."
+          },
+          "account_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "For sepa/ach/faster-payments quote only: owned active bank account; picked automatically when omitted."
+          },
+          "token": {
+            "type": "string",
+            "enum": [
+              "WUSD",
+              "WEUR",
+              "USDC",
+              "EURC"
+            ],
+            "description": "For quote only: funding token symbol. Defaults to the corridor currency's natural token, else the first estimate entry."
+          },
+          "first_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "company_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "is_business": {
+            "type": "boolean",
+            "description": "For recipient_add: true for a company (company_name), false for a person (first_name plus last_name)."
+          },
+          "nick_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 127
+          },
+          "details": {
+            "type": "object",
+            "description": "For recipient_add: rail-specific payment details (sepa needs iban+bic, ach needs routing_number+account_number+legal_address, pix needs key, ...)."
+          },
+          "estimate_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stored estimate from quote. Never invent or reuse another session's quote for execution."
+          },
+          "confirmed": {
+            "type": "boolean",
+            "const": true,
+            "description": "For send only: JSON true after explicit authorization of this quote's recipient, amount and cost."
+          },
+          "reference": {
+            "type": "string",
+            "maxLength": 140,
+            "description": "For send only: free-text reference carried on the payment."
+          },
+          "tx_hash": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{64}$",
+            "description": "For confirm only: hash of the on-chain FundTransfer."
+          },
+          "candidate_activity_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "For resolve only: provider activity id picked from the latest status candidates."
+          }
+        },
+        "required": [
+          "session",
+          "action"
+        ],
+        "additionalProperties": false,
+        "if": {
+          "properties": {
+            "action": {
+              "const": "corridors"
+            }
+          }
+        },
+        "then": {
+          "maxProperties": 2
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "recipients"
+              }
+            }
+          },
+          "then": {
+            "maxProperties": 3
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "recipient_remove"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "recipient_id"
+              ],
+              "maxProperties": 3
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "action": {
+                    "const": "quote"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "corridor",
+                  "recipient_id",
+                  "recipient_payment_details_id",
+                  "destination_amount"
+                ],
+                "maxProperties": 8
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "const": "send"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "estimate_id",
+                    "confirmed"
+                  ],
+                  "maxProperties": 5
+                },
+                "else": {
+                  "if": {
+                    "properties": {
+                      "action": {
+                        "const": "confirm"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "estimate_id",
+                      "tx_hash"
+                    ],
+                    "maxProperties": 4
+                  },
+                  "else": {
+                    "if": {
+                      "properties": {
+                        "action": {
+                          "const": "status"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "estimate_id"
+                      ],
+                      "maxProperties": 3
+                    },
+                    "else": {
+                      "if": {
+                        "properties": {
+                          "action": {
+                            "const": "resolve"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "estimate_id"
+                        ],
+                        "maxProperties": 4
+                      },
+                      "else": {
+                        "if": {
+                          "properties": {
+                            "action": {
+                              "const": "recipient_add"
+                            }
+                          }
+                        },
+                        "then": {
+                          "required": [
+                            "corridor",
+                            "is_business",
+                            "details"
+                          ],
+                          "maxProperties": 8
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "agents",
+      "title": "Set up and use payment agents",
+      "description": "Set up and use three payment agents on Base Sepolia. setup requires daily_cap_units and per_tx_max_units in USDC base units (6 decimals). An optional merchant_allowlist (list of exact resource URLs, at most 32, every entry also on the server-wide list) seeds the same list for every agent; an omitted list leaves the lists unchanged and an empty list is a change that needs approval and then restores inheritance of the server-wide list. Show approval_url when returned, then repeat identical setup terms to continue. set_limits changes ONE agent's canonical-USDC funding limits (agent-1..3, new daily_cap_units and per_tx_max_units) and optionally that agent's own merchant_allowlist through the owner-approved validator (an omitted list leaves it unchanged; an empty list restores inheritance of the server-wide list once approved); show approval_url when returned, repeat identical terms to continue, and it never reinstalls agents, resets budgets or changes other agents. revoke removes ONE agent from receiving new funding or starting new payments (agent-1..3) through the owner-approved validator; show approval_url when returned and repeat identical revoke to continue. Revoking keeps the agent's id, history and last limits (status shows active:false/revoked) and never moves its funds, reinstalls agents or resets budgets; other agents keep working. Only one revocation per setup until re-add exists: revoking a different agent afterwards fails with payment_agent_revoke_limit_reached. pay with attached agents is autonomous within caps: it funds the agent and buys a supported x402 or MPP resource with the agent signature, returning its content. A URL outside the paying agent's own merchant_allowlist fails with payment_merchant_not_allowed_for_agent (naming the agent and the URL) before any funding or signature; an agent with no seeded list inherits the server-wide list. pay with NO attached agents is the one-approval-per-payment mode: the first call returns a proposal (merchant, amount, expiry) plus the approval_url for the owner to sign once through the same owner-signed path bank / pay uses (same journal, same EIP-3009 terms); the second call with that signature completes the payment. status with payment_id reads a proposal/payment without advancing it. If pay returns funding, repeat pay with identical terms and idempotency_key to continue. Reuse that key after response loss or failure; never change the key to retry. status only reads progress or the saved payment_id result and never advances a payment. Initial owner approval installs the agents and their limits; later payments use agent signatures. status shows every agent's allowance as of the last agent operation's validator read: remaining_units (daily cap minus spent, never negative), per_tx_max_units, window_resets_at (ISO reset of the spend window) and the canonical-USDC token. A fresh pay above remaining_units or per_tx_max_units is refused before any funds move; an idempotent replay of an already-funded payment with the same key completes without a second funding. Report returned errors exactly; do not invent an approval or a reason for failure. Needs only a connected wallet, never an account or KYC.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "setup",
+              "status",
+              "pay",
+              "set_limits",
+              "revoke"
+            ]
+          },
+          "session": {
+            "type": "string"
+          },
+          "daily_cap_units": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$",
+            "maxLength": 39,
+            "description": "Exact positive USDC base units (6 decimals), less than 2^128."
+          },
+          "per_tx_max_units": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$",
+            "maxLength": 39,
+            "description": "Exact positive USDC base units (6 decimals), less than 2^128."
+          },
+          "merchant_allowlist": {
+            "type": "array",
+            "maxItems": 32,
+            "items": {
+              "type": "string",
+              "format": "uri",
+              "maxLength": 4096
+            },
+            "description": "Exact resource URLs this agent may pay; subset of the server-wide list. Omitted leaves the lists unchanged; an empty list restores inheritance of the server-wide list once its owner approval completes."
+          },
+          "payment_id": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "agent_id": {
+            "enum": [
+              "agent-1",
+              "agent-2",
+              "agent-3"
+            ]
+          },
+          "protocol": {
+            "enum": [
+              "x402",
+              "mpp"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 4096
+          },
+          "max_amount_units": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*$",
+            "maxLength": 78,
+            "description": "Exact positive decimal USDC base units (6 decimals); not a display amount."
+          },
+          "recipient": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{40}$"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "signature": {
+            "type": "string",
+            "pattern": "^0x[0-9a-fA-F]{130}$",
+            "description": "No-key mode only: the root EOA signature over the proposed typed data, after the owner signs once. Refused when agents are attached (agents sign themselves)."
+          }
+        },
+        "required": [
+          "action",
+          "session"
+        ],
+        "if": {
+          "properties": {
+            "action": {
+              "const": "setup"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "action": {
+              "const": "setup"
+            },
+            "session": {
+              "type": "string"
+            },
+            "daily_cap_units": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 39,
+              "description": "Exact positive USDC base units (6 decimals), less than 2^128."
+            },
+            "per_tx_max_units": {
+              "type": "string",
+              "pattern": "^[1-9][0-9]*$",
+              "maxLength": 39,
+              "description": "Exact positive USDC base units (6 decimals), less than 2^128."
+            },
+            "merchant_allowlist": {
+              "type": "array",
+              "maxItems": 32,
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "maxLength": 4096
+              },
+              "description": "Exact resource URLs this agent may pay; subset of the server-wide list. Omitted leaves the lists unchanged; an empty list restores inheritance of the server-wide list once its owner approval completes."
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "action",
+            "session",
+            "daily_cap_units",
+            "per_tx_max_units"
+          ]
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "status"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "action": {
+                "const": "status"
+              },
+              "session": {
+                "type": "string"
+              },
+              "payment_id": {
+                "type": "string",
+                "maxLength": 128
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "session"
+            ]
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "pay"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "action": {
+                  "const": "pay"
+                },
+                "session": {
+                  "type": "string"
+                },
+                "agent_id": {
+                  "enum": [
+                    "agent-1",
+                    "agent-2",
+                    "agent-3"
+                  ]
+                },
+                "protocol": {
+                  "enum": [
+                    "x402",
+                    "mpp"
+                  ]
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "maxLength": 4096
+                },
+                "max_amount_units": {
+                  "type": "string",
+                  "pattern": "^[1-9][0-9]*$",
+                  "maxLength": 78,
+                  "description": "Exact positive decimal USDC base units (6 decimals); not a display amount."
+                },
+                "recipient": {
+                  "type": "string",
+                  "pattern": "^0x[0-9a-fA-F]{40}$"
+                },
+                "idempotency_key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "signature": {
+                  "type": "string",
+                  "pattern": "^0x[0-9a-fA-F]{130}$",
+                  "description": "No-key mode only: the root EOA signature over the proposed typed data, after the owner signs once. Refused when agents are attached (agents sign themselves)."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "action",
+                "session",
+                "agent_id",
+                "protocol",
+                "url",
+                "max_amount_units",
+                "recipient",
+                "idempotency_key"
+              ]
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "action": {
+                    "const": "set_limits"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "action": {
+                    "const": "set_limits"
+                  },
+                  "session": {
+                    "type": "string"
+                  },
+                  "agent_id": {
+                    "enum": [
+                      "agent-1",
+                      "agent-2",
+                      "agent-3"
+                    ]
+                  },
+                  "daily_cap_units": {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]*$",
+                    "maxLength": 39,
+                    "description": "Exact positive USDC base units (6 decimals), less than 2^128."
+                  },
+                  "per_tx_max_units": {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]*$",
+                    "maxLength": 39,
+                    "description": "Exact positive USDC base units (6 decimals), less than 2^128."
+                  },
+                  "merchant_allowlist": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "string",
+                      "format": "uri",
+                      "maxLength": 4096
+                    },
+                    "description": "Exact resource URLs this agent may pay; subset of the server-wide list. Omitted leaves the lists unchanged; an empty list restores inheritance of the server-wide list once its owner approval completes."
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "action",
+                  "session",
+                  "agent_id",
+                  "daily_cap_units",
+                  "per_tx_max_units"
+                ]
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "const": "revoke"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "action": {
+                      "const": "revoke"
+                    },
+                    "session": {
+                      "type": "string"
+                    },
+                    "agent_id": {
+                      "enum": [
+                        "agent-1",
+                        "agent-2",
+                        "agent-3"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "action",
+                    "session",
+                    "agent_id"
+                  ]
+                },
+                "else": false
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "sandbox",
+      "title": "Simulate sandbox events for testers",
+      "description": "Simulates external events on the sandbox for testers on chain 84532; this tool never exists on mainnet. mint sends test tokens (WUSD/WEUR, at most 100) to the connected account and confirms the mint by the on-chain balance delta of the session kernel: the helper only acknowledges (HTTP 200 {ok:...}, never a tx hash), so success requires the balance to rise by the minted units within ~20 s, otherwise the typed error sandbox_mint_unconfirmed is returned without retry. Repeating a mint with identical terms (or the same idempotency_key) within 10 minutes returns the stored result instead of minting again. deposit_sepa/deposit_ach simulate an inbound bank deposit (at most 100) and return the matching activity. settle_transfers completes or reverts pending outbound transfers for one rail. card_purchase runs one simulated card flow (at most 50) and returns the resulting card activity. card_3ds raises a standalone authentication challenge to approve or decline with the cards tool; it is not linked to a purchase. Every action uses the connected session only; the owner email, kernel address and card ids come from that account's provider state, never from caller input.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "session",
+          "action"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{43}\\.[A-Za-z0-9_-]{43}$",
+            "description": "Private session from the initial connect_wallet call. Never display it."
+          },
+          "action": {
+            "enum": [
+              "mint",
+              "deposit_sepa",
+              "deposit_ach",
+              "settle_transfers",
+              "card_purchase",
+              "card_3ds"
+            ]
+          },
+          "token": {
+            "type": "string",
+            "enum": [
+              "WUSD",
+              "WEUR"
+            ],
+            "description": "Test token symbol to mint. For mint only."
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,18})?$",
+            "description": "Decimal amount string. At most 100 for mint and deposits, at most 50 for card flows."
+          },
+          "idempotency_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "For mint only: unique mint identity. Reuse with identical terms after a lost response; never create a replacement to retry."
+          },
+          "rail": {
+            "type": "string",
+            "enum": [
+              "sepa",
+              "ach"
+            ],
+            "description": "Transfer rail to settle. For settle_transfers only."
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "revert"
+            ],
+            "description": "complete marks pending transfers completed; revert simulates a return. For settle_transfers only."
+          },
+          "card_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Owned card ID from list or account status. For card actions only."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "EUR",
+              "USD"
+            ],
+            "description": "Transaction currency. For card actions only."
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "purchase",
+              "ecommerce",
+              "atm",
+              "refund",
+              "chargeback",
+              "partial_reversal"
+            ],
+            "description": "Simulated card flow. For card_purchase only."
+          },
+          "merchant_country": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "Merchant country, ISO 3166-1 alpha-3. Defaults to DEU. For card_purchase only."
+          }
+        },
+        "if": {
+          "properties": {
+            "action": {
+              "const": "mint"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "session",
+            "action",
+            "token",
+            "amount"
+          ],
+          "maxProperties": 5
+        },
+        "else": {
+          "if": {
+            "properties": {
+              "action": {
+                "enum": [
+                  "deposit_sepa",
+                  "deposit_ach"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "session",
+              "action",
+              "amount"
+            ],
+            "maxProperties": 3
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "action": {
+                  "const": "settle_transfers"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "session",
+                "action",
+                "rail",
+                "outcome"
+              ],
+              "maxProperties": 4
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "action": {
+                    "const": "card_purchase"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "session",
+                  "action",
+                  "card_id",
+                  "amount",
+                  "currency",
+                  "scenario"
+                ],
+                "maxProperties": 7
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "action": {
+                      "const": "card_3ds"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "session",
+                    "action",
+                    "card_id",
+                    "amount",
+                    "currency"
+                  ],
+                  "maxProperties": 5
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    }
+  ],
+  "limitations": [
+    "Snapshot only; initialize and tools/list again for current behavior.",
+    "Availability of a tool is not proof of settlement or merchant fulfillment.",
+    "Merchant accounts, browser capability and service integrations are separate from payments.",
+    "Card and fiat banking restrictions are not removed by wallet self-custody.",
+    "Visa card brand and country coverage must be verified against the issuer programme; no universal availability claim.",
+    "No verified Tanzania mobile-money or voice/face avatar provider is connected to this V2."
+  ]
+}

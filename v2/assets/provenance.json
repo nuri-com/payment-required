@@ -1,0 +1,23 @@
+{
+  "workflow": "fal-ai/flux-2-flex/edit reference edit",
+  "request_id": "01a08638-a5e5-72b1-aaf8-52b9fcab9a06",
+  "seed": 652132391,
+  "source_dimensions": [
+    1024,
+    768
+  ],
+  "crop": [
+    32,
+    107,
+    1000,
+    752
+  ],
+  "dimensions": [
+    968,
+    645
+  ],
+  "webp_bytes": 22636,
+  "attempts": 2,
+  "generation_cap": 3,
+  "review": "Parent accepted flat structural colour panels, no soft shading or cast shadows; preserves one person, assistant, card, envelope, suitcase, phone, paper plane."
+}
