@@ -372,8 +372,8 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
       <span class="sheettitle" id="ovtitle">Approve with Face ID or fingerprint</span>
       <button class="sheetclose" id="ovcancel" aria-label="Close">✕</button>
     </div>
-    <iframe id="bridgeframe" title="Wallet approval" allow="publickey-credentials-get *; publickey-credentials-create *; clipboard-write" referrerpolicy="no-referrer"></iframe>
-    <div class="sheetfoot"><span class="ovspin"><i></i><i></i><i></i></span><span id="ovtext">Closes by itself when you are done.</span><button class="ovtab" id="ovtab" hidden>Open in new tab →</button></div>
+    <iframe id="bridgeframe" title="Wallet approval" hidden></iframe>
+    <div class="sheetfoot"><span class="ovspin"><i></i><i></i><i></i></span><span id="ovtext">Closes by itself when you are done.</span><button class="ovtab" id="ovtab">Open again →</button></div>
   </div>
 </div>
 <div class="strip"><div class="inner" id="stripinner">
@@ -584,9 +584,16 @@ function onStarter(t,i){
 /* ---- bridge inside an on-page iframe; the bridge posts {type:'nuri-bridge',state} when done ---- */
 const overlay=document.getElementById('overlay'),frame=document.getElementById('bridgeframe'),ovtext=document.getElementById('ovtext');
 const BRIDGE_ORIGIN='https://wirex.nuri.com';
-let bridgeUrl='',bridgeHeard=false,stuckTimer=null;
+let bridgeUrl='',bridgeWin=null,bridgeHeard=false,stuckTimer=null;
 const ovtab=document.getElementById('ovtab');
-ovtab.onclick=()=>{if(bridgeUrl)window.open(bridgeUrl,'_blank');};
+function openBridgeWindow(){
+  if(!bridgeUrl)return;
+  if(window.matchMedia('(pointer:coarse)').matches){bridgeWin=window.open(bridgeUrl,'_blank');}
+  else{const w=Math.min(520,screen.width-40),h=Math.min(780,screen.height-80);
+    bridgeWin=window.open(bridgeUrl,'pr_bridge',`popup=yes,width=${w},height=${h},left=${Math.round((screen.width-w)/2)},top=${Math.round((screen.height-h)/2)}`);}
+  if(!bridgeWin)ovtext.textContent='Popup blocked. Allow popups for this site, then tap Open again.';
+}
+ovtab.onclick=()=>{openBridgeWindow();};
 function markStuck(){
   if(bridgeHeard||!overlay.classList.contains('on'))return;
   ovtext.textContent='Still stuck? Brave blocks embedded wallets. Open it in a new tab, approve, then come back — I keep watching.';
@@ -605,9 +612,9 @@ async function resolveBridge(url){
 async function openBridge(url){
   overlay.classList.add('on');document.body.style.overflow='hidden';ovtext.textContent='Loading…';clearTimeout(pollTimer);
   try{bridgeUrl=await resolveBridge(url)}catch(e){ovtext.textContent=e.message+' Ask for a new link below.';return}
-  frame.src=bridgeUrl;ovtext.textContent='Closes by itself when you are done.';pollRounds=0;bridgeHeard=false;ovtab.hidden=true;clearTimeout(stuckTimer);stuckTimer=setTimeout(markStuck,25000);schedulePoll(8000);
+  openBridgeWindow();ovtext.textContent='Approve in the window that just opened. Closes by itself when you are done.';pollRounds=0;bridgeHeard=false;clearTimeout(stuckTimer);schedulePoll(8000);
 }
-function closeBridge(){overlay.classList.remove('on');document.body.style.overflow='';frame.src='about:blank';bridgeUrl='';clearTimeout(stuckTimer);ovtab.hidden=true}
+function closeBridge(){overlay.classList.remove('on');document.body.style.overflow='';frame.removeAttribute('src');bridgeUrl='';try{if(bridgeWin&&!bridgeWin.closed)bridgeWin.close()}catch{}bridgeWin=null;ovtab.hidden=false}
 document.getElementById('ovcancel').onclick=()=>{closeBridge();clearTimeout(pollTimer)};
 window.addEventListener('message',e=>{
   if(e.origin!==BRIDGE_ORIGIN||!e.data||e.data.type!=='nuri-bridge')return;
